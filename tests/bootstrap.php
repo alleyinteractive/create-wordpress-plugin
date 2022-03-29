@@ -5,6 +5,9 @@
 
 use function Mantle\Testing\tests_add_filter;
 
+/**
+ * Visit {@see https://mantle.alley.co/testing/test-framework.html} to learn more.
+ */
 \Mantle\Testing\install(
 	function() {
 		tests_add_filter(
