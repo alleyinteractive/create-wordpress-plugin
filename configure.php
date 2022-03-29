@@ -173,7 +173,7 @@ foreach ( $files as $file ) {
 	}
 }
 
-if ( confirm( 'Execute `composer install` and run tests?' ) ) {
+if ( confirm( 'Execute `composer install` and run tests?', true ) ) {
 	if ( file_exists( __DIR__ . '/composer.lock' ) ) {
 		echo run( 'composer update' );
 	} else {
@@ -183,4 +183,4 @@ if ( confirm( 'Execute `composer install` and run tests?' ) ) {
 	echo run( 'composer test' );
 }
 
-// confirm( 'Let this script delete itself?', true ) && unlink( __FILE__ );
+confirm( 'Let this script delete itself?', true ) && unlink( __FILE__ );
