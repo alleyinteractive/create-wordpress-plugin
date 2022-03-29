@@ -20,7 +20,7 @@ jobs:
         uses: php-actions/composer@v6
         with:
           php_version: 8.0
-          composer_version: 2
+          version: 2
           args: --prefer-dist --no-dev
       - name: Extract branch name
         shell: bash
