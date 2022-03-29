@@ -1,0 +1,55 @@
+{
+    "name": "vendor_slug/plugin_slug",
+    "description": ":package_description",
+    "keywords": [
+        ":vendor_name",
+        ":package_slug"
+    ],
+    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": ":author_name",
+            "email": "email@domain.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "alleyinteractive/composer-wordpress-autoloader": "^0.2",
+        "alleyinteractive/mantle-framework": "dev-main"
+    },
+    "require-dev": {
+        "alleyinteractive/alley-coding-standards": "^0.3",
+        "nunomaduro/collision": "^5.0",
+        "phpunit/phpunit": "^8.5.8 || ^9.3.3"
+    },
+    "config": {
+        "allow-plugins": {
+            "alleyinteractive/composer-wordpress-autoloader": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "pestphp/pest-plugin": true
+        },
+        "sort-packages": true
+    },
+    "extra": {
+        "wordpress-autoloader": {
+            "autoload": {
+                "Vendor_Name\\Skeleton\\": "src"
+            },
+            "autoload-dev": {
+                "Vendor_Name\\Skeleton\\Tests\\": "tests"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "phpcbf": "phpcbf --standard=./phpcs.xml .",
+        "phpcs": "phpcs --standard=./phpcs.xml .",
+        "phpunit": "phpunit",
+        "test": [
+            "@phpcs",
+            "@phpunit"
+        ]
+    }
+}
