@@ -2,11 +2,18 @@
 
 <!--delete-->
 ---
-This package can be used as to scaffold a framework agnostic package. Follow these steps to get started:
+This package can be used as to scaffold a WordPress plugin that can be published
+to WordPress.org. This template includes a base plugin file, unit tests powered
+by [Mantle](https://mantle.alley.co/), Continuous Integration [via GitHub
+Actions](.github/workflows). Actions are configured to test the plugin and and
+also build it for release. A `main-built` branch and `v0.1.0-built` tags will be
+created with all dependencies included for use when submoduling a plugin.
+
+Follow these steps to get started:
 
 1. Press the "Use template" button at the top of this repo to create a new repo with the contents of this skeleton.
 2. Run "php ./configure.php" to run a script that will replace all placeholders throughout all the files.
-3. Have fun creating your package.
+3. Have fun creating your plugin.
 ---
 <!--/delete-->
 plugin_description
