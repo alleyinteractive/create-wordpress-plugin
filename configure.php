@@ -110,7 +110,7 @@ $username_guess  = basename( $username_guess );
 $author_username = ask( 'Author username', $username_guess );
 
 $vendor_name      = ask( 'Vendor name (usually the Github Organization)', $username_guess );
-$alleyinteractive      = slugify( $vendor_name );
+$vendor_slug      = slugify( $vendor_name );
 $vendor_namespace = ucwords( $vendor_name );
 $vendor_namespace = ask( 'Vendor namespace', $vendor_namespace );
 
@@ -126,7 +126,7 @@ $description = ask( 'Plugin description', "This is my plugin {$plugin_name}" );
 
 writeln( '------' );
 writeln( "Author     : {$author_name} ({$author_email})" );
-writeln( "Vendor     : {$vendor_name} ({$alleyinteractive})" );
+writeln( "Vendor     : {$vendor_name} ({$vendor_slug})" );
 writeln( "Plugin     : {$plugin_name} <{$description}>" );
 writeln( "Namespace  : {$vendor_namespace}\\{$class_name}" );
 writeln( "Class name : {$class_name}" );
@@ -148,18 +148,19 @@ foreach ( $files as $file ) {
 	replace_in_file(
 		$file,
 		[
-			'author_name'            => $author_name,
-			'author_username'        => $author_username,
-			'email@domain.com'       => $author_email,
-			'Example_Plugin'         => $class_name,
-			'plugin_description'     => $description,
-			'plugin_name_underscore' => str_replace( '-', '_', $plugin_name ),
-			'plugin_name'            => $plugin_name,
-			'plugin_name'            => $plugin_name,
-			'Skeleton'               => $class_name,
-			'vendor_name'            => $vendor_name,
-			'Vendor_Name'            => $vendor_namespace,
-			'alleyinteractive'            => $alleyinteractive,
+			'author_name'             => $author_name,
+			'author_username'         => $author_username,
+			'email@domain.com'        => $author_email,
+			'Example_Plugin'          => $class_name,
+			'plugin_description'      => $description,
+			'plugin_name_underscore'  => str_replace( '-', '_', $plugin_name ),
+			'plugin_name'             => $plugin_name,
+			'create-wordpress-plugin' => $plugin_name,
+			'plugin_name'             => $plugin_name,
+			'Skeleton'                => $class_name,
+			'vendor_name'             => $vendor_name,
+			'Vendor_Name'             => $vendor_namespace,
+			'alleyinteractive'        => $vendor_slug,
 		]
 	);
 

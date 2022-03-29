@@ -1,11 +1,17 @@
 # plugin_name
 
 Stable tag: 0.1.0
+
 Requires at least: 5.9
+
 Tested up to: 5.9
+
 Requires PHP: 7.4
+
 License: GPL v2 or later
+
 Tags: vendor_name, plugin_name
+
 Contributors: author_username
 
 <!--delete-->
