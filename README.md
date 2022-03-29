@@ -10,14 +10,12 @@ Contributors: author_username
 
 <!--delete-->
 ---
-This is a skeleton Wordpress plugin that can scaffold a WordPress plugin. Things
-may appear broken but that is because this is a skeleton for your future
-project! This template includes a base plugin file, autoloaded PHP files, unit
-tests powered by [Mantle](https://mantle.alley.co/), and Continuous Integration
-[via GitHub Actions](.github/workflows). Actions are configured to test the
-plugin and and also build it for release. A `main-built` branch and
-`v0.1.0-built` tags will be created with all dependencies included for use when
-submoduling a plugin.
+This is a skeleton Wordpress plugin that can scaffold a WordPress plugin. This
+template includes a base plugin file, autoloaded PHP files, unit tests powered
+by [Mantle](https://mantle.alley.co/), and Continuous Integration [via GitHub
+Actions](.github/workflows). Actions are configured to test the plugin and and
+also build it for release. A `main-built` branch and `v0.1.0-built` tags will be
+created with all dependencies included for use when submoduling a plugin.
 
 Follow these steps to get started:
 
@@ -27,8 +25,8 @@ Follow these steps to get started:
 ---
 
 <!--/delete-->
-[![Coding Standards](https://github.com/vendor_slug/plugin_slug/actions/workflows/coding-standards.yml/badge.svg)](https://github.com/vendor_slug/plugin_slug/actions/workflows/coding-standards.yml)
-[![Testing Suite](https://github.com/vendor_slug/plugin_slug/actions/workflows/unit-test.yml/badge.svg)](https://github.com/vendor_slug/plugin_slug/actions/workflows/unit-test.yml)
+[![Coding Standards](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/coding-standards.yml/badge.svg)](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/coding-standards.yml)
+[![Testing Suite](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/unit-test.yml/badge.svg)](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/unit-test.yml)
 
 plugin_description
 
@@ -37,7 +35,7 @@ plugin_description
 You can install the package via composer:
 
 ```bash
-composer require vendor_slug/package_slug
+composer require alleyinteractive/package_slug
 ```
 
 ## Usage

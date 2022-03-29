@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: plugin_name
- * Plugin URI: https://github.com/vendor_slug/plugin_slug
+ * Plugin URI: https://github.com/alleyinteractive/create-wordpress-plugin
  * Description: plugin_description
  * Version: 0.1.0
  * Author: Alley Interactive
