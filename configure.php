@@ -154,8 +154,8 @@ foreach ( $files as $file ) {
 			'email@domain.com'       => $author_email,
 			'Example_Plugin'         => $class_name,
 			'plugin_description'     => $description,
-			'plugin_name'            => $plugin_name,
 			'plugin_name_underscore' => str_replace( '-', '_', $plugin_name ),
+			'plugin_name'            => $plugin_name,
 			'plugin_slug'            => $plugin_slug,
 			'Skeleton'               => $class_name,
 			'vendor_name'            => $vendor_name,
@@ -175,10 +175,11 @@ foreach ( $files as $file ) {
 
 if ( confirm( 'Execute `composer install` and run tests?' ) ) {
 	if ( file_exists( __DIR__ . '/composer.lock' ) ) {
-		unlink( __DIR__ . '/composer.lock' );
+		echo run( 'composer update' );
+	} else {
+		echo run( 'composer install' );
 	}
 
-	echo run( 'composer install' );
 	echo run( 'composer test' );
 }
 
