@@ -41,7 +41,7 @@ plugin_description
 You can install the package via composer:
 
 ```bash
-composer require alleyinteractive/package_slug
+composer require alleyinteractive/create-wordpress-plugin
 ```
 
 ## Usage

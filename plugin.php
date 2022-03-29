@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: plugin_name
- * Plugin URI: https://github.com/alleyinteractive/create-wordpress-plugin
+ * Plugin URI: https://github.com/vendor_name/plugin_slug
  * Description: plugin_description
  * Version: 0.1.0
  * Author: author_name
- * Author URI: https://github.com/alleyinteractive/create-wordpress-plugin
+ * Author URI: https://github.com/vendor_name/plugin_slug
  * Requires at least: 5.9
  * Tested up to: 5.9
  *
