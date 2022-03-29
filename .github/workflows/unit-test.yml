@@ -9,9 +9,8 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  tests:
-    runs-on: ubuntu-latest
-
+  test:
+    runs-on: ${{ matrix.os }}
     services:
       mysql:
         image: mysql:5.7
@@ -29,11 +28,13 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
+        os: [ubuntu-latest, windows-latest]
         php: [7.4, 8.0]
         wp_version: ["latest"]
         can_fail: [false]
+        stability: [prefer-lowest, prefer-stable]
 
-    name: PHP ${{ matrix.php }} -- ${{ matrix.wp_version }}
+    name: P${{ matrix.php }} - ${{ matrix.stability }} - ${{ matrix.os }}
     env:
       CACHEDIR: /tmp/test-cache
       WP_CORE_DIR: /tmp/wordpress
@@ -62,9 +63,9 @@ jobs:
           cache-name: cache-composer-dependencies
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-${{ matrix.stability }}-composer-${{ hashFiles('**/composer.lock') }}--
           restore-keys: |
-            ${{ runner.os }}-composer-
+            ${{ runner.os }}-${{ matrix.stability }}-composer-
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -74,9 +75,6 @@ jobs:
           tools: composer:v2
           coverage: none
 
-      - name: Setup Memcached
-        uses: niden/actions-memcached@v7
-
       - name: Validate Composer
         run: composer validate --strict
 
@@ -85,7 +83,7 @@ jobs:
         with:
           timeout_minutes: 5
           max_attempts: 5
-          command: composer install
+          command: composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: Test Package
         shell: bash
