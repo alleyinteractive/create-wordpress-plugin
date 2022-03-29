@@ -15,3 +15,8 @@ composer.lock
 phpcs.xml
 phpunit.xml
 configure.php
+DOCKER_ENV
+phpunit.xml
+tests
+.phpcs
+phpcs.xml.dist
