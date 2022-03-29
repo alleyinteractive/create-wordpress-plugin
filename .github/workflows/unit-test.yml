@@ -28,13 +28,13 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
         php: [7.4, 8.0]
         wp_version: ["latest"]
         can_fail: [false]
         stability: [prefer-lowest, prefer-stable]
 
-    name: P${{ matrix.php }} - ${{ matrix.stability }} - ${{ matrix.os }}
+    name: PHP ${{ matrix.php }} - ${{ matrix.stability }} - ${{ matrix.os }}
     env:
       CACHEDIR: /tmp/test-cache
       WP_CORE_DIR: /tmp/wordpress
