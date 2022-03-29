@@ -41,8 +41,9 @@
   <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 	<properties>
 		<property name="prefixes" type="array">
-			<element value="vendor_name"/>
-			<element value="plugin_name"/>
+			<element value="vendor_name" />
+			<element value="plugin_name" />
+			<element value="plugin_name_underscore" />
 		</property>
 	</properties>
 </rule>
