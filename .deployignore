@@ -14,3 +14,4 @@ bin
 composer.lock
 phpcs.xml
 phpunit.xml
+configure.php

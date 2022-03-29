@@ -9,6 +9,7 @@
 /phpcs.xml export-ignore
 /phpunit.xml export-ignore
 /tests export-ignore
+/configure.php export-ignore
 
 #
 # Auto detect text files and perform LF normalization.
