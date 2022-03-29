@@ -180,7 +180,9 @@ if ( confirm( 'Execute `composer install` and run tests?', true ) ) {
 		echo run( 'composer install' );
 	}
 
+	echo "\n\n";
 	echo run( 'composer test' );
+	echo "\n\n";
 }
 
 confirm( 'Let this script delete itself?', true ) && unlink( __FILE__ );
