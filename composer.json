@@ -9,7 +9,7 @@
     "license": "GPL-2.0-or-later",
     "authors": [
         {
-            "name": ":author_name",
+            "name": "author_name",
             "email": "email@domain.com"
         }
     ],
