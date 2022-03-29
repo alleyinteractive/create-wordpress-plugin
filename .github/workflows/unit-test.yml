@@ -32,7 +32,7 @@ jobs:
         php: [7.4, 8.0]
         wp_version: ["latest"]
         can_fail: [false]
-        stability: [prefer-lowest, prefer-stable]
+        stability: [prefer-stable]
 
     name: PHP ${{ matrix.php }} - ${{ matrix.stability }} - ${{ matrix.os }}
     env:
