@@ -2,6 +2,8 @@
 <?php
 /**
  * Configure the WordPress Plugin interactively.
+ *
+ * phpcs:disable
  */
 
 if ( ! defined( 'STDIN' ) ) {
@@ -51,7 +53,11 @@ function slugify( string $subject ): string {
 }
 
 function title_case( string $subject ): string {
-	return str_replace( ' ', '', ucwords( str_replace( [ '-', '_' ], ' ', $subject ) ) );
+	return ensure_capitalp( str_replace( ' ', '_', ucwords( str_replace( [ '-', '_' ], ' ', $subject ) ) ) );
+}
+
+function ensure_capitalp( string $text ): string {
+	return str_replace( 'Wordpress', 'WordPress', $text );
 }
 
 function replace_in_file( string $file, array $replacements ): void {
@@ -88,7 +94,15 @@ function replace_for_all_other_oses(): array {
 	return explode( PHP_EOL, run( 'grep -E -r -l -i ":author|:vendor|:package|VendorName|skeleton|vendor_name|vendor_slug|author@domain.com" --exclude-dir=vendor ./* ./.github/* | grep -v ' . basename( __FILE__ ) ) );
 }
 
-$git_name   = run( 'git config user.name' );
+if ( ! function_exists( 'str_contains' ) ) {
+	function str_contains( string $haystack, string $needle ): bool {
+		return '' === $needle || false !== strpos( $haystack, $needle );
+	}
+}
+
+echo "\nWelcome friend! 😀\nLets setup your WordPress Plugin 🚀\n\n";
+
+$git_name    = run( 'git config user.name' );
 $author_name = ask( 'Author name', $git_name );
 
 $git_email    = run( 'git config user.email' );
@@ -97,27 +111,27 @@ $author_email = ask( 'Author email', $git_email );
 $username_guess  = explode( ':', run( 'git config remote.origin.url' ) )[1];
 $username_guess  = dirname( $username_guess );
 $username_guess  = basename( $username_guess );
-$author_username = ask( 'Author username', $username_guess );
+// $author_username = ask( 'Author username', $username_guess );
 
-$vendor_name      = ask( 'Vendor name', $author_username );
+$vendor_name      = ask( 'Vendor name (usually the Github Organization)', $username_guess );
 $vendor_slug      = slugify( $vendor_name );
 $vendor_namespace = ucwords( $vendor_name );
 $vendor_namespace = ask( 'Vendor namespace', $vendor_namespace );
 
 $current_dir = getcwd();
-$folder_name       = basename( $current_dir );
+$folder_name = ensure_capitalp( basename( $current_dir ) );
 
-$package_name = ask( 'Package name', $folder_name );
-$package_slug = slugify( $package_name );
+$plugin_name = ask( 'Plugin name', $folder_name );
+$plugin_slug = slugify( $plugin_name );
 
-$class_name   = title_case( $package_name );
+$class_name   = title_case( $plugin_name );
 $class_name   = ask( 'Class name', $class_name );
-$description = ask( 'Package description', "This is my package {$package_slug}" );
+$description = ask( 'Plugin description', "This is my plugin {$plugin_slug}" );
 
 writeln( '------' );
-writeln( "Author     : {$author_name} ({$author_username}, {$author_email})" );
+writeln( "Author     : {$author_name} ({$author_email})" );
 writeln( "Vendor     : {$vendor_name} ({$vendor_slug})" );
-writeln( "Package    : {$package_slug} <{$description}>" );
+writeln( "Plugin     : {$plugin_slug} <{$description}>" );
 writeln( "Namespace  : {$vendor_namespace}\\{$class_name}" );
 writeln( "Class name : {$class_name}" );
 writeln( '------' );
@@ -128,33 +142,39 @@ if ( ! confirm( 'Modify files?', true ) ) {
 	exit( 1 );
 }
 
-$files = ( str_starts_with( strtoupper( PHP_OS ), 'WIN' ) ? replace_for_windows() : replace_for_all_other_oses() );
+$files = 0 === strpos( strtoupper( PHP_OS ), 'WIN' )
+	? replace_for_windows()
+	: replace_for_all_other_oses();
 
 foreach ( $files as $file ) {
 	replace_in_file(
 		$file,
 		[
-			':author_name'         => $author_name,
-			':author_username'     => $author_username,
-			'author@domain.com'    => $author_email,
-			':vendor_name'         => $vendor_name,
-			':vendor_slug'         => $vendor_slug,
-			'VendorName'           => $vendor_namespace,
-			':package_name'        => $package_name,
-			':package_slug'        => $package_slug,
-			'Skeleton'             => $class_name,
-			':package_description' => $description,
+			'author_name'            => $author_name,
+			'email@domain.com'       => $author_email,
+			'Example_Plugin'         => $class_name,
+			'plugin_description'     => $description,
+			'plugin_name'            => $plugin_name,
+			'plugin_name_underscore' => str_replace( '-', '_', $plugin_name ),
+			'plugin_slug'            => $plugin_slug,
+			'Skeleton'               => $class_name,
+			'vendor_name'            => $vendor_name,
+			'Vendor_Name'            => $vendor_namespace,
+			'vendor_slug'            => $vendor_slug,
 		]
 	);
 
-	match (true) {
-		str_contains( $file, determine_separator( 'src/SkeletonClass.php' ) ) => rename( $file, determine_separator( './src/' . $class_name . 'Class.php' ) ),
-		str_contains( $file, 'README.md' ) => remove_readme_paragraphs( $file ),
-		default => [],
-	};
+	if ( str_contains( $file, determine_separator( 'src/class-example-plugin.php' ) ) ) {
+		rename( $file, determine_separator( './src/class-' . str_replace( '_', '-', strtolower( $class_name ) ) . '.php' ) );
+	}
 
+	if ( str_contains( $file, 'README.md' ) ) {
+		remove_readme_paragraphs( $file );
+	}
 }
 
-confirm( 'Execute `composer install` and run tests?' ) && run( 'composer install && composer test' );
+if ( confirm( 'Execute `composer install` and run tests?' ) ) {
+	echo run( 'composer install && composer test' );
+}
 
-confirm( 'Let this script delete itself?', true ) && unlink( __FILE__ );
+// confirm( 'Let this script delete itself?', true ) && unlink( __FILE__ );
