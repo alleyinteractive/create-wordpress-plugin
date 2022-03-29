@@ -1,11 +1,11 @@
 {
     "name": "vendor_slug/plugin_slug",
-    "description": ":package_description",
+    "description": "plugin_description",
     "keywords": [
-        ":vendor_name",
-        ":package_slug"
+        "vendor_name",
+        "plugin_slug"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/vendor_slug/plugin_slug",
     "license": "GPL-2.0-or-later",
     "authors": [
         {
@@ -44,8 +44,8 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
-        "phpcbf": "phpcbf --standard=./phpcs.xml .",
-        "phpcs": "phpcs --standard=./phpcs.xml .",
+        "phpcbf": "phpcbf --standard=./phpcs.xml.dist .",
+        "phpcs": "phpcs --standard=./phpcs.xml.dist .",
         "phpunit": "phpunit",
         "test": [
             "@phpcs",

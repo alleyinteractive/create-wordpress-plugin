@@ -1,1 +1,3 @@
-# :plugin_name
+# plugin_name
+
+plugin_description
