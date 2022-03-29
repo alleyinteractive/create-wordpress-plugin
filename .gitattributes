@@ -11,6 +11,7 @@
 /phpunit.xml export-ignore
 /tests export-ignore
 /configure.php export-ignore
+/Makefile export-ignore
 
 #
 # Auto detect text files and perform LF normalization.

@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: plugin_name
- * Plugin URI: https://github.com/vendor_slug/plugin_slug
+ * Plugin URI: https://github.com/vendor_name/plugin_slug
  * Description: plugin_description
  * Version: 0.1.0
- * Author: Alley Interactive
- * Author URI: https://alley.co/
+ * Author: author_name
+ * Author URI: https://github.com/vendor_name/plugin_slug
  * Requires at least: 5.9
  * Tested up to: 5.9
  *

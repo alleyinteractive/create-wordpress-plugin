@@ -86,12 +86,8 @@ function determine_separator( string $path ): string {
 	return str_replace( '/', DIRECTORY_SEPARATOR, $path );
 }
 
-function replace_for_windows(): array {
-	return preg_split( '/\\r\\n|\\r|\\n/', run( 'dir /S /B * | findstr /v /i .git\ | findstr /v /i vendor | findstr /v /i ' . basename( __FILE__ ) . ' | findstr /r /i /M /F:/ ":author :vendor :package VendorName skeleton vendor_name vendor_slug author@domain.com"' ) );
-}
-
 function replace_for_all_other_oses(): array {
-	return explode( PHP_EOL, run( 'grep -E -r -l -i ":author|:vendor|:package|VendorName|skeleton|vendor_name|vendor_slug|author@domain.com" --exclude-dir=vendor ./* ./.github/* | grep -v ' . basename( __FILE__ ) ) );
+	return explode( PHP_EOL, run( 'grep -E -r -l -i ":author|:vendor|:package|VendorName|skeleton|vendor_name|alleyinteractive|author@domain.com" --exclude-dir=vendor ./* ./.github/* | grep -v ' . basename( __FILE__ ) ) );
 }
 
 if ( ! function_exists( 'str_contains' ) ) {
@@ -100,7 +96,7 @@ if ( ! function_exists( 'str_contains' ) ) {
 	}
 }
 
-echo "\nWelcome friend! 😀\nLets setup your WordPress Plugin 🚀\n\n";
+echo "\nWelcome friend! 😀\nLet's setup your WordPress Plugin 🚀\n\n";
 
 $git_name    = run( 'git config user.name' );
 $author_name = ask( 'Author name', $git_name );
@@ -122,16 +118,16 @@ $current_dir = getcwd();
 $folder_name = ensure_capitalp( basename( $current_dir ) );
 
 $plugin_name = ask( 'Plugin name', $folder_name );
-$plugin_slug = slugify( $plugin_name );
+$plugin_name = slugify( $plugin_name );
 
 $class_name   = title_case( $plugin_name );
 $class_name   = ask( 'Class name', $class_name );
-$description = ask( 'Plugin description', "This is my plugin {$plugin_slug}" );
+$description = ask( 'Plugin description', "This is my plugin {$plugin_name}" );
 
 writeln( '------' );
 writeln( "Author     : {$author_name} ({$author_email})" );
 writeln( "Vendor     : {$vendor_name} ({$vendor_slug})" );
-writeln( "Plugin     : {$plugin_slug} <{$description}>" );
+writeln( "Plugin     : {$plugin_name} <{$description}>" );
 writeln( "Namespace  : {$vendor_namespace}\\{$class_name}" );
 writeln( "Class name : {$class_name}" );
 writeln( '------' );
@@ -142,26 +138,29 @@ if ( ! confirm( 'Modify files?', true ) ) {
 	exit( 1 );
 }
 
-$files = 0 === strpos( strtoupper( PHP_OS ), 'WIN' )
-	? replace_for_windows()
-	: replace_for_all_other_oses();
+if ( 0 === strpos( strtoupper( PHP_OS ), 'WIN' ) ) {
+	die( 'Not supported in Windows.' );
+}
+
+$files = replace_for_all_other_oses();
 
 foreach ( $files as $file ) {
 	replace_in_file(
 		$file,
 		[
-			'author_name'            => $author_name,
-			'author_username'        => $author_username,
-			'email@domain.com'       => $author_email,
-			'Example_Plugin'         => $class_name,
-			'plugin_description'     => $description,
-			'plugin_name_underscore' => str_replace( '-', '_', $plugin_name ),
-			'plugin_name'            => $plugin_name,
-			'plugin_slug'            => $plugin_slug,
-			'Skeleton'               => $class_name,
-			'vendor_name'            => $vendor_name,
-			'Vendor_Name'            => $vendor_namespace,
-			'vendor_slug'            => $vendor_slug,
+			'author_name'             => $author_name,
+			'author_username'         => $author_username,
+			'email@domain.com'        => $author_email,
+			'Example_Plugin'          => $class_name,
+			'plugin_description'      => $description,
+			'plugin_name_underscore'  => str_replace( '-', '_', $plugin_name ),
+			'plugin_name'             => $plugin_name,
+			'create-wordpress-plugin' => $plugin_name,
+			'plugin_name'             => $plugin_name,
+			'Skeleton'                => $class_name,
+			'vendor_name'             => $vendor_name,
+			'Vendor_Name'             => $vendor_namespace,
+			'alleyinteractive'        => $vendor_slug,
 		]
 	);
 
@@ -186,6 +185,9 @@ if ( confirm( 'Execute `composer install` and run tests?', true ) ) {
 	echo "\n\n";
 }
 
-confirm( 'Let this script delete itself?', true ) && unlink( __FILE__ );
+if ( confirm( 'Let this script delete itself?', true ) ) {
+	unlink( __FILE__ );
+	unlink( __DIR__ . '/Makefile' );
+}
 
 echo "\n\nWe're done! 🎉\n\n";

@@ -20,3 +20,4 @@ phpunit.xml
 tests
 .phpcs
 phpcs.xml.dist
+Makefile

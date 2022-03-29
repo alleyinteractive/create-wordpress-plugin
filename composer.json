@@ -1,11 +1,11 @@
 {
-    "name": "vendor_slug/plugin_slug",
+    "name": "vendor_name/plugin_slug",
     "description": "plugin_description",
     "keywords": [
         "vendor_name",
         "plugin_slug"
     ],
-    "homepage": "https://github.com/vendor_slug/plugin_slug",
+    "homepage": "https://github.com/vendor_name/plugin_slug",
     "license": "GPL-2.0-or-later",
     "authors": [
         {
