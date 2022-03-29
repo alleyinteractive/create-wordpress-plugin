@@ -118,16 +118,16 @@ $current_dir = getcwd();
 $folder_name = ensure_capitalp( basename( $current_dir ) );
 
 $plugin_name = ask( 'Plugin name', $folder_name );
-$create-wordpress-plugin = slugify( $plugin_name );
+$plugin_name = slugify( $plugin_name );
 
 $class_name   = title_case( $plugin_name );
 $class_name   = ask( 'Class name', $class_name );
-$description = ask( 'Plugin description', "This is my plugin {$create-wordpress-plugin}" );
+$description = ask( 'Plugin description', "This is my plugin {$plugin_name}" );
 
 writeln( '------' );
 writeln( "Author     : {$author_name} ({$author_email})" );
 writeln( "Vendor     : {$vendor_name} ({$alleyinteractive})" );
-writeln( "Plugin     : {$create-wordpress-plugin} <{$description}>" );
+writeln( "Plugin     : {$plugin_name} <{$description}>" );
 writeln( "Namespace  : {$vendor_namespace}\\{$class_name}" );
 writeln( "Class name : {$class_name}" );
 writeln( '------' );
@@ -155,7 +155,7 @@ foreach ( $files as $file ) {
 			'plugin_description'     => $description,
 			'plugin_name_underscore' => str_replace( '-', '_', $plugin_name ),
 			'plugin_name'            => $plugin_name,
-			'create-wordpress-plugin'            => $create-wordpress-plugin,
+			'plugin_name'            => $plugin_name,
 			'Skeleton'               => $class_name,
 			'vendor_name'            => $vendor_name,
 			'Vendor_Name'            => $vendor_namespace,

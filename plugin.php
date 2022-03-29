@@ -4,8 +4,8 @@
  * Plugin URI: https://github.com/alleyinteractive/create-wordpress-plugin
  * Description: plugin_description
  * Version: 0.1.0
- * Author: Alley Interactive
- * Author URI: https://alley.co/
+ * Author: author_name
+ * Author URI: https://github.com/alleyinteractive/create-wordpress-plugin
  * Requires at least: 5.9
  * Tested up to: 5.9
  *
