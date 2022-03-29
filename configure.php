@@ -186,6 +186,9 @@ if ( confirm( 'Execute `composer install` and run tests?', true ) ) {
 	echo "\n\n";
 }
 
-confirm( 'Let this script delete itself?', true ) && unlink( __FILE__ );
+if ( confirm( 'Let this script delete itself?', true ) ) {
+	unlink( __FILE__ );
+	unlink( __DIR__ . '/Makefile' );
+}
 
 echo "\n\nWe're done! 🎉\n\n";
