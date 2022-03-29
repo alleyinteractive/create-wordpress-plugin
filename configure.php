@@ -111,7 +111,7 @@ $author_email = ask( 'Author email', $git_email );
 $username_guess  = explode( ':', run( 'git config remote.origin.url' ) )[1];
 $username_guess  = dirname( $username_guess );
 $username_guess  = basename( $username_guess );
-// $author_username = ask( 'Author username', $username_guess );
+$author_username = ask( 'Author username', $username_guess );
 
 $vendor_name      = ask( 'Vendor name (usually the Github Organization)', $username_guess );
 $vendor_slug      = slugify( $vendor_name );
@@ -151,6 +151,7 @@ foreach ( $files as $file ) {
 		$file,
 		[
 			'author_name'            => $author_name,
+			'author_username'        => $author_username,
 			'email@domain.com'       => $author_email,
 			'Example_Plugin'         => $class_name,
 			'plugin_description'     => $description,
@@ -186,3 +187,5 @@ if ( confirm( 'Execute `composer install` and run tests?', true ) ) {
 }
 
 confirm( 'Let this script delete itself?', true ) && unlink( __FILE__ );
+
+echo "\n\nWe're done! 🎉\n\n";

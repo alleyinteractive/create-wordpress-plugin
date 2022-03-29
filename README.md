@@ -1,5 +1,16 @@
 # plugin_name
 
+Stable tag: 0.1.0
+Requires at least: 5.9
+Tested up to: 5.9
+Requires PHP: 7.4
+License: GPL v2 or later
+Tags: vendor_name, plugin_name
+Contributors: author_username
+
+[![Coding Standards](https://github.com/vendor_slug/plugin_slug/actions/workflows/coding-standards.yml/badge.svg)](https://github.com/vendor_slug/plugin_slug/actions/workflows/coding-standards.yml)
+[![Testing Suite](https://github.com/vendor_slug/plugin_slug/actions/workflows/unit-test.yml/badge.svg)](https://github.com/vendor_slug/plugin_slug/actions/workflows/unit-test.yml)
+
 <!--delete-->
 ---
 This package can be used as to scaffold a WordPress plugin that can be published
