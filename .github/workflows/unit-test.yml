@@ -79,7 +79,7 @@ jobs:
         run: composer validate --strict
 
       - name: Install dependencies
-        uses: nick-invision/retry@v2.6.0
+        uses: nick-invision/retry@v2.7.0
         with:
           timeout_minutes: 5
           max_attempts: 5
