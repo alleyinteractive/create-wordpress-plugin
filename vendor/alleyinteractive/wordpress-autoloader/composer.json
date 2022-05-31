@@ -1,0 +1,43 @@
+{
+  "name": "alleyinteractive/wordpress-autoloader",
+  "type": "library",
+  "description": "Autoload files using WordPress File Conventions",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Alley Interactive",
+      "email": "info@alley.co"
+    }
+  ],
+  "require": {
+    "php": "^7.4.0|^8.0|^8.1"
+  },
+  "require-dev": {
+    "alleyinteractive/alley-coding-standards": "^0.3",
+    "phpunit/phpunit": "^9.5.8"
+  },
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  },
+  "autoload": {
+    "files": [
+      "src/class-autoloader.php"
+    ]
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "scripts": {
+    "lint": "@phpcs",
+    "lint:fix": "@phpcbf",
+    "phpcbf": "phpcbf --standard=./phpcs.xml.dist .",
+    "phpcs": "phpcs --standard=./phpcs.xml.dist .",
+    "phpunit": "vendor/bin/phpunit",
+    "test": [
+      "@phpcs",
+      "@phpunit"
+    ]
+  }
+}

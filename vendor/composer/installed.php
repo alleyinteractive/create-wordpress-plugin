@@ -1,0 +1,41 @@
+<?php return array(
+    'root' => array(
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'type' => 'library',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'reference' => 'f42b02fd547f4ae1aab662a6951536e6fe537376',
+        'name' => 'vendor_name/plugin_slug',
+        'dev' => false,
+    ),
+    'versions' => array(
+        'alleyinteractive/composer-wordpress-autoloader' => array(
+            'pretty_version' => 'v0.4.1',
+            'version' => '0.4.1.0',
+            'type' => 'composer-plugin',
+            'install_path' => __DIR__ . '/../alleyinteractive/composer-wordpress-autoloader',
+            'aliases' => array(),
+            'reference' => '4964609549c2589609607aae04cd1079b1438c0c',
+            'dev_requirement' => false,
+        ),
+        'alleyinteractive/wordpress-autoloader' => array(
+            'pretty_version' => 'v0.2.0',
+            'version' => '0.2.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../alleyinteractive/wordpress-autoloader',
+            'aliases' => array(),
+            'reference' => 'b02e276f1fa710f7985ae1acb352e524d65dd38e',
+            'dev_requirement' => false,
+        ),
+        'vendor_name/plugin_slug' => array(
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'reference' => 'f42b02fd547f4ae1aab662a6951536e6fe537376',
+            'dev_requirement' => false,
+        ),
+    ),
+);
