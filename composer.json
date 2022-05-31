@@ -19,7 +19,7 @@
     },
     "require-dev": {
         "alleyinteractive/alley-coding-standards": "^0.3",
-        "mantle-framework/testkit": "^0.1",
+        "mantle-framework/testkit": "^0.2",
         "nunomaduro/collision": "^5.0",
         "phpunit/phpunit": "^9.3.3"
     },
