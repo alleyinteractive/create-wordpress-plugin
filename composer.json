@@ -15,11 +15,11 @@
     ],
     "require": {
         "php": "^7.4 || ^8.0",
-        "alleyinteractive/composer-wordpress-autoloader": "^0.4"
+        "alleyinteractive/composer-wordpress-autoloader": "^0.6"
     },
     "require-dev": {
         "alleyinteractive/alley-coding-standards": "^0.3",
-        "mantle-framework/testkit": "^0.4",
+        "mantle-framework/testkit": "^0.5",
         "nunomaduro/collision": "^5.0",
         "phpunit/phpunit": "^9.3.3"
     },
