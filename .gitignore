@@ -1,6 +1,8 @@
 # Build files
 build
 vendor
+composer.lock
+package-lock.json
 
 # Log files
 *.log
