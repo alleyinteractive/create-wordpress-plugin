@@ -19,29 +19,25 @@ jobs:
           access_token: ${{ github.token }}
       - name: Checkout code
         uses: actions/checkout@v2
-
-      # - name: Check if there are node asses to use
-      #   uses: andstor/file-existence-action@v1
-      #   id: has-node-assets
-      #   with:
-      #     files: "package.json"
-
-      - name: Check if there are node asses to use
+      - name: Check if there are node assets to use
         shell: bash
         id: has-node-assets
         run: |
           [[ -f package.json ]] && echo "::set-output name=exists::true" || echo "::set-output name=exists::false"
-
       - name: Setup Node
-        if: steps.has-node-assets.outputs.files_exists == 'true'
+        if: steps.has-node-assets.outputs.exists == 'true'
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
       - name: Install node dependencies (npm ci)
+        if: steps.has-node-assets.outputs.exists == 'true'
         run: npm install
       - name: Run npm test
+        if: steps.has-node-assets.outputs.exists == 'true'
         run: npm run test
       - name: Run npm lint
+        if: steps.has-node-assets.outputs.exists == 'true'
         run: npm run lint
       - name: Run npm build
+        if: steps.has-node-assets.outputs.exists == 'true'
         run: npm run build

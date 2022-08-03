@@ -34,7 +34,7 @@ jobs:
         can_fail: [false]
         stability: [prefer-stable]
 
-    name: PHP ${{ matrix.php }} - ${{ matrix.stability }} - ${{ matrix.os }}
+    name: PHP Unit Tests ${{ matrix.php }} - ${{ matrix.stability }} - ${{ matrix.os }}
     env:
       CACHEDIR: /tmp/test-cache
       WP_CORE_DIR: /tmp/wordpress
