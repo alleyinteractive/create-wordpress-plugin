@@ -10,6 +10,11 @@ jobs:
   built-branch:
     name: Built Branch
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [8.0]
+        node: [16]
 
     steps:
       - uses: actions/checkout@v3
@@ -19,16 +24,24 @@ jobs:
       - name: Install dependencies
         uses: php-actions/composer@v6
         with:
-          php_version: 8.0
+          php_version: ${{ matrix.php }}
           version: 2
           args: --prefer-dist --no-dev
+      - name: Check if the plugin has front-end assets
+        shell: bash
+        id: has-node-assets
+        run: |
+          [[ -f package.json ]] && echo "::set-output name=exists::true" || echo "::set-output name=exists::false"
       - name: Setup Node
+        if: steps.has-node-assets.outputs.exists == 'true'
         uses: actions/setup-node@v1
         with:
-          node-version: 16
+          node-version: ${{ matrix.node }}
       - name: Install node dependencies (npm ci)
+        if: steps.has-node-assets.outputs.exists == 'true'
         run: npm install
       - name: Run npm build
+        if: steps.has-node-assets.outputs.exists == 'true'
         run: npm run build
       - name: Extract branch name
         shell: bash

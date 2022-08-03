@@ -19,7 +19,7 @@ jobs:
           access_token: ${{ github.token }}
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Check if there are node assets to use
+      - name: Check if the plugin has front-end assets
         shell: bash
         id: has-node-assets
         run: |

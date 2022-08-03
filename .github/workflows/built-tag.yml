@@ -10,25 +10,36 @@ jobs:
   built-branch:
     name: Create Built Release
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        node: [16]
 
     steps:
       - uses: actions/checkout@v3
       - name: Clear previous vendor
         shell: bash
         run: rm -rf vendor && rm -rf composer.lock
+      - name: Check if the plugin has front-end assets
+        shell: bash
+        id: has-node-assets
+        run: |
+          [[ -f package.json ]] && echo "::set-output name=exists::true" || echo "::set-output name=exists::false"
       - name: Install dependencies
         uses: php-actions/composer@v6
         with:
-          php_version: 8.0
+          php_version: ${{ matrix.php }}
           version: 2
           args: --prefer-dist --no-dev
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
-          node-version: 16
+          node-version: ${{ matrix.node }}
       - name: Install node dependencies (npm ci)
+        if: steps.has-node-assets.outputs.exists == 'true'
         run: npm install
       - name: Run npm build
+        if: steps.has-node-assets.outputs.exists == 'true'
         run: npm run build
       - name: Extract branch name
         shell: bash
