@@ -185,6 +185,23 @@ if ( confirm( 'Execute `composer install` and run tests?', true ) ) {
 	echo "\n\n";
 }
 
+if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) ) {
+	if ( confirm( 'Do you want to run `npm install` and `npm run build`?', true ) ) {
+		echo run( 'npm install && npm run build' );
+	}
+} elseif ( confirm( 'Do you want to delete the front-end files? (Such as package.json, webpack.config.js, etc.)', true ) ) {
+	$frontend_files = [
+		'package.json',
+		'webpack.config.js',
+	];
+
+	foreach ( $frontend_files as $file ) {
+		if ( file_exists( $file ) ) {
+			unlink( $file );
+		}
+	}
+}
+
 if ( confirm( 'Let this script delete itself?', true ) ) {
 	unlink( __FILE__ );
 	unlink( __DIR__ . '/Makefile' );
