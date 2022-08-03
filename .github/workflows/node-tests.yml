@@ -1,0 +1,47 @@
+name: Node Tests
+
+on:
+  pull_request:
+
+jobs:
+  npm-ci:
+    name: Install, build, and test
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        node: [16]
+    steps:
+      - name: Cancel previous runs of this workflow (pull requests only)
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: styfle/cancel-workflow-action@0.5.0
+        with:
+          access_token: ${{ github.token }}
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # - name: Check if there are node asses to use
+      #   uses: andstor/file-existence-action@v1
+      #   id: has-node-assets
+      #   with:
+      #     files: "package.json"
+
+      - name: Check if there are node asses to use
+        shell: bash
+        id: has-node-assets
+        run: |
+          [[ -f package.json ]] && echo "::set-output name=exists::true" || echo "::set-output name=exists::false"
+
+      - name: Setup Node
+        if: steps.has-node-assets.outputs.files_exists == 'true'
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Install node dependencies (npm ci)
+        run: npm install
+      - name: Run npm test
+        run: npm run test
+      - name: Run npm lint
+        run: npm run lint
+      - name: Run npm build
+        run: npm run build
