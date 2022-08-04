@@ -44,8 +44,8 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
-        "phpcbf": "phpcbf --standard=./phpcs.xml.dist .",
-        "phpcs": "phpcs --standard=./phpcs.xml.dist .",
+        "phpcbf": "phpcbf .",
+        "phpcs": "phpcs .",
         "phpunit": "phpunit",
         "test": [
             "@phpcs",

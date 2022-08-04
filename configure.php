@@ -144,9 +144,9 @@ if ( 0 === strpos( strtoupper( PHP_OS ), 'WIN' ) ) {
 
 $files = replace_for_all_other_oses();
 
-foreach ( $files as $file ) {
+foreach ( $files as $path ) {
 	replace_in_file(
-		$file,
+		$path,
 		[
 			'author_name'             => $author_name,
 			'author_username'         => $author_username,
@@ -164,12 +164,12 @@ foreach ( $files as $file ) {
 		]
 	);
 
-	if ( str_contains( $file, determine_separator( 'src/class-example-plugin.php' ) ) ) {
-		rename( $file, determine_separator( './src/class-' . str_replace( '_', '-', strtolower( $class_name ) ) . '.php' ) );
+	if ( str_contains( $path, determine_separator( 'src/class-example-plugin.php' ) ) ) {
+		rename( $path, determine_separator( './src/class-' . str_replace( '_', '-', strtolower( $class_name ) ) . '.php' ) );
 	}
 
-	if ( str_contains( $file, 'README.md' ) ) {
-		remove_readme_paragraphs( $file );
+	if ( str_contains( $path, 'README.md' ) ) {
+		remove_readme_paragraphs( $path );
 	}
 }
 
@@ -191,13 +191,24 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 	}
 } elseif ( confirm( 'Do you want to delete the front-end files? (Such as package.json, webpack.config.js, etc.)', true ) ) {
 	$frontend_files = [
+		'.github/workflows/node-tests.yml',
+		'.eslintignore',
+		'.eslintrc.json',
+		'.nvmrc',
+		'.stylelintrc.json',
+		'babel.config.json',
+		'jsconfig.json',
 		'package.json',
 		'webpack.config.js',
+		'webpack/wpAssets.js',
+		'webpack/',
 	];
 
-	foreach ( $frontend_files as $file ) {
-		if ( file_exists( $file ) ) {
-			unlink( $file );
+	foreach ( $frontend_files as $path ) {
+		if ( is_dir( $path ) ) {
+			rmdir( $path );
+		} elseif ( file_exists( $path ) ) {
+			unlink( $path );
 		}
 	}
 }
