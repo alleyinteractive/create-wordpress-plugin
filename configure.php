@@ -153,11 +153,14 @@ foreach ( $files as $path ) {
 			'email@domain.com'        => $author_email,
 			'Example_Plugin'          => $class_name,
 			'plugin_description'      => $description,
-			'plugin_name_underscore'  => str_replace( '-', '_', $plugin_name ),
-			'CREATE_WORDPRESS_PLUGIN' => strtoupper( str_replace( '-', '_', $plugin_name ) ),
+
+			'create_wordpress_plugin' => str_replace( '-', '_', $plugin_name ),
 			'plugin_name'             => $plugin_name,
+
 			'create-wordpress-plugin' => $plugin_name,
-			'plugin_name'             => $plugin_name,
+			'plugin-name'             => $plugin_name,
+
+			'CREATE_WORDPRESS_PLUGIN' => strtoupper( str_replace( '-', '_', $plugin_name ) ),
 			'Skeleton'                => $class_name,
 			'vendor_name'             => $vendor_name,
 			'Vendor_Name'             => $vendor_namespace,

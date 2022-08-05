@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: plugin_name
- * Plugin URI: https://github.com/vendor_name/plugin_slug
+ * Plugin Name: create-wordpress-plugin
+ * Plugin URI: https://github.com/alleyinteractive/create-wordpress-plugin
  * Description: plugin_description
  * Version: 0.1.0
  * Author: author_name
- * Author URI: https://github.com/vendor_name/plugin_slug
+ * Author URI: https://github.com/alleyinteractive/create-wordpress-plugin
  * Requires at least: 5.9
  * Tested up to: 5.9
  *
@@ -26,7 +26,7 @@ if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 		function() {
 			?>
 			<div class="notice notice-error">
-				<p><?php esc_html_e( 'Composer is not installed and the plugin_name cannot load. Try using a `*-built` branch if the plugin is being loaded as a submodule.', 'plugin_domain' ); ?></p>
+				<p><?php esc_html_e( 'Composer is not installed and create-wordpress-plugin cannot load. Try using a `*-built` branch if the plugin is being loaded as a submodule.', 'plugin_domain' ); ?></p>
 			</div>
 			<?php
 		}

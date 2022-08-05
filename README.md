@@ -27,7 +27,7 @@ Follow these steps to get started:
 
 <!--/delete-->
 
-# plugin_name
+# create-wordpress-plugin
 
 Stable tag: 0.1.0
 
@@ -39,7 +39,7 @@ Requires PHP: 7.4
 
 License: GPL v2 or later
 
-Tags: vendor_name, plugin_name
+Tags: vendor_name, create-wordpress-plugin
 
 Contributors: author_username
 

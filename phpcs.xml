@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="plugin_name" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
-  <description>PHP_CodeSniffer standard for plugin_name.</description>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="create-wordpress-plugin" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
+  <description>PHP_CodeSniffer standard for create-wordpress-plugin.</description>
 
   <!-- Include Alley Rules -->
   <rule ref="Alley-Interactive" />
@@ -38,7 +38,6 @@
     <properties>
       <property name="prefixes" type="array">
         <element value="vendor_name" />
-        <element value="plugin_name_underscore" />
         <element value="create_wordpress_plugin" />
       </property>
     </properties>

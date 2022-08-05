@@ -1,9 +1,7 @@
 <?php
 /**
- * plugin_name Test Bootstrap
+ * create-wordpress-plugin Test Bootstrap
  */
-
-use function Mantle\Testing\tests_add_filter;
 
 /**
  * Visit {@see https://mantle.alley.co/testing/test-framework.html} to learn more.
