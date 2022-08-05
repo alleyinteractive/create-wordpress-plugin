@@ -1,11 +1,12 @@
 {
-    "name": "vendor_name/plugin_slug",
+    "name": "alleyinteractive/create-wordpress-plugin",
     "description": "plugin_description",
+    "type": "wordpress-plugin",
     "keywords": [
-        "vendor_name",
-        "plugin_slug"
+        "alleyinteractive",
+        "create-wordpress-plugin"
     ],
-    "homepage": "https://github.com/vendor_name/plugin_slug",
+    "homepage": "https://github.com/alleyinteractive/create-wordpress-plugin",
     "license": "GPL-2.0-or-later",
     "authors": [
         {

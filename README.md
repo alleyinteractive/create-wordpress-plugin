@@ -67,9 +67,31 @@ $plugin->perform_magic();
 
 ## Testing
 
-```bash
-composer test
+Run `npm run test` to run Jest tests against JavaScript files. Run
+`npm run test:watch` to keep the test runner open and watching for changes.
+
+Run `npm run lint` to run ESLint against all JavaScript files. Linting will also
+happen when running development or production builds.
+
+Run `composer test` to run tests against PHPUnit and the PHP code in the plugin.
+
+## Updating Dependencies
+
+To update `@wordpress` dependencies, simply execute:
+
+```sh
+npm run update-dependencies WPVERSION
 ```
+
+Where `WPVERSION` is the version of WordPress you are targeting. The version
+must include both the major and patch version (e.g., `5.9.3`). For example:
+
+```sh
+npm run update-dependencies 5.9.3
+```
+
+The versions are drawn from tags on
+[wordpress-develop](https://github.com/WordPress/wordpress-develop/tags).
 
 ## Changelog
 

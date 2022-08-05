@@ -1,0 +1,6 @@
+{
+  "core_term_meta": true,
+  "domain": "create-wordpress-plugin",
+  "namespace": "Vendor_Name\\Skeleton",
+  "require_path": "__DIR__"
+}
