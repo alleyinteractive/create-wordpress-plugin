@@ -86,8 +86,8 @@ function determine_separator( string $path ): string {
 	return str_replace( '/', DIRECTORY_SEPARATOR, $path );
 }
 
-function replace_for_all_other_oses(): array {
-	return explode( PHP_EOL, run( 'grep -E -r -l -i ":author|:vendor|:package|VendorName|skeleton|vendor_name|alleyinteractive|author@domain.com" --exclude-dir=vendor --exclude-dir=node_modules --exclude-dir=build ./* ./.github/* | grep -v ' . basename( __FILE__ ) ) );
+function list_all_files_for_replacement(): array {
+	return explode( PHP_EOL, run( 'grep -R -l ./  --exclude={LICENSE,configure.php} --exclude-dir={.git,.github,vendor,bin,webpack}' ) );
 }
 
 if ( ! function_exists( 'str_contains' ) ) {
@@ -141,33 +141,31 @@ if ( 0 === strpos( strtoupper( PHP_OS ), 'WIN' ) ) {
 	die( 'Not supported in Windows.' );
 }
 
-$files = replace_for_all_other_oses();
+$search_and_replace = [
+	'author_name'             => $author_name,
+	'author_username'         => $author_username,
+	'email@domain.com'        => $author_email,
+	'plugin_description'      => $description,
 
-foreach ( $files as $path ) {
-	replace_in_file(
-		$path,
-		[
-			'author_name'             => $author_name,
-			'author_username'         => $author_username,
-			'email@domain.com'        => $author_email,
-			'plugin_description'      => $description,
+	'Create_WordPress_Plugin' => $namespace,
+	'Example_Plugin'          => $class_name,
 
-			'Create_WordPress_Plugin' => $namespace,
-			'Example_Plugin'          => $class_name,
+	'create_wordpress_plugin' => str_replace( '-', '_', $plugin_name ),
+	'plugin_name'             => $plugin_name,
 
-			'create_wordpress_plugin' => str_replace( '-', '_', $plugin_name ),
-			'plugin_name'             => $plugin_name,
+	'create-wordpress-plugin' => $plugin_name,
+	'plugin-name'             => $plugin_name,
+	'package_name'            => $plugin_name,
 
-			'create-wordpress-plugin' => $plugin_name,
-			'plugin-name'             => $plugin_name,
-			'package_name'            => $plugin_name,
+	'CREATE_WORDPRESS_PLUGIN' => strtoupper( str_replace( '-', '_', $plugin_name ) ),
+	'Skeleton'                => $class_name,
+	'vendor_name'             => $vendor_name,
+	'alleyinteractive'        => $vendor_slug,
+];
 
-			'CREATE_WORDPRESS_PLUGIN' => strtoupper( str_replace( '-', '_', $plugin_name ) ),
-			'Skeleton'                => $class_name,
-			'vendor_name'             => $vendor_name,
-			'alleyinteractive'        => $vendor_slug,
-		]
-	);
+foreach ( list_all_files_for_replacement() as $path ) {
+	echo "Updating $path...\n";
+	replace_in_file( $path, $search_and_replace );
 
 	if ( str_contains( $path, determine_separator( 'src/class-example-plugin.php' ) ) ) {
 		rename( $path, determine_separator( './src/class-' . str_replace( '_', '-', strtolower( $class_name ) ) . '.php' ) );
@@ -211,6 +209,8 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 		'bin/',
 		'node_modules/',
 	];
+
+	echo "Deleting...\n";
 
 	foreach ( $frontend_files as $path ) {
 		if ( is_dir( $path ) ) {
