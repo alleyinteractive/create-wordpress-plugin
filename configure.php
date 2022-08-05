@@ -202,6 +202,12 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 		'package.json',
 		'webpack.config.js',
 		'webpack/',
+		'entries/',
+		'services/',
+		'slotfills/',
+		'build/',
+		'bin/',
+		'node_modules/',
 	];
 
 	foreach ( $frontend_files as $path ) {
