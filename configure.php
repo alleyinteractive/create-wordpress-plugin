@@ -154,6 +154,7 @@ foreach ( $files as $path ) {
 			'Example_Plugin'          => $class_name,
 			'plugin_description'      => $description,
 			'plugin_name_underscore'  => str_replace( '-', '_', $plugin_name ),
+			'CREATE_WORDPRESS_PLUGIN' => strtoupper( str_replace( '-', '_', $plugin_name ) ),
 			'plugin_name'             => $plugin_name,
 			'create-wordpress-plugin' => $plugin_name,
 			'plugin_name'             => $plugin_name,
@@ -200,13 +201,12 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 		'jsconfig.json',
 		'package.json',
 		'webpack.config.js',
-		'webpack/wpAssets.js',
 		'webpack/',
 	];
 
 	foreach ( $frontend_files as $path ) {
 		if ( is_dir( $path ) ) {
-			rmdir( $path );
+			run( "rm -rf {$path}" );
 		} elseif ( file_exists( $path ) ) {
 			unlink( $path );
 		}

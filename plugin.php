@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Check if Composer is installed.
-if ( ! file_exists( __DIR__ . '/vendor/wordpress-autoload.php' ) ) {
+if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	\add_action(
 		'admin_notices',
 		function() {
@@ -36,4 +36,8 @@ if ( ! file_exists( __DIR__ . '/vendor/wordpress-autoload.php' ) ) {
 }
 
 // Load Composer dependencies.
-require_once __DIR__ . '/vendor/wordpress-autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
+
+// Load the plugin's main files.
+require_once __DIR__ . '/src/assets.php';
+require_once __DIR__ . '/src/meta.php';

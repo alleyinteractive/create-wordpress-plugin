@@ -39,11 +39,21 @@
 
   <!-- Define the prefixes that can be used by the plugin -->
   <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
-	<properties>
-		<property name="prefixes" type="array">
-			<element value="vendor_name" />
-			<element value="plugin_name_underscore" />
-		</property>
-	</properties>
-</rule>
+    <properties>
+      <property name="prefixes" type="array">
+        <element value="vendor_name" />
+        <element value="plugin_name_underscore" />
+        <element value="create_wordpress_plugin" />
+      </property>
+    </properties>
+  </rule>
+
+  <!-- Disable commenting rules for example code included in the plugin. -->
+  <rule ref="Squiz.PHP.CommentedOutCode.Found">
+    <exclude-pattern>src/assets.php</exclude-pattern>
+  </rule>
+
+  <rule ref="Squiz.Commenting.InlineComment">
+    <exclude-pattern>src/assets.php</exclude-pattern>
+  </rule>
 </ruleset>
