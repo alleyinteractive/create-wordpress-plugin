@@ -87,7 +87,7 @@ function determine_separator( string $path ): string {
 }
 
 function replace_for_all_other_oses(): array {
-	return explode( PHP_EOL, run( 'grep -E -r -l -i ":author|:vendor|:package|VendorName|skeleton|vendor_name|alleyinteractive|author@domain.com" --exclude-dir=vendor ./* ./.github/* | grep -v ' . basename( __FILE__ ) ) );
+	return explode( PHP_EOL, run( 'grep -E -r -l -i ":author|:vendor|:package|VendorName|skeleton|vendor_name|alleyinteractive|author@domain.com" --exclude-dir=vendor --exclude-dir=node_modules --exclude-dir=build ./* ./.github/* | grep -v ' . basename( __FILE__ ) ) );
 }
 
 if ( ! function_exists( 'str_contains' ) ) {
@@ -121,7 +121,7 @@ $plugin_name = ask( 'Plugin name', $folder_name );
 $plugin_name = slugify( $plugin_name );
 
 $class_name   = title_case( $plugin_name );
-$class_name   = ask( 'Class name', $class_name );
+$class_name   = ask( 'Main plugin class name', $class_name );
 $description = ask( 'Plugin description', "This is my plugin {$plugin_name}" );
 
 writeln( '------' );
@@ -174,15 +174,13 @@ foreach ( $files as $path ) {
 	}
 }
 
-if ( confirm( 'Execute `composer install` and run tests?', true ) ) {
+if ( confirm( 'Execute `composer install`?', true ) ) {
 	if ( file_exists( __DIR__ . '/composer.lock' ) ) {
 		echo run( 'composer update' );
 	} else {
 		echo run( 'composer install' );
 	}
 
-	echo "\n\n";
-	echo run( 'composer test' );
 	echo "\n\n";
 }
 
