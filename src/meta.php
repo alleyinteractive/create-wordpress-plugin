@@ -5,7 +5,7 @@
  * @package package_name
  */
 
-namespace Vendor_Name\Skeleton;
+namespace Create_WordPress_Plugin;
 
 // Register custom meta fields.
 register_post_meta_from_defs();

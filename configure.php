@@ -111,8 +111,6 @@ $author_username = ask( 'Author username', $username_guess );
 
 $vendor_name      = ask( 'Vendor name (usually the Github Organization)', $username_guess );
 $vendor_slug      = slugify( $vendor_name );
-$vendor_namespace = ucwords( $vendor_name );
-$vendor_namespace = ask( 'Vendor namespace', $vendor_namespace );
 
 $current_dir = getcwd();
 $folder_name = ensure_capitalp( basename( $current_dir ) );
@@ -167,7 +165,6 @@ foreach ( $files as $path ) {
 			'CREATE_WORDPRESS_PLUGIN' => strtoupper( str_replace( '-', '_', $plugin_name ) ),
 			'Skeleton'                => $class_name,
 			'vendor_name'             => $vendor_name,
-			'Vendor_Name'             => $vendor_namespace,
 			'alleyinteractive'        => $vendor_slug,
 		]
 	);

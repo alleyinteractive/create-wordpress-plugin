@@ -5,7 +5,7 @@
  * @package package_name
  */
 
-namespace Vendor_Name\Skeleton;
+namespace Create_WordPress_Plugin;
 
 define( 'CREATE_WORDPRESS_PLUGIN_ASSET_MAP', read_asset_map( dirname( __DIR__ ) . '/build/assetMap.json' ) );
 define( 'CREATE_WORDPRESS_PLUGIN_ASSET_MODE', CREATE_WORDPRESS_PLUGIN_ASSET_MAP['mode'] ?? 'production' );

@@ -61,7 +61,7 @@ composer require alleyinteractive/create-wordpress-plugin
 Activate the plugin in WordPress and use it like so:
 
 ```php
-$plugin = Vendor_Name\Skeleton\Example_Plugin();
+$plugin = Create_WordPress_Plugin\Skeleton\Example_Plugin();
 $plugin->perform_magic();
 ```
 
