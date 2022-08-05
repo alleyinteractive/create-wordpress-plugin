@@ -1,3 +1,32 @@
+<!--delete-->
+# Create WordPress Plugin
+
+This is a skeleton WordPress plugin that can scaffold a WordPress plugin. This
+template includes a base plugin file, autoloaded PHP files, unit tests powered
+by [Mantle](https://mantle.alley.co/), front-end assets compiled via Webpack,
+and Continuous Integration [via GitHub Actions](.github/workflows). Actions are
+configured to test the plugin and also build it for release. A `main-built`
+branch and `v0.1.0-built` tags will be created with all dependencies included
+for use when submoduling a plugin. The built branches will include Composer
+dependencies and any compiled front-end assets (if using them).
+
+The plugin supports front-end assets which can be enqueued inside
+`src/assets.php`. For plugins that don't require front-end assets, the
+configuration script below will prompt you to delete the front-end files if you
+don't wish to use them.
+
+## Getting Started
+
+Follow these steps to get started:
+
+1. Press the "Use template" button at the top of this repo to create a new repo
+   with the contents of this skeleton.
+2. Run `make` (or `php ./configure.php`) to run a script that will replace all
+   placeholders throughout all the files.
+3. Have fun creating your plugin! 🎊
+
+<!--/delete-->
+
 # plugin_name
 
 Stable tag: 0.1.0
@@ -14,23 +43,6 @@ Tags: vendor_name, plugin_name
 
 Contributors: author_username
 
-<!--delete-->
----
-This is a skeleton Wordpress plugin that can scaffold a WordPress plugin. This
-template includes a base plugin file, autoloaded PHP files, unit tests powered
-by [Mantle](https://mantle.alley.co/), and Continuous Integration [via GitHub
-Actions](.github/workflows). Actions are configured to test the plugin and and
-also build it for release. A `main-built` branch and `v0.1.0-built` tags will be
-created with all dependencies included for use when submoduling a plugin.
-
-Follow these steps to get started:
-
-1. Press the "Use template" button at the top of this repo to create a new repo with the contents of this skeleton.
-2. Run `make` (or `php ./configure.php`) to run a script that will replace all placeholders throughout all the files.
-3. Have fun creating your plugin.
----
-
-<!--/delete-->
 [![Coding Standards](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/coding-standards.yml/badge.svg)](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/coding-standards.yml)
 [![Testing Suite](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/unit-test.yml/badge.svg)](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/unit-test.yml)
 

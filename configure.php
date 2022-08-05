@@ -78,7 +78,7 @@ function remove_readme_paragraphs( string $file ): void {
 
 	file_put_contents(
 		$file,
-		preg_replace( '/<!--delete-->.*<!--\/delete-->/s', '', $contents ) ?: $contents
+		trim( preg_replace( '/<!--delete-->.*<!--\/delete-->/s', '', $contents ) ?: $contents ),
 	);
 }
 
