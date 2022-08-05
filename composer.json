@@ -34,10 +34,10 @@
     "extra": {
         "wordpress-autoloader": {
             "autoload": {
-                "Vendor_Name\\Skeleton\\": "src"
+                "Create_WordPress_Plugin\\": "src"
             },
             "autoload-dev": {
-                "Vendor_Name\\Skeleton\\Tests\\": "tests"
+                "Create_WordPress_Plugin\\Tests\\": "tests"
             }
         }
     },

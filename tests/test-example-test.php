@@ -1,5 +1,5 @@
 <?php
-namespace Vendor_Name\Skeleton\Tests;
+namespace Create_WordPress_Plugin\Tests;
 
 /**
  * Visit {@see https://mantle.alley.co/testing/test-framework.html} to learn more.

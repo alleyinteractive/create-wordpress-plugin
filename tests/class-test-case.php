@@ -1,5 +1,5 @@
 <?php
-namespace Vendor_Name\Skeleton\Tests;
+namespace Create_WordPress_Plugin\Tests;
 
 use Mantle\Testkit\Test_Case as TestkitTest_Case;
 
