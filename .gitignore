@@ -2,7 +2,6 @@
 build
 vendor
 composer.lock
-package-lock.json
 node_modules
 
 # Log files
