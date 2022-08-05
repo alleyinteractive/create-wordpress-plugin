@@ -77,6 +77,10 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 ## Credits
 
+This project is actively maintained by [Alley
+Interactive](https://github.com/alleyinteractive). Like what you see? [Come work
+with us](https://alley.co/careers/).
+
 - [author_name](https://github.com/author_name)
 - [All Contributors](../../contributors)
 
