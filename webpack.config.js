@@ -18,12 +18,12 @@ module.exports = (env, { mode }) => ({
     ? 'source-map'
     : 'eval-source-map',
 
-  // Dynamically produce entries from the slotfills index file and all blocks.
+  // Dynamically produce entries from the slotfills index file and all entries.
   entry: glob
-    .sync('./blocks/**/index.js*')
+    .sync('./entries/**/index.js*')
     .reduce((acc, item) => {
       const entry = item
-        .replace('./blocks/', '')
+        .replace('./entries/', '')
         .replace('/index.jsx', '')
         .replace('/index.js', '');
       acc[entry] = item;

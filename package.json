@@ -1,8 +1,8 @@
 {
-  "name": "wp-starter-plugin",
+  "name": "create-wordpress-plugin",
   "version": "1.0.0",
-  "license": "unlicensed",
-  "main": "index.php",
+  "license": "GPL-3.0",
+  "main": "plugin.php",
   "engines": {
     "node": "16",
     "npm": "8"

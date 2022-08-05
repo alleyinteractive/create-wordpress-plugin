@@ -34,13 +34,13 @@ function action_wp_enqueue_scripts() {
 	*/
 
 	// wp_enqueue_script(
-	// 	'create-wordpress-plugin-example-handle',
-	// 	get_asset_path( 'example-handle.js' ),
-	// 	get_asset_dependencies( 'example-handle.php' ),
-	// 	get_asset_hash( 'example-handle.js' ),
+	// 	'create-wordpress-plugin-example-entry',
+	// 	get_asset_path( 'example-entry.js' ),
+	// 	get_asset_dependencies( 'example-entry.php' ),
+	// 	get_asset_hash( 'example-entry.js' ),
 	// 	true
 	// );
-	// inline_locale_data( 'create-wordpress-plugin-example-handle' );
+	// inline_locale_data( 'create-wordpress-plugin-example-entry' );
 }
 
 /**
