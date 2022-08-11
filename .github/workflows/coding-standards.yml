@@ -10,4 +10,4 @@ on:
 
 jobs:
   coding-standards:
-    uses: alleyinteractive/.github/workflows/php-coding-standards.yml@workflows
+    uses: alleyinteractive/.github/.github/workflows/php-coding-standards.yml@workflows
