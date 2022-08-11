@@ -9,43 +9,5 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  tests:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        php: [8.0]
-    name: PHP Coding Standards ${{ matrix.php }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Get Composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Set up Composer caching
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-composer-dependencies
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ matrix.php }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ matrix.php }}-composer-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd
-          tools: composer:v2
-          coverage: none
-      - name: Validate Composer
-        run: composer validate --strict
-      - name: Install dependencies
-        uses: nick-invision/retry@v2.7.0
-        with:
-          timeout_minutes: 5
-          max_attempts: 5
-          command: composer install
-      - name: Run phpcs
-        run: composer run phpcs
+  coding-standards:
+    uses: alleyinteractive/.github/workflows/php-coding-standards.yml@reusable
