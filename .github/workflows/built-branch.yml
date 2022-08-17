@@ -8,4 +8,4 @@ on:
 
 jobs:
   built-branch:
-    uses: alleyinteractive/.github/.github/workflows/built-branch.yml@workflows
+    uses: alleyinteractive/.github/.github/workflows/built-branch.yml@HEAD

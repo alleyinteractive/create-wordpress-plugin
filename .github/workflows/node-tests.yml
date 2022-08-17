@@ -5,4 +5,4 @@ on:
 
 jobs:
   node-tests:
-    uses: alleyinteractive/.github/.github/workflows/node-tests.yml@workflows
+    uses: alleyinteractive/.github/.github/workflows/node-tests.yml@HEAD

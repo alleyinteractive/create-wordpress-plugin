@@ -8,4 +8,4 @@ on:
 
 jobs:
   built-tag:
-    uses: alleyinteractive/.github/.github/workflows/built-tag.yml@workflows
+    uses: alleyinteractive/.github/.github/workflows/built-tag.yml@HEAD
