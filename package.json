@@ -43,7 +43,7 @@
     "update-dependencies": "node bin/update-dependencies.js"
   },
   "dependencies": {
-    "@alleyinteractive/block-editor-tools": "^0.0.1-0",
+    "@alleyinteractive/block-editor-tools": "^0.0.1",
     "@wordpress/a11y": "3.6.1",
     "@wordpress/annotations": "2.6.2",
     "@wordpress/api-fetch": "6.3.1",
