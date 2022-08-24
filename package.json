@@ -130,7 +130,7 @@
     "glob": "^7.1.7",
     "jest": "^27.4.5",
     "postcss": "^8.3.6",
-    "postcss-loader": "^6.2.1",
+    "postcss-loader": "^7.0.1",
     "resolve-url-loader": "^4.0.0",
     "sass": "^1.54.5",
     "sass-loader": "^12.4.0",
