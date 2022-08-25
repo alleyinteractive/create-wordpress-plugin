@@ -20,10 +20,10 @@ module.exports = (env, { mode }) => ({
 
   // Dynamically produce entries from the slotfills index file and all entries.
   entry: glob
-    .sync('./entries/**/index.js*')
+    .sync('./@(blocks|entries)/**/index.js*')
     .reduce((acc, item) => {
       const entry = item
-        .replace('./entries/', '')
+        .replace(/\.\/(?:blocks|entries)\//i, '')
         .replace('/index.jsx', '')
         .replace('/index.js', '');
       acc[entry] = item;
