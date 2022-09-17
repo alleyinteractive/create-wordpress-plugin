@@ -128,7 +128,7 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "glob": "^7.1.7",
-    "jest": "^29.0.1",
+    "jest": "^29.0.3",
     "postcss": "^8.3.6",
     "postcss-loader": "^7.0.1",
     "resolve-url-loader": "^4.0.0",
