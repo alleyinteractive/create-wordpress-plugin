@@ -130,6 +130,20 @@ if ( ! function_exists( 'str_contains' ) ) {
 	}
 }
 
+function delete_files( string|array $paths ) {
+	if ( ! is_array( $paths ) ) {
+		$paths = [ $paths ];
+	}
+
+	foreach ( $paths as $path ) {
+		if ( is_dir( $path ) ) {
+			run( "rm -rf {$path}" );
+		} elseif ( file_exists( $path ) ) {
+			unlink( $path );
+		}
+	}
+}
+
 echo "\nWelcome friend! 😀\nLet's setup your WordPress Plugin 🚀\n\n";
 
 $git_name    = run( 'git config user.name' );
@@ -213,7 +227,11 @@ foreach ( list_all_files_for_replacement() as $path ) {
 	echo 'Done!' . PHP_EOL;
 }
 
+$needs_built_assets = false;
+
 if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloader already included!)' ) ) {
+	$needs_built_assets = true;
+
 	if ( confirm( 'Execute `composer install`?', true ) ) {
 		if ( file_exists( __DIR__ . '/composer.lock' ) ) {
 			echo run( 'composer update' );
@@ -228,50 +246,59 @@ if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloade
 }
 
 if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) ) {
+	$needs_built_assets = true;
+
 	if ( confirm( 'Do you want to run `npm install` and `npm run build`?', true ) ) {
 		echo run( 'npm install && npm run build' );
 	}
 
 	remove_assets_readme( true );
 } elseif ( confirm( 'Do you want to delete the front-end files? (Such as package.json, webpack.config.js, etc.)', true ) ) {
-	$frontend_files = [
-		'.github/workflows/node-tests.yml',
-		'.eslintignore',
-		'.eslintrc.json',
-		'.nvmrc',
-		'.stylelintrc.json',
-		'babel.config.json',
-		'jsconfig.json',
-		'package.json',
-		'package-lock.json',
-		'webpack.config.js',
-		'webpack/',
-		'entries/',
-		'services/',
-		'slotfills/',
-		'build/',
-		'bin/',
-		'node_modules/',
-		'src/assets.php',
-	];
-
 	echo "Deleting...\n";
 
-	foreach ( $frontend_files as $path ) {
-		if ( is_dir( $path ) ) {
-			run( "rm -rf {$path}" );
-		} elseif ( file_exists( $path ) ) {
-			unlink( $path );
-		}
-	}
+	delete_files(
+		[
+			'.github/workflows/node-tests.yml',
+			'.eslintignore',
+			'.eslintrc.json',
+			'.nvmrc',
+			'.stylelintrc.json',
+			'babel.config.json',
+			'jsconfig.json',
+			'package.json',
+			'package-lock.json',
+			'webpack.config.js',
+			'webpack/',
+			'entries/',
+			'services/',
+			'slotfills/',
+			'build/',
+			'bin/',
+			'node_modules/',
+			'src/assets.php',
+		]
+	);
 
 	remove_assets_readme( false );
 	remove_assets_require();
 }
 
+if ( ! $needs_built_assets && confirm( 'Delete the Github actions for built assets?' ) ) {
+	delete_files(
+		[
+			'.github/workflows/built-branch.yml',
+			'.github/workflows/built-tag.yml',
+		]
+	);
+}
+
 if ( confirm( 'Let this script delete itself?', true ) ) {
-	unlink( __FILE__ );
-	unlink( __DIR__ . '/Makefile' );
+	delete_files(
+		[
+			'Makefile',
+			__FILE__,
+		]
+	);
 }
 
 echo "\n\nWe're done! 🎉\n\n";

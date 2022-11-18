@@ -27,7 +27,7 @@ Follow these steps to get started:
 
 <!--/delete-->
 
-# create-wordpress-plugin
+# Create WordPress Plugin
 
 Contributors: author_username
 
