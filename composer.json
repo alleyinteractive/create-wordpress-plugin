@@ -1,6 +1,6 @@
 {
     "name": "alleyinteractive/create-wordpress-plugin",
-    "description": "plugin_description",
+    "description": "A skeleton WordPress plugin",
     "type": "wordpress-plugin",
     "keywords": [
         "alleyinteractive",

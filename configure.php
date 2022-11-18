@@ -162,11 +162,12 @@ $class_name = ask( 'Base class name for plugin', title_case( $plugin_name ) );
 $description = ask( 'Plugin description', "This is my plugin {$plugin_name}" );
 
 writeln( '------' );
-writeln( "Author     : {$author_name} ({$author_email})" );
-writeln( "Vendor     : {$vendor_name} ({$vendor_slug})" );
-writeln( "Plugin     : {$plugin_name} <{$description}>" );
-writeln( "Namespace  : {$namespace}" );
-writeln( "Main Class : {$class_name}" );
+writeln( "Author      : {$author_name} ({$author_email})" );
+writeln( "Vendor      : {$vendor_name} ({$vendor_slug})" );
+writeln( "Plugin      : {$plugin_name} <{$plugin_name_slug}>" );
+writeln( "Description : {$description}" );
+writeln( "Namespace   : {$namespace}" );
+writeln( "Main Class  : {$class_name}" );
 writeln( '------' );
 
 writeln( 'This script will replace the above values in all relevant files in the project directory.' );
@@ -183,7 +184,8 @@ $search_and_replace = [
 	'author_name'             => $author_name,
 	'author_username'         => $author_username,
 	'email@domain.com'        => $author_email,
-	'plugin_description'      => $description,
+
+	'A skeleton WordPress plugin' => $description,
 
 	'Create_WordPress_Plugin' => $namespace,
 	'Example_Plugin'          => $class_name,

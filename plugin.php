@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Create WordPress Plugin
  * Plugin URI: https://github.com/alleyinteractive/create-wordpress-plugin
- * Description: plugin_description
+ * Description: A skeleton WordPress plugin
  * Version: 0.1.0
  * Author: author_name
  * Author URI: https://github.com/alleyinteractive/create-wordpress-plugin
