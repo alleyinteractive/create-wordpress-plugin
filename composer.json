@@ -1,6 +1,6 @@
 {
     "name": "alleyinteractive/create-wordpress-plugin",
-    "description": "plugin_description",
+    "description": "A skeleton WordPress plugin",
     "type": "wordpress-plugin",
     "keywords": [
         "alleyinteractive",
@@ -15,12 +15,12 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
-        "alleyinteractive/composer-wordpress-autoloader": "^0.6"
+        "php": "^8.0",
+        "alleyinteractive/composer-wordpress-autoloader": "^1.0"
     },
     "require-dev": {
         "alleyinteractive/alley-coding-standards": "^0.3",
-        "mantle-framework/testkit": "^0.5",
+        "mantle-framework/testkit": "^0.9",
         "nunomaduro/collision": "^5.0"
     },
     "config": {

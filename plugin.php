@@ -1,18 +1,18 @@
 <?php
 /**
- * Plugin Name: create-wordpress-plugin
+ * Plugin Name: Create WordPress Plugin
  * Plugin URI: https://github.com/alleyinteractive/create-wordpress-plugin
- * Description: plugin_description
+ * Description: A skeleton WordPress plugin
  * Version: 0.1.0
  * Author: author_name
  * Author URI: https://github.com/alleyinteractive/create-wordpress-plugin
  * Requires at least: 5.9
  * Tested up to: 5.9
  *
- * Text Domain: plugin_domain
+ * Text Domain: create-wordpress-plugin
  * Domain Path: /languages/
  *
- * @package package_name
+ * @package create-wordpress-plugin
  */
 
 namespace Create_WordPress_Plugin;
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Check if Composer is installed.
+// Check if Composer is installed (remove if Composer is not required for your plugin).
 if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	\add_action(
 		'admin_notices',

@@ -2,7 +2,7 @@
 /**
  * Example_Plugin class file
  *
- * @package package_name
+ * @package create-wordpress-plugin
  */
 
 namespace Create_WordPress_Plugin;

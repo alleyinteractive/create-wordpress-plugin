@@ -3,7 +3,7 @@
 
 This is a skeleton WordPress plugin that can scaffold a WordPress plugin. This
 template includes a base plugin file, autoloaded PHP files, unit tests powered
-by [Mantle](https://mantle.alley.co/), front-end assets compiled via Webpack,
+by [Mantle](https://mantle.alley.com/), front-end assets compiled via Webpack,
 and Continuous Integration [via GitHub Actions](.github/workflows). Actions are
 configured to test the plugin and also build it for release. A `main-built`
 branch and `v0.1.0-built` tags will be created with all dependencies included
@@ -27,26 +27,26 @@ Follow these steps to get started:
 
 <!--/delete-->
 
-# create-wordpress-plugin
+# Create WordPress Plugin
+
+Contributors: author_username
+
+Tags: vendor_name, create-wordpress-plugin
 
 Stable tag: 0.1.0
 
 Requires at least: 5.9
 
-Tested up to: 5.9
+Tested up to: 6.0
 
-Requires PHP: 7.4
+Requires PHP: 8.0
 
 License: GPL v2 or later
-
-Tags: vendor_name, create-wordpress-plugin
-
-Contributors: author_username
 
 [![Coding Standards](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/coding-standards.yml/badge.svg)](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/coding-standards.yml)
 [![Testing Suite](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/unit-test.yml/badge.svg)](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/unit-test.yml)
 
-plugin_description
+A skeleton WordPress plugin.
 
 ## Installation
 
@@ -64,7 +64,7 @@ Activate the plugin in WordPress and use it like so:
 $plugin = Create_WordPress_Plugin\Skeleton\Example_Plugin();
 $plugin->perform_magic();
 ```
-
+<!--front-end-->
 ## Testing
 
 Run `npm run test` to run Jest tests against JavaScript files. Run
@@ -74,7 +74,6 @@ Run `npm run lint` to run ESLint against all JavaScript files. Linting will also
 happen when running development or production builds.
 
 Run `composer test` to run tests against PHPUnit and the PHP code in the plugin.
-
 ## Updating Dependencies
 
 To update `@wordpress` dependencies, simply execute:
@@ -92,7 +91,7 @@ npm run update-dependencies 5.9.3
 
 The versions are drawn from tags on
 [wordpress-develop](https://github.com/WordPress/wordpress-develop/tags).
-
+<!--/front-end-->
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
