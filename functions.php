@@ -4,7 +4,7 @@
  *
  * To be used with the @alleyco/scaffold NPM package.
  *
- * @package package_name
+ * @package create-wordpress-plugin
  */
 
 namespace Create_WordPress_Plugin;

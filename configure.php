@@ -153,8 +153,8 @@ $vendor_slug      = slugify( $vendor_name );
 $current_dir = getcwd();
 $folder_name = ensure_capitalp( basename( $current_dir ) );
 
-$plugin_name = ask( 'Plugin name', $folder_name );
-$plugin_name = slugify( $plugin_name );
+$plugin_name      = ask( 'Plugin name', $folder_name );
+$plugin_name_slug = slugify( $plugin_name );
 
 $namespace  = ask( 'Plugin namespace', title_case( $plugin_name ) );
 $class_name = ask( 'Base class name for plugin', title_case( $plugin_name ) );
@@ -191,9 +191,8 @@ $search_and_replace = [
 	'create_wordpress_plugin' => str_replace( '-', '_', $plugin_name ),
 	'plugin_name'             => $plugin_name,
 
-	'create-wordpress-plugin' => $plugin_name,
-	'plugin-name'             => $plugin_name,
-	'package_name'            => $plugin_name,
+	'create-wordpress-plugin' => $plugin_name_slug,
+	'Create WordPress Plugin' => $plugin_name,
 
 	'CREATE_WORDPRESS_PLUGIN' => strtoupper( str_replace( '-', '_', $plugin_name ) ),
 	'Skeleton'                => $class_name,

@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: create-wordpress-plugin
+ * Plugin Name: Create WordPress Plugin
  * Plugin URI: https://github.com/alleyinteractive/create-wordpress-plugin
  * Description: plugin_description
  * Version: 0.1.0
@@ -9,10 +9,10 @@
  * Requires at least: 5.9
  * Tested up to: 5.9
  *
- * Text Domain: plugin_domain
+ * Text Domain: create-wordpress-plugin
  * Domain Path: /languages/
  *
- * @package package_name
+ * @package create-wordpress-plugin
  */
 
 namespace Create_WordPress_Plugin;
