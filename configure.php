@@ -125,7 +125,7 @@ function determine_separator( string $path ): string {
 }
 
 function list_all_files_for_replacement(): array {
-	return explode( PHP_EOL, run( 'grep -R -l ./  --exclude={LICENSE,configure.php} --exclude-dir={.git,.github,vendor,bin,webpack}' ) );
+	return explode( PHP_EOL, run( 'grep -R -l ./  --exclude={LICENSE,configure.php} --exclude-dir={.git,.github,vendor,bin,webpack,node_modules}' ) );
 }
 
 if ( ! function_exists( 'str_contains' ) ) {
