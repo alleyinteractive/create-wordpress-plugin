@@ -85,10 +85,6 @@ function remove_readme_paragraphs( string $file ): void {
 function remove_composer_require( string $file = 'plugin.php' ) {
 	$contents = file_get_contents( $file );
 
-	var_dump(
-		'contents',
-		trim( preg_replace( '/\/\/ Check if Composer.*vendor\/autoload\.php\';\\n\\n?/s', '', $contents ) ?: $contents ),
-	);exit;
 	file_put_contents(
 		$file,
 		trim( preg_replace( '/\/\/ Check if Composer.*vendor\/autoload\.php\';\\n\\n?/s', '', $contents ) ?: $contents ),
@@ -153,7 +149,7 @@ $vendor_slug      = slugify( $vendor_name );
 $current_dir = getcwd();
 $folder_name = ensure_capitalp( basename( $current_dir ) );
 
-$plugin_name      = ask( 'Plugin name', $folder_name );
+$plugin_name      = ask( 'Plugin name', str_replace( '_', ' ', title_case( $folder_name ) ) );
 $plugin_name_slug = slugify( $plugin_name );
 
 $namespace  = ask( 'Plugin namespace', title_case( $plugin_name ) );
@@ -213,6 +209,8 @@ foreach ( list_all_files_for_replacement() as $path ) {
 	if ( str_contains( $path, 'README.md' ) ) {
 		remove_readme_paragraphs( $path );
 	}
+
+	echo 'Done!' . PHP_EOL;
 }
 
 if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloader already included!)' ) ) {
