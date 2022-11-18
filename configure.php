@@ -223,9 +223,9 @@ foreach ( list_all_files_for_replacement() as $path ) {
 	if ( str_contains( $path, 'README.md' ) ) {
 		remove_readme_paragraphs( $path );
 	}
-
-	echo 'Done!' . PHP_EOL;
 }
+
+echo "Done!\n\n";'Done!' . PHP_EOL;
 
 $needs_built_assets = false;
 
@@ -275,6 +275,7 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 			'build/',
 			'bin/',
 			'node_modules/',
+			'scaffold',
 			'src/assets.php',
 		]
 	);
