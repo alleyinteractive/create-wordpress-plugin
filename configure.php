@@ -82,6 +82,43 @@ function remove_readme_paragraphs( string $file ): void {
 	);
 }
 
+function remove_composer_require( string $file = 'plugin.php' ) {
+	$contents = file_get_contents( $file );
+
+	var_dump(
+		'contents',
+		trim( preg_replace( '/\/\/ Check if Composer.*vendor\/autoload\.php\';\\n\\n?/s', '', $contents ) ?: $contents ),
+	);exit;
+	file_put_contents(
+		$file,
+		trim( preg_replace( '/\/\/ Check if Composer.*vendor\/autoload\.php\';\\n\\n?/s', '', $contents ) ?: $contents ),
+	);
+}
+
+function remove_assets_readme( bool $keep_contents, string $file = 'README.md' ) {
+	$contents = file_get_contents( $file );
+
+	if ( $keep_contents ) {
+		$contents = str_replace( '<!--front-end-->', '', $contents );
+		$contents = str_replace( '<!--/front-end-->', '', $contents );
+
+		file_put_contents( $file, $contents );
+	} else {
+	file_put_contents(
+		$file,
+		trim( preg_replace( '/<!--front-end-->.*<!--\/front-end-->/s', '', $contents ) ?: $contents ),
+	);
+}
+
+function remove_assets_require( string $file = 'plugin.php' ) {
+	$contents = file_get_contents( $file );
+
+	file_put_contents(
+		$file,
+		trim( preg_replace( '/require_once __DIR__ \. \'\/src\/assets.php\';\\n/s', '', $contents ) ?: $contents ),
+	);
+}
+
 function determine_separator( string $path ): string {
 	return str_replace( '/', DIRECTORY_SEPARATOR, $path );
 }
@@ -176,20 +213,26 @@ foreach ( list_all_files_for_replacement() as $path ) {
 	}
 }
 
-if ( confirm( 'Execute `composer install`?', true ) ) {
-	if ( file_exists( __DIR__ . '/composer.lock' ) ) {
-		echo run( 'composer update' );
-	} else {
-		echo run( 'composer install' );
-	}
+if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloader already included!)' ) ) {
+	if ( confirm( 'Execute `composer install`?', true ) ) {
+		if ( file_exists( __DIR__ . '/composer.lock' ) ) {
+			echo run( 'composer update' );
+		} else {
+			echo run( 'composer install' );
+		}
 
-	echo "\n\n";
+		echo "\n\n";
+	}
+} elseif ( confirm( 'Do you want to remove the vendor/autoload.php dependency from your main plugin file?' ) ) {
+	remove_composer_require();
 }
 
 if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) ) {
 	if ( confirm( 'Do you want to run `npm install` and `npm run build`?', true ) ) {
 		echo run( 'npm install && npm run build' );
 	}
+
+	remove_assets_readme( true );
 } elseif ( confirm( 'Do you want to delete the front-end files? (Such as package.json, webpack.config.js, etc.)', true ) ) {
 	$frontend_files = [
 		'.github/workflows/node-tests.yml',
@@ -209,6 +252,7 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 		'build/',
 		'bin/',
 		'node_modules/',
+		'src/assets.php',
 	];
 
 	echo "Deleting...\n";
@@ -220,6 +264,9 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 			unlink( $path );
 		}
 	}
+
+	remove_assets_readme( false );
+	remove_assets_require();
 }
 
 if ( confirm( 'Let this script delete itself?', true ) ) {
