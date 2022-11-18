@@ -110,7 +110,7 @@
   "devDependencies": {
     "@babel/core": "^7.16.5",
     "@babel/eslint-parser": "^7.16.5",
-    "@babel/preset-env": "^7.19.3",
+    "@babel/preset-env": "^7.20.2",
     "@babel/preset-react": "^7.16.5",
     "@wordpress/dependency-extraction-webpack-plugin": "^3.5.0",
     "@wordpress/scripts": "^24.2.0",
