@@ -282,7 +282,7 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 	remove_assets_require();
 }
 
-if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloader already included!)' ) ) {
+if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloader already included!)', true ) ) {
 	$uses_composer = true;
 	$needs_built_assets = true;
 
@@ -308,14 +308,13 @@ if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloade
 // Check if the plugin will be use standalone (as a single repository) or as a
 // part of larger project (such as a wp-content-rooted project).
 if (
-	! confirm( '
-		Will this be a standalone plugin or will it be located within a larger project?
-		For example, a standalone plugin will have a separate repository and
-		will be distributed independently.
-		',
+	! confirm(
+		'Will this be a standalone plugin or will it be located within a larger project? For example, a standalone plugin will have a separate repository and will be distributed independently.',
 		! file_exists( '../../.git/index' )
 	)
 ) {
+	$needs_built_assets = false;
+
 	if ( confirm( "Do you want to remove the plugin's Github actions? (If this isn't a standalone plugin they won't be used)", true ) ) {
 		delete_files( [ '.buddy', 'buddy.yml', '.github' ] );
 	}
@@ -351,6 +350,10 @@ if (
 			remove_composer_require();
 			remove_composer_files();
 		}
+	}
+
+	if ( confirm( 'Do you want to remove the git repository for the plugin?', true ) ) {
+		delete_files( '.git' );
 	}
 }
 
