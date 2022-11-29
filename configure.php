@@ -247,6 +247,7 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 
 	if ( confirm( 'Do you want to run `npm install` and `npm run build`?', true ) ) {
 		echo run( 'npm install && npm run build' );
+		echo "\n\n\n";
 	}
 
 	remove_assets_readme( true );
@@ -306,7 +307,15 @@ if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloade
 
 // Check if the plugin will be use standalone (as a single repository) or as a
 // part of larger project (such as a wp-content-rooted project).
-if ( confirm( 'Will this plugin be standalone or will it be part of a larger project?', file_exists( '../../.git/index' ) ) ) {
+if (
+	! confirm( '
+		Will this be a standalone plugin or will it be located within a larger project?
+		For example, a standalone plugin will have a separate repository and
+		will be distributed independently.
+		',
+		! file_exists( '../../.git/index' )
+	)
+) {
 	if ( confirm( "Do you want to remove the plugin's Github actions? (If this isn't a standalone plugin they won't be used)", true ) ) {
 		delete_files( [ '.buddy', 'buddy.yml', '.github' ] );
 	}
