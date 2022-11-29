@@ -1,0 +1,45 @@
+<?php
+/**
+ * Block Name: {{title}}.
+ *
+ * @package WP_Starter_Plugin
+ */
+
+/**
+ * Registers the block using the metadata loaded from the `block.json` file.
+ * Behind the scenes, it registers also all assets so they can be enqueued
+ * through the block editor in the corresponding context.
+ *
+ * @see https://developer.wordpress.org/reference/functions/register_block_type/
+ */
+function {{namespaceSnakeCase}}_{{slugSnakeCase}}_block_init() {
+	// Register the block by passing the location of block.json.
+	register_block_type(
+		__DIR__,
+		{{#isDynamicVariant}}
+		[
+			'render_callback' => '{{namespaceSnakeCase}}_{{slugSnakeCase}}_render_callback',
+		]
+		{{/isDynamicVariant}}
+	);
+
+}
+add_action( 'init', '{{namespaceSnakeCase}}_{{slugSnakeCase}}_block_init' );
+
+{{#isDynamicVariant}}
+/**
+ * This function is called when the block is being rendered on the front end of the site.
+ *
+ * @param array    $attributes     The array of attributes for this block.
+ * @param string   $content        Rendered block output. ie. <InnerBlocks.Content />.
+ * @param WP_Block $block_instance The instance of the WP_Block class that represents the block being rendered.
+ */
+function {{namespaceSnakeCase}}_{{slugSnakeCase}}_render_callback( $attributes, $content, $block_instance ) {
+	ob_start();
+	/**
+	 * All of passed parameters are still accessible in the template.php file.
+	 */
+	require plugin_dir_path( __FILE__ ) . 'template.php';
+	return ob_get_clean();
+}
+{{/isDynamicVariant}}
