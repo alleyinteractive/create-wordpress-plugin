@@ -14,12 +14,24 @@ if ( 0 === strpos( strtoupper( PHP_OS ), 'WIN' ) ) {
 	die( 'Not supported in Windows.' );
 }
 
+defined( 'CONSOLE_WIDTH' ) || define( 'CONSOLE_WIDTH', exec( 'tput cols' ) ?: 80 );
+
+function colorize_string( string $string, string $open, string $close = "\e[0m" ): string {
+	// Cut the question to the width of the terminal (minus the decoration).
+	$lines = explode(PHP_EOL, wordwrap( $string, CONSOLE_WIDTH - strlen( $open ) - strlen( $close ), PHP_EOL, false ) );
+
+	// Colorize the lines individually.
+	$lines = array_map( fn ( $line ) => $open . $line . $close, $lines );
+
+	return implode(PHP_EOL, $lines);
+}
+
 function colorize_question( string $question ) {
-	return "\e[0;38;5;208m\e[1;38;5;113m{$question}\e[0m";
+	return colorize_string( $question, "\e[1;38;5;113m" );
 }
 
 function colorize_default( string $default ) {
-	return "\e[0;38;5;208m{$default}\e[0m";
+	return colorize_string( $default, "\e[0;38;5;208m" );
 }
 
 function ask( string $question, string $default = '' ): string {
@@ -31,8 +43,8 @@ function ask( string $question, string $default = '' ): string {
 }
 
 function confirm( string $question, bool $default = false ): bool {
-	$answer = ask(
-		$question . ' (yes/no) [' . colorize_default( $default ? 'yes' : 'no' ) . ']'
+	$answer = readline(
+		colorize_question( $question ) . ' (yes/no) [' . colorize_default( $default ? 'yes' : 'no' ) . ']: '
 	);
 
 	if ( ! $answer ) {
@@ -167,12 +179,6 @@ function delete_files( string|array $paths ) {
 		}
 	}
 }
-
-$e = confirm(
-	'Will this be a standalone plugin or will it be located within a larger project? For example, a standalone plugin will have a separate repository and will be distributed independently.',
-	! file_exists( '../../.git/index' )
-);
-exit;
 
 $name = colorize_default( 'alleyinteractive/create-wordpress-plugin' );
 echo "\nWelcome friend to {$name}! 😀\nLet's setup your WordPress Plugin 🚀\n\n";
@@ -395,3 +401,5 @@ if ( confirm( 'Let this script delete itself?', true ) ) {
 }
 
 echo "\n\nWe're done! 🎉\n\n";
+
+die( 0 );
