@@ -1,104 +1,77 @@
-const glob = require('glob');
 const path = require('path');
-const StatsPlugin = require('webpack-stats-plugin').StatsWriterPlugin;
-const DependencyExtractionWebpackPlugin = require('@wordpress/dependency-extraction-webpack-plugin');
-const autoprefixer = require('autoprefixer');
-const createWriteWpAssetManifest = require('./webpack/wpAssets');
+const fs = require('fs');
+
+const defaultConfig = require('@wordpress/scripts/config/webpack.config');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (env, { mode }) => ({
-  /*
-   * See https://webpack.js.org/configuration/devtool/ for an explanation of how
-   * to configure this directive. We are using the recommended options for
-   * production and development mode that produce high quality source maps.
-   * However, the performance of these options is not stellar, so if you
-   * notice that the build performance in your project is suffering to an
-   * unacceptable degree, you can choose different options from the link above.
-   */
-  devtool: mode === 'production'
-    ? 'source-map'
-    : 'eval-source-map',
+  ...defaultConfig,
 
-  // Dynamically produce entries from the slotfills index file and all entries.
-  entry: glob
-    .sync('./@(blocks|entries)/**/index.js*')
-    .reduce((acc, item) => {
-      const entry = item
-        .replace(/\.\/(?:blocks|entries)\//i, '')
-        .replace('/index.jsx', '')
-        .replace('/index.js', '');
-      acc[entry] = item;
-      return acc;
-    }, {
-      slotfills: './slotfills/index.js',
-    }),
+  // Dynamically produce entries from the slotfills index file and all blocks.
+  entry: () => {
+    const blocks = defaultConfig.entry();
 
-  // Configure loaders based on extension.
-  module: {
-    rules: [
-      {
-        exclude: /node_modules/,
-        test: /.jsx?$/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: true,
-          },
-        },
-      },
-      {
-        exclude: /node_modules/,
-        test: /\.(sa|sc|c)ss$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          {
-            loader: 'postcss-loader',
-            options: {
-              postcssOptions: {
-                plugins: [autoprefixer()],
-              },
-            },
-          },
-          'resolve-url-loader',
-          'sass-loader',
-        ],
-      },
-    ],
+    return {
+      ...blocks,
+      ...fs
+        .readdirSync('./entries')
+        .reduce((acc, dirPath) => {
+          acc[
+            `entries-${dirPath}`
+          ] = `./entries/${dirPath}`;
+          return acc;
+        }, {
+          // All other custom entry points can be included here.
+        }),
+    };
   },
 
   // Use different filenames for production and development builds for clarity.
   output: {
     clean: mode === 'production',
-    filename: mode === 'production'
-      ? '[name].bundle.min.js'
-      : '[name].js',
+    filename: (pathData) => {
+      const dirname = pathData.chunk.name;
+
+      // Process all blocks.
+      if (!pathData.chunk.name.includes('src-')) {
+        return '[name].js';
+      }
+
+      const srcDirname = dirname.replace('src-', '');
+      return `${srcDirname}/index.js`;
+    },
     path: path.join(__dirname, 'build'),
   },
 
   // Configure plugins.
   plugins: [
-    // This maps references to @wordpress/{package-name} to the wp object.
-    new DependencyExtractionWebpackPlugin({ useDefaults: true }),
-
-    // This creates our assetMap.json file to get build hashes for cache busting.
-    new StatsPlugin({
-      transform: createWriteWpAssetManifest,
-      fields: ['assetsByChunkName', 'hash'],
-      filename: 'assetMap.json',
+    ...defaultConfig.plugins,
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: '**/{block.json,*.php,*.css}',
+          context: 'src',
+          noErrorOnMissing: true,
+        },
+      ],
     }),
   ],
 
-  // Tell webpack that we are using both .js and .jsx extensions and hook up aliases.
+  // This webpack alias rule is needed at the root to ensure that the paths are resolved
+  // using the custom alias defined below.
   resolve: {
+    ...defaultConfig.resolve,
     alias: {
+      ...defaultConfig.alias,
       '@': path.resolve(__dirname),
     },
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '...'],
   },
 
   // Cache the generated webpack modules and chunks to improve build speed.
   // @see https://webpack.js.org/configuration/cache/
   cache: {
+    ...defaultConfig.cache,
     type: 'filesystem',
   },
 });
