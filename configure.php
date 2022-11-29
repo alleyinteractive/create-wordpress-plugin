@@ -202,6 +202,7 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 		'package.json',
 		'package-lock.json',
 		'webpack.config.js',
+		'blocks/',
 		'webpack/',
 		'entries/',
 		'services/',
