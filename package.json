@@ -101,6 +101,7 @@
     "@wordpress/widgets": "^2.20.0",
     "@wordpress/wordcount": "^3.22.0",
     "classnames": "^2.3.1",
+    "copy-webpack-plugin": "^11.0.0",
     "dompurify": "^2.3.4",
     "lodash": "4.17.21",
     "moment": "^2.29.4",
