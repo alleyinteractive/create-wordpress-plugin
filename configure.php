@@ -198,6 +198,7 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 		'.nvmrc',
 		'.stylelintrc.json',
 		'babel.config.json',
+		'jest.config.json',
 		'jsconfig.json',
 		'package.json',
 		'package-lock.json',

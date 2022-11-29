@@ -46,6 +46,19 @@ require_once __DIR__ . '/inc/assets.php';
 require_once __DIR__ . '/inc/meta.php';
 
 /**
+ * Load the php index files from the build directory for blocks, slotfills, and any other scripts with an index.php file.
+ */
+function load_scripts() {
+	foreach ( glob( __DIR__ . '/build/**/index.php' ) as $path ) {
+		if ( 0 === validate_file( $path ) && file_exists( $path ) ) {
+			require_once $path;  // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.IncludingFile, WordPressVIPMinimum.Files.IncludingFile.UsingVariable
+		}
+	}
+}
+
+load_scripts();
+
+/**
  * Instantiate the plugin.
  */
 function main() {
