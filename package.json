@@ -101,7 +101,6 @@
     "@wordpress/widgets": "^2.20.0",
     "@wordpress/wordcount": "^3.22.0",
     "classnames": "^2.3.2",
-    "copy-webpack-plugin": "^11.0.0",
     "dompurify": "^2.4.1",
     "lodash": "4.17.21",
     "moment": "^2.29.4",
@@ -112,6 +111,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@alleyinteractive/stylelint-config": "^0.0.1",
     "@babel/core": "^7.20.5",
     "@babel/eslint-parser": "^7.19.1",
     "@babel/preset-env": "^7.20.2",
@@ -123,6 +123,7 @@
     "babel-plugin-styled-components": "^2.0.7",
     "chalk": "^4.1.2",
     "check-node-version": "^4.2.1",
+    "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.2",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
