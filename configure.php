@@ -337,6 +337,8 @@ if (
 ) {
 	$needs_built_assets = false;
 
+	echo "\n\n";
+
 	if ( confirm( "Do you want to remove the plugin's Github actions? (If this isn't a standalone plugin they won't be used)", true ) ) {
 		delete_files( [ '.buddy', 'buddy.yml', '.github' ] );
 	}
