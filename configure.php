@@ -14,24 +14,32 @@ if ( 0 === strpos( strtoupper( PHP_OS ), 'WIN' ) ) {
 	die( 'Not supported in Windows.' );
 }
 
+function colorize_question( string $question ) {
+	return "\e[0;38;5;208m\e[1;38;5;113m{$question}\e[0m";
+}
+
+function colorize_default( string $default ) {
+	return "\e[0;38;5;208m{$default}\e[0m";
+}
+
 function ask( string $question, string $default = '' ): string {
-	$answer = readline( $question . ( $default ? " ({$default})" : null ) . ': ' );
+	$answer = readline(
+		colorize_question( $question ) . ( $default ? ' [' . colorize_default( $default ) . ']' : '' ) . ': '
+	);
 
-	if ( ! $answer ) {
-		return $default;
-	}
-
-	return $answer;
+	return $answer ?: $default;
 }
 
 function confirm( string $question, bool $default = false ): bool {
-	$answer = ask( $question . ' (' . ( $default ? 'Y/n' : 'y/N' ) . ')' );
+	$answer = ask(
+		$question . ' (yes/no) [' . colorize_default( $default ? 'yes' : 'no' ) . ']'
+	);
 
 	if ( ! $answer ) {
 		return $default;
 	}
 
-	return strtolower( $answer ) === 'y';
+	return in_array( strtolower( trim( $answer ) ), [ 'y', 'yes', 'true', '1' ], true );
 }
 
 function writeln( string $line ): void {
@@ -160,32 +168,39 @@ function delete_files( string|array $paths ) {
 	}
 }
 
-echo "\nWelcome friend! 😀\nLet's setup your WordPress Plugin 🚀\n\n";
+$e = confirm(
+	'Will this be a standalone plugin or will it be located within a larger project? For example, a standalone plugin will have a separate repository and will be distributed independently.',
+	! file_exists( '../../.git/index' )
+);
+exit;
+
+$name = colorize_default( 'alleyinteractive/create-wordpress-plugin' );
+echo "\nWelcome friend to {$name}! 😀\nLet's setup your WordPress Plugin 🚀\n\n";
 
 $git_name    = run( 'git config user.name' );
-$author_name = ask( 'Author name', $git_name );
+$author_name = ask( 'Author name?', $git_name );
 
 $git_email    = run( 'git config user.email' );
-$author_email = ask( 'Author email', $git_email );
+$author_email = ask( 'Author email?', $git_email );
 
 $username_guess  = explode( ':', run( 'git config remote.origin.url' ) )[1] ?? '';
 $username_guess  = dirname( $username_guess );
 $username_guess  = basename( $username_guess );
-$author_username = ask( 'Author username', $username_guess );
+$author_username = ask( 'Author username?', $username_guess );
 
-$vendor_name      = ask( 'Vendor name (usually the Github Organization)', $username_guess );
+$vendor_name      = ask( 'Vendor name (usually the Github Organization)?', $username_guess );
 $vendor_slug      = slugify( $vendor_name );
 
 $current_dir = getcwd();
 $folder_name = ensure_capitalp( basename( $current_dir ) );
 
-$plugin_name      = ask( 'Plugin name', str_replace( '_', ' ', title_case( $folder_name ) ) );
+$plugin_name      = ask( 'Plugin name?', str_replace( '_', ' ', title_case( $folder_name ) ) );
 $plugin_name_slug = slugify( $plugin_name );
 
-$namespace  = ask( 'Plugin namespace', title_case( $plugin_name ) );
-$class_name = ask( 'Base class name for plugin', title_case( $plugin_name ) );
+$namespace  = ask( 'Plugin namespace?', title_case( $plugin_name ) );
+$class_name = ask( 'Base class name for plugin?', title_case( $plugin_name ) );
 
-$description = ask( 'Plugin description', "This is my plugin {$plugin_name}" );
+$description = ask( 'Plugin description?', "This is my plugin {$plugin_name}" );
 
 writeln( '------' );
 writeln( "Author      : {$author_name} ({$author_email})" );
@@ -324,7 +339,7 @@ if (
 		$parent_composer = realpath( '../../composer.json' );
 		$parent_folder = dirname( $parent_composer );
 
-		if ( confirm( "Do you want to rollup the plugin's composer dependencies to the parent project's composer.json file ({$parent_composer})? This will delete the local composer.json file as well.", true ) ) {
+		if ( confirm( "Do you want to rollup the plugin's Composer dependencies to the parent project's composer.json file ({$parent_composer})? This will copy this plugin's dependencies to the parent project and delete the local composer.json file.", true ) ) {
 			$composer = json_decode( file_get_contents( $parent_composer ), true );
 			$plugin_composer = json_decode( file_get_contents( 'composer.json' ), true );
 
@@ -342,13 +357,16 @@ if (
 				file_put_contents( $parent_composer, json_encode( $composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) );
 				echo "Updated {$parent_composer} with the plugin's composer dependencies.\n";
 
+				remove_composer_require();
+				remove_composer_files();
+
+				echo "\n\n";
+
 				if ( confirm( "Do you want to run `composer update` in {$parent_folder}?", true ) ) {
 					echo run( 'composer update', $parent_folder );
 				}
 			}
 
-			remove_composer_require();
-			remove_composer_files();
 		}
 	}
 
@@ -357,7 +375,7 @@ if (
 	}
 }
 
-if ( ! $needs_built_assets && confirm( 'Delete the Github actions for built assets?' ) ) {
+if ( ! $needs_built_assets && file_exists( '.github/workflows/built-branch.yml' ) && confirm( 'Delete the Github actions for built assets?', true ) ) {
 	delete_files(
 		[
 			'.github/workflows/built-branch.yml',
