@@ -10,6 +10,10 @@ if ( ! defined( 'STDIN' ) ) {
 	die( 'Not in CLI mode.' );
 }
 
+if ( 0 === strpos( strtoupper( PHP_OS ), 'WIN' ) ) {
+	die( 'Not supported in Windows.' );
+}
+
 function ask( string $question, string $default = '' ): string {
 	$answer = readline( $question . ( $default ? " ({$default})" : null ) . ': ' );
 
@@ -34,7 +38,9 @@ function writeln( string $line ): void {
 	echo $line . PHP_EOL;
 }
 
-function run( string $command ): string {
+function run( string $command, string $dir = null ): string {
+	$command = $dir ? "cd {$dir} && {$command}" : $command;
+
 	return trim( shell_exec( $command ) );
 }
 
@@ -89,6 +95,20 @@ function remove_composer_require( string $file = 'plugin.php' ) {
 		$file,
 		trim( preg_replace( '/\/\/ Check if Composer.*vendor\/autoload\.php\';\\n\\n?/s', '', $contents ) ?: $contents ),
 	);
+
+	echo "Removed Composer's vendor/autoload.php from {$file}" . PHP_EOL;
+}
+
+function remove_composer_files() {
+	delete_files(
+		[
+			'composer.json',
+			'composer.lock',
+			'vendor/',
+		]
+	);
+
+	echo 'Removed composer.json, composer.lock and vendor/ files.' . PHP_EOL;
 }
 
 function remove_assets_readme( bool $keep_contents, string $file = 'README.md' ) {
@@ -124,18 +144,14 @@ function list_all_files_for_replacement(): array {
 	return explode( PHP_EOL, run( 'grep -R -l ./  --exclude={LICENSE,configure.php} --exclude-dir={.git,.github,vendor,bin,webpack,node_modules}' ) );
 }
 
-if ( ! function_exists( 'str_contains' ) ) {
-	function str_contains( string $haystack, string $needle ): bool {
-		return '' === $needle || false !== strpos( $haystack, $needle );
-	}
-}
-
 function delete_files( string|array $paths ) {
 	if ( ! is_array( $paths ) ) {
 		$paths = [ $paths ];
 	}
 
 	foreach ( $paths as $path ) {
+		$path = determine_separator( $path );
+
 		if ( is_dir( $path ) ) {
 			run( "rm -rf {$path}" );
 		} elseif ( file_exists( $path ) ) {
@@ -152,7 +168,7 @@ $author_name = ask( 'Author name', $git_name );
 $git_email    = run( 'git config user.email' );
 $author_email = ask( 'Author email', $git_email );
 
-$username_guess  = explode( ':', run( 'git config remote.origin.url' ) )[1];
+$username_guess  = explode( ':', run( 'git config remote.origin.url' ) )[1] ?? '';
 $username_guess  = dirname( $username_guess );
 $username_guess  = basename( $username_guess );
 $author_username = ask( 'Author username', $username_guess );
@@ -184,10 +200,6 @@ writeln( 'This script will replace the above values in all relevant files in the
 
 if ( ! confirm( 'Modify files?', true ) ) {
 	exit( 1 );
-}
-
-if ( 0 === strpos( strtoupper( PHP_OS ), 'WIN' ) ) {
-	die( 'Not supported in Windows.' );
 }
 
 $search_and_replace = [
@@ -225,25 +237,10 @@ foreach ( list_all_files_for_replacement() as $path ) {
 	}
 }
 
-echo "Done!\n\n";'Done!' . PHP_EOL;
+echo "Done!\n\n";
 
 $needs_built_assets = false;
-
-if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloader already included!)' ) ) {
-	$needs_built_assets = true;
-
-	if ( confirm( 'Execute `composer install`?', true ) ) {
-		if ( file_exists( __DIR__ . '/composer.lock' ) ) {
-			echo run( 'composer update' );
-		} else {
-			echo run( 'composer install' );
-		}
-
-		echo "\n\n";
-	}
-} elseif ( confirm( 'Do you want to remove the vendor/autoload.php dependency from your main plugin file?' ) ) {
-	remove_composer_require();
-}
+$uses_composer = false;
 
 if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) ) {
 	$needs_built_assets = true;
@@ -282,6 +279,70 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 
 	remove_assets_readme( false );
 	remove_assets_require();
+}
+
+if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloader already included!)' ) ) {
+	$uses_composer = true;
+	$needs_built_assets = true;
+
+	if ( confirm( 'Do you want to run `composer install`?', true ) ) {
+		if ( file_exists( __DIR__ . '/composer.lock' ) ) {
+			echo run( 'composer update' );
+		} else {
+			echo run( 'composer install' );
+		}
+
+		echo "\n\n";
+	}
+} elseif ( confirm( 'Do you want to remove the vendor/autoload.php dependency from your main plugin file and the composer.json file?' ) ) {
+	remove_composer_require();
+
+	// Prompt the user to delete the composer.json file. Plugins often still
+	// keep this around for development and Packagist.
+	if ( confirm( 'Do you want to delete the composer.json and composer.lock files?', false ) ) {
+		remove_composer_files();
+	}
+}
+
+// Check if the plugin will be use standalone (as a single repository) or as a
+// part of larger project (such as a wp-content-rooted project).
+if ( confirm( 'Will this plugin be standalone or will it be part of a larger project?', file_exists( '../../.git/index' ) ) ) {
+	if ( confirm( "Do you want to remove the plugin's Github actions? (If this isn't a standalone plugin they won't be used)", true ) ) {
+		delete_files( [ '.buddy', 'buddy.yml', '.github' ] );
+	}
+
+	// Offer to roll up this plugin's dependencies to the parent project's composer.
+	if ( $uses_composer && file_exists( '../../composer.json' ) ) {
+		$parent_composer = realpath( '../../composer.json' );
+		$parent_folder = dirname( $parent_composer );
+
+		if ( confirm( "Do you want to rollup the plugin's composer dependencies to the parent project's composer.json file ({$parent_composer})? This will delete the local composer.json file as well.", true ) ) {
+			$composer = json_decode( file_get_contents( $parent_composer ), true );
+			$plugin_composer = json_decode( file_get_contents( 'composer.json' ), true );
+
+			$original = $composer;
+
+			$composer['require'] = array_merge( $composer['require'], $plugin_composer['require'] );
+			$composer['require-dev'] = array_merge( $composer['require-dev'], $plugin_composer['require-dev'] );
+			$composer['config']['allow-plugins']['alleyinteractive/composer-wordpress-autoloader'] = true;
+
+			ksort( $composer['require'] );
+			ksort( $composer['require-dev'] );
+			ksort( $composer['config']['allow-plugins'] );
+
+			if ( $composer !== $original ) {
+				file_put_contents( $parent_composer, json_encode( $composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) );
+				echo "Updated {$parent_composer} with the plugin's composer dependencies.\n";
+
+				if ( confirm( "Do you want to run `composer update` in {$parent_folder}?", true ) ) {
+					echo run( 'composer update', $parent_folder );
+				}
+			}
+
+			remove_composer_require();
+			remove_composer_files();
+		}
+	}
 }
 
 if ( ! $needs_built_assets && confirm( 'Delete the Github actions for built assets?' ) ) {
