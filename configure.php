@@ -323,9 +323,10 @@ if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloade
 // Check if the plugin will be use standalone (as a single repository) or as a
 // part of larger project (such as a wp-content-rooted project).
 if (
-	! confirm(
+	file_exists( '../../.git/index' )
+	&& ! confirm(
 		'Will this be a standalone plugin or will it be located within a larger project? For example, a standalone plugin will have a separate repository and will be distributed independently.',
-		! file_exists( '../../.git/index' )
+		false,
 	)
 ) {
 	$needs_built_assets = false;
