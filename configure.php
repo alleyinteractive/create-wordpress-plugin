@@ -305,6 +305,8 @@ if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloade
 	}
 }
 
+$standalone = true;
+
 // Check if the plugin will be use standalone (as a single repository) or as a
 // part of larger project (such as a wp-content-rooted project).
 if (
@@ -314,6 +316,8 @@ if (
 		false,
 	)
 ) {
+	$standalone = false;
+
 	$needs_built_assets = false;
 
 	if ( confirm( "Do you want to remove the plugin's Github actions? (If this isn't a standalone plugin they won't be used)", true ) ) {
@@ -369,6 +373,14 @@ if ( ! $needs_built_assets && file_exists( '.github/workflows/built-branch.yml' 
 			'.github/workflows/built-tag.yml',
 		]
 	);
+}
+
+if (
+	$standalone
+	&& file_exists( __DIR__ . '/buddy.yml' )
+	&& confirm( 'Do you need the Buddy CI configuration? (Alley devs only -- if the plugin is open-source it will not be needed)', false )
+) {
+	delete_files( [ '.buddy', 'buddy.yml' ] );
 }
 
 if ( confirm( 'Let this script delete itself?', true ) ) {
