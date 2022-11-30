@@ -189,3 +189,16 @@ function get_entry_asset_url( string $dir_entry_name, $filename = 'index.js' ) {
 
 	return '';
 }
+
+/**
+ * Load the php index files from the build directory for blocks, slotfills, and any other scripts with an index.php file.
+ */
+function load_scripts() {
+	foreach ( glob( __DIR__ . '/build/**/index.php' ) as $path ) {
+		if ( 0 === validate_file( $path ) && file_exists( $path ) ) {
+			require_once $path;  // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.IncludingFile, WordPressVIPMinimum.Files.IncludingFile.UsingVariable
+		}
+	}
+}
+
+load_scripts();
