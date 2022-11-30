@@ -11,7 +11,7 @@ if ( ! defined( 'STDIN' ) ) {
 }
 
 if ( 0 === strpos( strtoupper( PHP_OS ), 'WIN' ) ) {
-	die( 'Not supported in Windows.' );
+	die( 'Not supported in Windows. 🪟' );
 }
 
 function ask( string $question, string $default = '' ): string {
