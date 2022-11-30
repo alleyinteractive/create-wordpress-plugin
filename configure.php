@@ -216,8 +216,8 @@ foreach ( list_all_files_for_replacement() as $path ) {
 	echo "Updating $path...\n";
 	replace_in_file( $path, $search_and_replace );
 
-	if ( str_contains( $path, determine_separator( 'src/class-example-plugin.php' ) ) ) {
-		rename( $path, determine_separator( './src/class-' . str_replace( '_', '-', strtolower( $class_name ) ) . '.php' ) );
+	if ( str_contains( $path, determine_separator( 'inc/class-example-plugin.php' ) ) ) {
+		rename( $path, determine_separator( './inc/class-' . str_replace( '_', '-', strtolower( $class_name ) ) . '.php' ) );
 	}
 
 	if ( str_contains( $path, 'README.md' ) ) {

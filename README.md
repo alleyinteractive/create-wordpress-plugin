@@ -11,7 +11,7 @@ for use when submoduling a plugin. The built branches will include Composer
 dependencies and any compiled front-end assets (if using them).
 
 The plugin supports front-end assets which can be enqueued inside
-`src/assets.php`. For plugins that don't require front-end assets, the
+`inc/assets.php`. For plugins that don't require front-end assets, the
 configuration script below will prompt you to delete the front-end files if you
 don't wish to use them.
 
@@ -74,24 +74,32 @@ Run `npm run lint` to run ESLint against all JavaScript files. Linting will also
 happen when running development or production builds.
 
 Run `composer test` to run tests against PHPUnit and the PHP code in the plugin.
-## Updating Dependencies
 
-To update `@wordpress` dependencies, simply execute:
+### Updating WP Dependencies
+
+Updates the [WordPress dependency packages](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-scripts/#packages-update) used in the project to their latest version.
+
+To update `@wordpress` dependencies to their latest version use the packages-update command:
 
 ```sh
-npm run update-dependencies WPVERSION
+npm run packages-update
+```
+
+This script provides the following custom options:
+
+-   `--dist-tag` – allows specifying a custom dist-tag when updating npm packages. Defaults to `latest`. This is especially useful when using [`@wordpress/dependency-extraction-webpack-plugin`](https://www.npmjs.com/package/@wordpress/dependency-extraction-webpack-plugin). It lets installing the npm dependencies at versions used by the given WordPress major version for local testing, etc. Example:
+
+```sh
+npm run packages-update --dist-tag=wp-WPVERSION`
 ```
 
 Where `WPVERSION` is the version of WordPress you are targeting. The version
-must include both the major and patch version (e.g., `5.9.3`). For example:
+must include both the major and minor version (e.g., `6.1`). For example:
 
 ```sh
-npm run update-dependencies 5.9.3
+npm run packages-update --dist-tag=wp-6.1`
 ```
 
-The versions are drawn from tags on
-[wordpress-develop](https://github.com/WordPress/wordpress-develop/tags).
-<!--/front-end-->
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.

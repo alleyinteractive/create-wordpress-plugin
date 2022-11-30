@@ -21,6 +21,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Root directory to this plugin.
+ *
+ * @var string
+ */
+define( 'CREATE_WORDPRESS_PLUGIN_DIR', __DIR__ );
+
 // Check if Composer is installed (remove if Composer is not required for your plugin).
 if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	\add_action(
@@ -42,8 +49,21 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 // Load the plugin's main files.
 require_once __DIR__ . '/functions.php';
-require_once __DIR__ . '/src/assets.php';
-require_once __DIR__ . '/src/meta.php';
+require_once __DIR__ . '/inc/assets.php';
+require_once __DIR__ . '/inc/meta.php';
+
+/**
+ * Load the php index files from the build directory for blocks, slotfills, and any other scripts with an index.php file.
+ */
+function load_scripts() {
+	foreach ( glob( __DIR__ . '/build/**/index.php' ) as $path ) {
+		if ( 0 === validate_file( $path ) && file_exists( $path ) ) {
+			require_once $path;  // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.IncludingFile, WordPressVIPMinimum.Files.IncludingFile.UsingVariable
+		}
+	}
+}
+
+load_scripts();
 
 /**
  * Instantiate the plugin.
