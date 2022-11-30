@@ -136,6 +136,15 @@ function remove_assets_require( string $file = 'plugin.php' ) {
 	);
 }
 
+function remove_assets_buddy( string $file = 'buddy.yml') {
+	$contents = file_get_contents( $file );
+
+	$contents = trim( preg_replace( '/(- action: "npm audit".*)variables:/s', 'variables:', $contents ) ?: $contents );
+	$contents = str_replace( '    variables:', '  variables:', $contents );
+
+	file_put_contents( $file, $contents );
+}
+
 function determine_separator( string $path ): string {
 	return str_replace( '/', DIRECTORY_SEPARATOR, $path );
 }
@@ -280,6 +289,7 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 
 	remove_assets_readme( false );
 	remove_assets_require();
+	remove_assets_buddy();
 }
 
 if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloader already included!)', true ) ) {
