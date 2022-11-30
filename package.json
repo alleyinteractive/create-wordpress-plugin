@@ -11,14 +11,6 @@
     "defaults",
     "not IE 11"
   ],
-  "jest": {
-    "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/$1"
-    },
-    "modulePathIgnorePatterns": [
-      ".buddy-tests"
-    ]
-  },
   "scripts": {
     "build": "wp-scripts build --webpack-copy-php --webpack-src-dir=blocks",
     "create-block": "cd blocks && npx @wordpress/create-block --template ../bin/create-block --no-plugin",
