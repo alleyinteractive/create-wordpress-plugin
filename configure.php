@@ -386,9 +386,7 @@ if ( ! $needs_built_assets && file_exists( '.github/workflows/built-branch.yml' 
 }
 
 if (
-	$standalone
-	&& file_exists( __DIR__ . '/buddy.yml' )
-	&& confirm( 'Do you need the Buddy CI configuration? (Alley devs only -- if the plugin is open-source it will not be needed)', false )
+	$standalone && file_exists( __DIR__ . '/buddy.yml' ) && confirm( 'Do you need the Buddy CI configuration? (Alley devs only -- if the plugin is open-source it will not be needed)', false )
 ) {
 	delete_files( [ '.buddy', 'buddy.yml' ] );
 }
