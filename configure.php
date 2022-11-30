@@ -350,6 +350,7 @@ if (
 
 				if ( confirm( "Do you want to run `composer update` in {$parent_folder}?", true ) ) {
 					echo run( 'composer update', $parent_folder );
+					echo "\n\n";
 				}
 			}
 
