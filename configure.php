@@ -150,7 +150,7 @@ function determine_separator( string $path ): string {
 }
 
 function list_all_files_for_replacement(): array {
-	return explode( PHP_EOL, run( 'grep -R -l ./  --exclude={LICENSE,configure.php} --exclude-dir={.git,.github,vendor,bin,webpack,node_modules}' ) );
+	return explode( PHP_EOL, run( 'grep -R -l .  --exclude LICENSE --exclude configure.php --exclude composer.lock --exclude-dir .git --exclude-dir .github --exclude-dir vendor --exclude-dir bin --exclude-dir webpack --exclude-dir modules --exclude-dir .phpcs' ) );
 }
 
 function delete_files( string|array $paths ) {
