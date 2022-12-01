@@ -285,7 +285,7 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 			'bin/',
 			'node_modules/',
 			'scaffold',
-			'entries/assets.php',
+			'src/assets.php',
 		]
 	);
 
