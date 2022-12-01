@@ -37,9 +37,9 @@ add_action( 'init', '{{namespaceSnakeCase}}_{{slugSnakeCase}}_block_init' );
 function {{namespaceSnakeCase}}_{{slugSnakeCase}}_render_callback( $attributes, $content, $block_instance ) {
 	ob_start();
 	/**
-	 * All of passed parameters are still accessible in the template.php file.
+	 * All of passed parameters are still accessible in the render.php file.
 	 */
-	require plugin_dir_path( __FILE__ ) . 'template.php';
+	require plugin_dir_path( __FILE__ ) . 'render.php';
 	return ob_get_clean();
 }
 {{/isDynamicVariant}}
