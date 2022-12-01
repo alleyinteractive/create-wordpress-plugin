@@ -34,7 +34,7 @@
     "extra": {
         "wordpress-autoloader": {
             "autoload": {
-                "Create_WordPress_Plugin\\": "inc"
+                "Create_WordPress_Plugin\\": "src"
             },
             "autoload-dev": {
                 "Create_WordPress_Plugin\\Tests\\": "tests"

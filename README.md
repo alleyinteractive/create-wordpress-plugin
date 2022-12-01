@@ -11,7 +11,7 @@ for use when submoduling a plugin. The built branches will include Composer
 dependencies and any compiled front-end assets (if using them).
 
 The plugin supports front-end assets which can be enqueued inside
-`inc/assets.php`. For plugins that don't require front-end assets, the
+`src/assets.php`. For plugins that don't require front-end assets, the
 configuration script below will prompt you to delete the front-end files if you
 don't wish to use them.
 

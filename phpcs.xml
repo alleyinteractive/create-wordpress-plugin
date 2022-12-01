@@ -48,10 +48,10 @@
     <exclude-pattern>inc/assets.php</exclude-pattern>
     <exclude-pattern>blocks</exclude-pattern>
     <exclude-pattern>build</exclude-pattern>
-    <exclude-pattern>src</exclude-pattern>
+    <exclude-pattern>entries</exclude-pattern>
   </rule>
 
   <rule ref="Squiz.Commenting.InlineComment">
-    <exclude-pattern>inc/assets.php</exclude-pattern>
+    <exclude-pattern>src/assets.php</exclude-pattern>
   </rule>
 </ruleset>
