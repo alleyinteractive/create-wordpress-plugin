@@ -9,5 +9,5 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  coding-standards:
+  unit-tests:
     uses: alleyinteractive/.github/.github/workflows/php-tests.yml@main
