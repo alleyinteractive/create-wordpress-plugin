@@ -15,11 +15,11 @@ module.exports = (env, { mode }) => ({
     return {
       ...blocks,
       ...fs
-        .readdirSync('./src')
+        .readdirSync('./entries')
         .reduce((acc, dirPath) => {
           acc[
-            `src-${dirPath}`
-          ] = `./src/${dirPath}`;
+            `entries-${dirPath}`
+          ] = `./entries/${dirPath}`;
           return acc;
         }, {
           // All other custom entry points can be included here.
@@ -33,12 +33,12 @@ module.exports = (env, { mode }) => ({
     filename: (pathData) => {
       const dirname = pathData.chunk.name;
 
-      // Process all non-src entries.
-      if (!pathData.chunk.name.includes('src-')) {
+      // Process all non-entries entries.
+      if (!pathData.chunk.name.includes('entries-')) {
         return '[name].js';
       }
 
-      const srcDirname = dirname.replace('src-', '');
+      const srcDirname = dirname.replace('entries-', '');
       return `${srcDirname}/index.js`;
     },
     path: path.join(__dirname, 'build'),
@@ -51,7 +51,7 @@ module.exports = (env, { mode }) => ({
       patterns: [
         {
           from: '**/{index.php,*.css}',
-          context: 'src',
+          context: 'entries',
           noErrorOnMissing: true,
         },
       ],
@@ -60,11 +60,11 @@ module.exports = (env, { mode }) => ({
       filename: (pathData) => {
         const dirname = pathData.chunk.name;
         // Process all blocks.
-        if (!pathData.chunk.name.includes('src-')) {
+        if (!pathData.chunk.name.includes('entries-')) {
           return '[name].css';
         }
 
-        const srcDirname = dirname.replace('src-', '');
+        const srcDirname = dirname.replace('entries-', '');
         return `${srcDirname}/index.css`;
       },
     }),

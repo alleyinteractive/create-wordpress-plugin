@@ -11,9 +11,10 @@ module.exports = {
     description: '',
     dashicon: 'palmtree',
     category: 'widgets',
-    editorScript: 'file:index.js',
-    editorStyle: 'file:editor.scss',
-    style: 'file:style.scss',
+    editorScript: 'file:./index.js',
+    editorStyle: 'file:./index.scss',
+    style: ['file:./style-index.scss'],
+    render: 'file:./render.php',
   },
   variants: {
     static: {},
