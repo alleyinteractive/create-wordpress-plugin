@@ -1,7 +1,7 @@
 <?php
 /**
  * Slotfills script registration and enqueue.
- * 
+ *
  * This file will be copied to the assets build directory.
  *
  * @package package_name
@@ -26,7 +26,7 @@ function register_slotfill_scripts() {
 	|
 	| This example function is called by the enqueue_block_editor_assets hook. Use it to
 	| enqueue assets that are loaded in the block editor.
-	| 
+	|
 	| In the example below we can use the __FILE__ path to find the asset and enqueue
 	| under any condition. This file, index.php, will be required from the  `load_scripts()`
 	| function.
@@ -37,8 +37,7 @@ function register_slotfill_scripts() {
 	*/
 	// Automatically load dependencies and version.
 	$asset_file = include plugin_dir_path( __FILE__ ) . 'index.asset.php';
-	
-	// phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+
 	// \wp_register_script(
 	// 'wp-starter-plugin-slotfills',
 	// plugins_url( 'index.js', __FILE__ ),
@@ -46,6 +45,7 @@ function register_slotfill_scripts() {
 	// $asset_file['version'],
 	// true
 	// );
+	//
 	// wp_set_script_translations( 'wp-starter-plugin-slotfills', 'wp-starter-plugin' );
 }
 add_action( 'init', __NAMESPACE__ . '\register_slotfill_scripts' );

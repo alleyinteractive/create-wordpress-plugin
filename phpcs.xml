@@ -46,6 +46,9 @@
   <!-- Disable commenting rules for example code included in the plugin. -->
   <rule ref="Squiz.PHP.CommentedOutCode.Found">
     <exclude-pattern>inc/assets.php</exclude-pattern>
+    <exclude-pattern>blocks</exclude-pattern>
+    <exclude-pattern>build</exclude-pattern>
+    <exclude-pattern>src</exclude-pattern>
   </rule>
 
   <rule ref="Squiz.Commenting.InlineComment">

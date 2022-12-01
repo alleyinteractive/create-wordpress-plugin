@@ -1,4 +1,4 @@
-### Blocks Directory
+# Blocks Directory
 
 Custom blocks in this directory can be created by running the `create-block` script.
 
@@ -14,7 +14,7 @@ There are 2 variants of blocks which you can create:
 
 The create-block script will create the block files in a directory using the `slug` field entered from the prompts when scaffolding the block.
 
-The script uses the [@wordpress/create-block](https://github.com/WordPress/gutenberg/tree/trunk/packages/create-block#create-block) script with the `--no-plugin` flag for scaffolding block files only, and the `--template` flag setting the block template files to be scaffolded. See the create-block script in `package.json`. 
+The script uses the [@wordpress/create-block](https://github.com/WordPress/gutenberg/tree/trunk/packages/create-block#create-block) script with the `--no-plugin` flag for scaffolding block files only, and the `--template` flag setting the block template files to be scaffolded. See the create-block script in `package.json`.
 
 You can also scaffold a quick block by navigating to the blocks directory in your terminal and run the following command by passing in a slug for quick static block scaffolding:
 ```
