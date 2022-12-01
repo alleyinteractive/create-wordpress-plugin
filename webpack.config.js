@@ -3,6 +3,7 @@ const fs = require('fs');
 
 const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = (env, { mode }) => ({
   ...defaultConfig,
@@ -32,7 +33,7 @@ module.exports = (env, { mode }) => ({
     filename: (pathData) => {
       const dirname = pathData.chunk.name;
 
-      // Process all blocks.
+      // Process all non-src entries.
       if (!pathData.chunk.name.includes('src-')) {
         return '[name].js';
       }
@@ -49,20 +50,31 @@ module.exports = (env, { mode }) => ({
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: '**/{block.json,*.php,*.css}',
+          from: '**/{index.php,*.css}',
           context: 'src',
           noErrorOnMissing: true,
         },
       ],
+    }),
+    new MiniCssExtractPlugin({
+      filename: (pathData) => {
+        const dirname = pathData.chunk.name;
+        // Process all blocks.
+        if (!pathData.chunk.name.includes('src-')) {
+          return '[name].css';
+        }
+
+        const srcDirname = dirname.replace('src-', '');
+        return `${srcDirname}/index.css`;
+      },
     }),
   ],
 
   // This webpack alias rule is needed at the root to ensure that the paths are resolved
   // using the custom alias defined below.
   resolve: {
-    ...defaultConfig.resolve,
     alias: {
-      ...defaultConfig.alias,
+      ...defaultConfig.resolve.alias,
       '@': path.resolve(__dirname),
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx', '...'],
