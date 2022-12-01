@@ -1,5 +1,7 @@
 <?php
-namespace Create_WordPress_Plugin\Tests;
+namespace Create_WordPress_Plugin\Tests\Feature;
+
+use Create_WordPress_Plugin\Tests\Test_Case;
 
 /**
  * Visit {@see https://mantle.alley.co/testing/test-framework.html} to learn more.
