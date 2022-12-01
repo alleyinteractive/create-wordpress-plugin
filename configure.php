@@ -278,14 +278,14 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 			'tsconfig.json',
 			'webpack.config.js',
 			'webpack/',
-			'src/',
+			'entries/',
 			'services/',
 			'slotfills/',
 			'build/',
 			'bin/',
 			'node_modules/',
 			'scaffold',
-			'src/assets.php',
+			'entries/assets.php',
 		]
 	);
 
