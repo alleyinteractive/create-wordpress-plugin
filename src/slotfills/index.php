@@ -38,16 +38,15 @@ function register_slotfill_scripts() {
 	// Automatically load dependencies and version.
 	$asset_file = include plugin_dir_path( __FILE__ ) . 'index.asset.php';
 	
-	/* Un-comment and run build to enqueue.
-	\wp_register_script(
-		'wp-starter-plugin-slotfills',
-		plugins_url( 'index.js', __FILE__ ),
-		$asset_file['dependencies'],
-		$asset_file['version'],
-		true
-	);
-	wp_set_script_translations( 'wp-starter-plugin-slotfills', 'wp-starter-plugin' );
-	 */
+	// phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+	// \wp_register_script(
+	// 'wp-starter-plugin-slotfills',
+	// plugins_url( 'index.js', __FILE__ ),
+	// $asset_file['dependencies'],
+	// $asset_file['version'],
+	// true
+	// );
+	// wp_set_script_translations( 'wp-starter-plugin-slotfills', 'wp-starter-plugin' );
 }
 add_action( 'init', __NAMESPACE__ . '\register_slotfill_scripts' );
 
