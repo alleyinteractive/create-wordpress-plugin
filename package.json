@@ -31,9 +31,9 @@
     "scaffold": "scaffold dir ./scaffold --theme=./",
     "start": "wp-scripts start --webpack-copy-php --webpack-src-dir=blocks",
     "stylelint:fix": "stylelint --fix \"**/*.scss\"",
-    "stylelint": "stylelint \"**/*.scss\"",
+    "stylelint": "stylelint \"**/*.scss\" --allow-empty-input",
     "test:watch": "jest --watch",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "@alleyinteractive/block-editor-tools": "^0.0.1",
