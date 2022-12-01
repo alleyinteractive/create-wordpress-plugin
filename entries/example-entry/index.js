@@ -4,3 +4,5 @@
  * Entries are automatically built with webpack when included inside the
  * ../entries directory. Enqueue them in src/assets.php
  */
+
+import './index.scss';
