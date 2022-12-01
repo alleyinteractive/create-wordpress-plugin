@@ -136,6 +136,15 @@ function remove_assets_require( string $file = 'plugin.php' ) {
 	);
 }
 
+function remove_assets_buddy( string $file = 'buddy.yml') {
+	$contents = file_get_contents( $file );
+
+	$contents = trim( preg_replace( '/(- action: "npm audit".*)variables:/s', 'variables:', $contents ) ?: $contents );
+	$contents = str_replace( '    variables:', '  variables:', $contents );
+
+	file_put_contents( $file, $contents );
+}
+
 function determine_separator( string $path ): string {
 	return str_replace( '/', DIRECTORY_SEPARATOR, $path );
 }
@@ -280,6 +289,7 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 
 	remove_assets_readme( false );
 	remove_assets_require();
+	remove_assets_buddy();
 }
 
 if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloader already included!)', true ) ) {
@@ -305,6 +315,8 @@ if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloade
 	}
 }
 
+$standalone = true;
+
 // Check if the plugin will be use standalone (as a single repository) or as a
 // part of larger project (such as a wp-content-rooted project).
 if (
@@ -314,6 +326,8 @@ if (
 		false,
 	)
 ) {
+	$standalone = false;
+
 	$needs_built_assets = false;
 
 	if ( confirm( "Do you want to remove the plugin's Github actions? (If this isn't a standalone plugin they won't be used)", true ) ) {
@@ -369,6 +383,12 @@ if ( ! $needs_built_assets && file_exists( '.github/workflows/built-branch.yml' 
 			'.github/workflows/built-tag.yml',
 		]
 	);
+}
+
+if (
+	$standalone && file_exists( __DIR__ . '/buddy.yml' ) && confirm( 'Do you need the Buddy CI configuration? (Alley devs only -- if the plugin is open-source it will not be needed)', false )
+) {
+	delete_files( [ '.buddy', 'buddy.yml' ] );
 }
 
 if ( confirm( 'Let this script delete itself?', true ) ) {
