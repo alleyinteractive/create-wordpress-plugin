@@ -111,6 +111,24 @@ function remove_composer_files() {
 	echo 'Removed composer.json, composer.lock and vendor/ files.' . PHP_EOL;
 }
 
+function remove_project_files() {
+	delete_files(
+		[
+			'.buddy',
+			'buddy.yml',
+			'CHANGELOG.md',
+			'.deployignore',
+			'.editorconfig',
+			'.gitignore',
+			'.gitattributes',
+			'.github',
+			'LICENSE',
+		]
+	);
+
+	echo 'Removed .buddy, buddy.yml, CHANGELOG.md, .deployignore, .editorconfig, .gitignore, .gitattributes, .github and LICENSE files.' . PHP_EOL;
+}
+
 function remove_assets_readme( bool $keep_contents, string $file = 'README.md' ) {
 	$contents = file_get_contents( $file );
 
@@ -330,8 +348,8 @@ if (
 
 	$needs_built_assets = false;
 
-	if ( confirm( "Do you want to remove the plugin's Github actions? (If this isn't a standalone plugin they won't be used)", true ) ) {
-		delete_files( [ '.buddy', 'buddy.yml', '.github' ] );
+	if ( confirm( "Do you want to remove project-based files, such as GitHub actions? (If this is a standalone plugin, these are probably in the root directory.)", true ) ) {
+		remove_project_files();
 	}
 
 	// Offer to roll up this plugin's dependencies to the parent project's composer.
