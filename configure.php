@@ -234,13 +234,13 @@ echo "\nWelcome friend to alleyinteractive/create-wordpress-plugin! 😀\nLet's 
 
 $author_name = ask(
 	question: 'Author name?',
-	default: run( 'git config user.name' ) ?: ( $args['author_name'] ?? '' ),
+	default: $args['author_name'] ?? run( 'git config user.name' ),
 	allow_empty: false,
 );
 
 $author_email = ask(
 	question: 'Author email?',
-	default: run( 'git config user.email' ) ?: ( $args['author_email'] ?? '' ),
+	default: $args['author_email'] ?? run( 'git config user.email' ),
 	allow_empty: false,
 );
 
