@@ -6,7 +6,7 @@
 # Via WPCS.
 #
 /.github export-ignore
-/phpcs.xml export-ignore
+/.phpcs.xml export-ignore
 /.phpcs export-ignore
 /phpunit.xml export-ignore
 /tests export-ignore
