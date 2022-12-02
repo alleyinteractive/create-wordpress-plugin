@@ -4,7 +4,7 @@
  *
  * This file will be copied to the assets build directory.
  *
- * @package package_name
+ * @package create-wordpress-plugin
  */
 
 namespace Create_WordPress_Plugin;

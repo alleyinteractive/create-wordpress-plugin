@@ -2,7 +2,7 @@
 /**
  * Contains functions for working with assets (primarily JavaScript).
  *
- * @package package_name
+ * @package create-wordpress-plugin
  */
 
 namespace Create_WordPress_Plugin;
