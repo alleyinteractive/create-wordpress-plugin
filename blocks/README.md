@@ -54,3 +54,6 @@ The `index.php` contains the PHP block registration and will be autoloaded with 
 Block attributes should be defined in the `block.json` file. [Learn more about block.json in the block editor handbook.](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/)
 
 Running `npm run build` will compile the JavaScript and copy the PHP files to a directory in the `build` folder using `@wordpress/scripts`. The blocks will be enqueued via `block.json` after block registration. The block `index.php` file will be read by the `load_scripts()` function found in the `function.php` file.
+
+### Customize the block scaffolding templates.
+The `bin/create-block` script and associated `.mustache` files replace default files included in the `@wordpress/create-block` script for scaffolding blocks. To learn more about external project templates and to customize different variations of scaffolded blocks refer to the [External Project Templates documentation](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-create-block/packages-create-block-external-template/) in the block editor handbook.

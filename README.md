@@ -11,9 +11,7 @@ for use when submoduling a plugin. The built branches will include Composer
 dependencies and any compiled front-end assets (if using them).
 
 The plugin supports front-end assets which can be enqueued inside
-`src/assets.php`. For plugins that don't require front-end assets, the
-configuration script below will prompt you to delete the front-end files if you
-don't wish to use them.
+`src/assets.php` or from within an entry points `index.php` file. For plugins that don't require front-end assets, the configuration script below will prompt you to delete the front-end files if you don't wish to use them.
 
 ## Getting Started
 
@@ -74,6 +72,18 @@ Run `npm run lint` to run ESLint against all JavaScript files. Linting will also
 happen when running development or production builds.
 
 Run `composer test` to run tests against PHPUnit and the PHP code in the plugin.
+
+### The `entries` directory and entry points
+All directories created in the `entries` directory can serve as entry points and will be compiled with [@wordpress/scripts](https://github.com/WordPress/gutenberg/blob/trunk/packages/scripts/README.md#scripts) into the `build` directory with an accompanied `index.asset.php` asset map.
+
+#### Enqueuing Entry Points
+
+You can also include an `index.php` file in the entry point directory for enqueueing or registering a script. This file will then be moved to the build directory and will be auto-loaded with the `load_scripts()` function in the `functions.php` file. Alternatively, if a script is to be enqueued elsewhere there are helper functions in the `src/assets.php` file for getting the assets.
+
+### Scaffold a block with `create-block`
+
+Use the `create-block` command to create custom blocks with [`@wordpress/create-block`](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-create-block/) and follow the prompts to generate all the block assets in the `blocks/` directory. 
+Block registration, script creation, etc will be scaffolded from the `bin/create-block/templates/block/` templates. Run `npm run build` to compile and build the custom block. Blocks are enqueued using the `load_scripts()` function in `src/assets.php`.
 
 ### Updating WP Dependencies
 
