@@ -84,7 +84,6 @@ function writeln( string $line ): void {
 function run( string $command, string $dir = null ): string {
 	$command = $dir ? "cd {$dir} && {$command}" : $command;
 
-	return '';
 	return trim( shell_exec( $command ) );
 }
 
