@@ -3,6 +3,14 @@
 /**
  * Configure the WordPress Plugin interactively.
  *
+ * Supports arguments to set the values directly.
+ *
+ * [--author_name=<author_name>]
+ * : The author name.
+ *
+ * [--author_email=<author_email>]
+ * : The author email.
+ *
  * phpcs:disable
  */
 
@@ -12,6 +20,34 @@ if ( ! defined( 'STDIN' ) ) {
 
 if ( 0 === strpos( strtoupper( PHP_OS ), 'WIN' ) ) {
 	die( 'Not supported in Windows. 🪟' );
+}
+
+if ( version_compare( PHP_VERSION, '8.0.0', '<' ) ) {
+	die( 'PHP 8.0.0 or greater is required.' );
+}
+
+// Parse the command line arguments from $argv.
+$args         = [];
+$previous_key = null;
+
+foreach ( $argv as $value ) {
+	if ( str_starts_with( $value, '--' ) ) {
+		if ( false !== strpos( $value, '=' ) ) {
+			[ $arg, $value ] = explode( '=', substr( $value, 2 ), 2 );
+
+			$args[ $arg ] = trim( $value );
+
+			$previous_key = null;
+		} else {
+			$args[ substr( $value, 2 ) ] = true;
+
+			$previous_key = substr( $value, 2 );
+		}
+	} elseif ( ! empty( $previous_key ) ) {
+		$args[ $previous_key ] = trim( $value );
+	} else {
+		$previous_key = trim( $value );
+	}
 }
 
 function ask( string $question, string $default = '', bool $allow_empty = true ): string {
@@ -48,6 +84,7 @@ function writeln( string $line ): void {
 function run( string $command, string $dir = null ): string {
 	$command = $dir ? "cd {$dir} && {$command}" : $command;
 
+	return '';
 	return trim( shell_exec( $command ) );
 }
 
@@ -198,13 +235,13 @@ echo "\nWelcome friend to alleyinteractive/create-wordpress-plugin! 😀\nLet's 
 
 $author_name = ask(
 	question: 'Author name?',
-	default: run( 'git config user.name' ),
+	default: run( 'git config user.name' ) ?: ( $args['author_name'] ?? '' ),
 	allow_empty: false,
 );
 
 $author_email = ask(
 	question: 'Author email?',
-	default: run( 'git config user.email' ),
+	default: run( 'git config user.email' ) ?: ( $args['author_email'] ?? '' ),
 	allow_empty: false,
 );
 
