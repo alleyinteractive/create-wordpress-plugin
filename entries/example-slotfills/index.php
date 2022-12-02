@@ -11,14 +11,14 @@ namespace Create_WordPress_Plugin;
 
 add_action(
 	'enqueue_block_editor_assets',
-	__NAMESPACE__ . '\action_enqueue_slotfill_assets'
+	__NAMESPACE__ . '\action_enqueue_example_slotfills_assets'
 );
 
 /**
  * Registers all slotfill assets so that they can be enqueued through Gutenberg in
  * the corresponding context.
  */
-function register_slotfill_scripts() {
+function register_example_slotfills_scripts() {
 	/*
 	|--------------------------------------------------------------------------
 	| Register slotfills assets from entry.
@@ -39,20 +39,20 @@ function register_slotfill_scripts() {
 	$asset_file = include plugin_dir_path( __FILE__ ) . 'index.asset.php';
 
 	// \wp_register_script(
-	// 'wp-starter-plugin-slotfills',
+	// 'create-wordpress-plugin-example_slotfills',
 	// plugins_url( 'index.js', __FILE__ ),
 	// $asset_file['dependencies'],
 	// $asset_file['version'],
 	// true
 	// );
 	//
-	// wp_set_script_translations( 'wp-starter-plugin-slotfills', 'wp-starter-plugin' );
+	// wp_set_script_translations( 'create-wordpress-plugin-example_slotfills', 'create-wordpress-plugin' );
 }
-add_action( 'init', __NAMESPACE__ . '\register_slotfill_scripts' );
+add_action( 'init', __NAMESPACE__ . '\register_example_slotfills_scripts' );
 
 /**
  * Enqueue block editor assets for this slotfill.
  */
-function action_enqueue_slotfill_assets() {
-	wp_enqueue_script( 'wp-starter-plugin-slotfills' );
+function action_enqueue_example_slotfills_assets() {
+	wp_enqueue_script( 'create-wordpress-plugin-example_slotfills' );
 }

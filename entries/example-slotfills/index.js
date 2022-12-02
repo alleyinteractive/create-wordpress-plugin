@@ -6,5 +6,5 @@
  */
 
 // Import example slotfill styles.
-// import './index.scss';
+import './index.scss';
 // ...
