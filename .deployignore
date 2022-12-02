@@ -12,7 +12,7 @@ output.log
 tests
 bin
 composer.lock
-phpcs.xml
+.phpcs.xml
 phpunit.xml
 configure.php
 DOCKER_ENV
