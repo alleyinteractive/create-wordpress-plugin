@@ -70,7 +70,7 @@ function title_case( string $subject ): string {
 }
 
 function ensure_capitalp( string $text ): string {
-	return str_replace( 'WordPress', 'WordPress', $text );
+	return str_replace( 'Wordpress', 'WordPress', $text );
 }
 
 function replace_in_file( string $file, array $replacements ): void {
