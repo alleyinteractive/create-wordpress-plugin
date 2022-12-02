@@ -72,7 +72,7 @@ function register_meta_helper(
 	 * @param string $meta_key     The meta key to register.
 	 */
 	$args = apply_filters(
-		'ai_register_meta_helper_args', // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		'create_wordpress_plugin_register_meta_helper_args', // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		wp_parse_args(
 			$args,
 			[

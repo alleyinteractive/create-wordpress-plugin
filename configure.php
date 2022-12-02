@@ -151,7 +151,7 @@ function rollup_phpcs_to_parent( string $parent_file, string $local_file, string
 
   <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
     <properties>
-      <property name="prefixes" type="array" value="' . $plugin_domain . ',ai_,_ai" />
+      <property name="prefixes" type="array" value="' . $plugin_domain . '" />
     </properties>
   </rule>
 </ruleset>';
@@ -426,7 +426,7 @@ if (
 				$parent_folder . '/.phpcs.xml',
 			];
 
-			if ( file_exists( __DIR__ . '/phpcs.xml' ) ) {
+			if ( file_exists( __DIR__ . '/.phpcs.xml' ) ) {
 				foreach ( $parent_files as $parent_file ) {
 					if ( ! file_exists( $parent_file ) ) {
 						continue;
@@ -435,7 +435,7 @@ if (
 					if ( confirm( "Do you want to roll up the phpcs configuration to the parent? (This will change the plugin's phpcs configuration to inherit the parent configuration from {$parent_file}.)" ) ) {
 						rollup_phpcs_to_parent(
 							parent_file: '../../' . basename( $parent_file ),
-							local_file: __DIR__ . '/phpcs.xml',
+							local_file: __DIR__ . '/.phpcs.xml',
 							plugin_name: $plugin_name,
 							plugin_domain: $plugin_name_slug,
 						);
