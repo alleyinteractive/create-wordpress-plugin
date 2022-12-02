@@ -7,9 +7,6 @@
 
 namespace Create_WordPress_Plugin;
 
-define( 'CREATE_WORDPRESS_PLUGIN_ASSET_MAP', read_asset_map( dirname( __DIR__ ) . '/build/assetMap.json' ) );
-define( 'CREATE_WORDPRESS_PLUGIN_ASSET_MODE', CREATE_WORDPRESS_PLUGIN_ASSET_MAP['mode'] ?? 'production' );
-
 // Register and enqueue assets.
 add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\action_wp_enqueue_scripts' );
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\action_admin_enqueue_scripts' );
@@ -21,7 +18,7 @@ add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\action_enqueue_bloc
 function action_wp_enqueue_scripts() {
 	/*
 	|--------------------------------------------------------------------------
-	| Enqueue site assets.
+	| Enqueue site assets using the asset/entry helper functions.
 	|--------------------------------------------------------------------------
 	|
 	| This function is called by the enqueue_block_editor_assets hook. Use it to
@@ -35,12 +32,12 @@ function action_wp_enqueue_scripts() {
 
 	// wp_enqueue_script(
 	// 	'create-wordpress-plugin-example-entry',
-	// 	get_asset_path( 'example-entry.js' ),
-	// 	get_asset_dependencies( 'example-entry.php' ),
-	// 	get_asset_hash( 'example-entry.js' ),
+	// 	get_entry_asset_url( 'example-entry' ),
+	// 	get_asset_dependency_array( 'example-entry' ),
+	// 	get_asset_version( 'example-entry' ),
 	// 	true
 	// );
-	// inline_locale_data( 'create-wordpress-plugin-example-entry' );
+	// wp_set_script_translations( 'create-wordpress-plugin-example-entry', 'create-wordpress-plugin' );
 }
 
 /**
@@ -49,7 +46,7 @@ function action_wp_enqueue_scripts() {
 function action_admin_enqueue_scripts() {
 	/*
 	|--------------------------------------------------------------------------
-	| Enqueue admin assets.
+	| Enqueue admin assets using the asset/entry helper functions.
 	|--------------------------------------------------------------------------
 	|
 	| This function is called by the admin_enqueue_scripts hook. Use it to enqueue
@@ -59,12 +56,12 @@ function action_admin_enqueue_scripts() {
 
 	// wp_enqueue_script(
 	// 	'create-wordpress-plugin-admin-handle',
-	// 	get_asset_path( 'admin-handle.js' ),
-	// 	get_asset_dependencies( 'admin-handle.php' ),
-	// 	get_asset_hash( 'admin-handle.js' ),
+	// 	get_entry_asset_url( 'admin-handle' ),
+	// 	get_asset_dependency_array( 'admin-handle' ),
+	// 	get_asset_version( 'admin-handle' ),
 	// 	true
 	// );
-	// inline_locale_data( 'create-wordpress-plugin-admin-handle' );
+	// wp_set_script_translations( 'create-wordpress-plugin-admin-handle', 'create-wordpress-plugin' );
 }
 
 /**
@@ -73,7 +70,7 @@ function action_admin_enqueue_scripts() {
 function action_enqueue_block_editor_assets() {
 	/*
 	|--------------------------------------------------------------------------
-	| Enqueue block editor assets.
+	| Enqueue block editor assets using the asset/entry helper functions.
 	|--------------------------------------------------------------------------
 	|
 	| This function is called by the enqueue_block_editor_assets hook. Use it to
@@ -83,133 +80,125 @@ function action_enqueue_block_editor_assets() {
 
 	// wp_enqueue_script(
 	// 	'create-wordpress-plugin-slotfills',
-	// 	get_asset_path( 'slotfills.js' ),
-	// 	get_asset_dependencies( 'slotfills.php' ),
-	// 	get_asset_hash( 'slotfills.js' ),
+	// 	get_entry_asset_url( 'slotfills' ),
+	// 	get_asset_dependency_array( 'slotfills' ),
+	// 	get_asset_version( 'slotfills' ),
 	// 	true
 	// );
-	// inline_locale_data( 'create-wordpress-plugin-slotfills' );
+	// wp_set_script_translations( 'create-wordpress-plugin-slotfills', 'create-wordpress-plugin' );
 }
 
 /**
- * Gets asset dependencies from the generated asset manifest.
+ * Validate file paths to prevent a PHP error if a file doesn't exist.
  *
- * @param string $asset Entry point and asset type separated by a '.'.
- *
- * @return array An array of dependencies for this asset.
+ * @param string $path The file path to validate.
+ * @return bool        True if the path is valid and the file exists.
  */
-function get_asset_dependencies( string $asset ) : array {
-	// Get the path to the PHP file containing the dependencies.
-	$dependency_file = get_asset_path( $asset, true );
-	if ( empty( $dependency_file ) ) {
-		return [];
+function validate_path( string $path ) : bool {
+	return 0 === validate_file( $path ) && file_exists( $path );
+}
+
+/**
+ * Get the entry points directory path or public URL.
+ *
+ * @param string  $dir_entry_name The directory name where the entry point was defined.
+ * @param boolean $dir            Optional. Whether to return the directory path or the plugin URL path. Defaults to false (returns URL).
+ *
+ * @return string
+ */
+function get_entry_dir_path( string $dir_entry_name, bool $dir = false ) {
+	// The relative path from the plugin root.
+	$asset_build_dir = "/build/{$dir_entry_name}/";
+	// Set the absolute file path from the root directory.
+	$asset_dir_path = CREATE_WORDPRESS_PLUGIN_DIR . $asset_build_dir;
+
+	if ( ! empty( $asset_dir_path ) && validate_path( $asset_dir_path ) ) {
+		// Negotiate the base path.
+		return true === $dir
+			? $asset_dir_path
+			: plugins_url( $asset_build_dir, __DIR__ );
 	}
 
-	// Ensure the filepath is valid.
-	if ( ! file_exists( $dependency_file ) || 0 !== validate_file( $dependency_file ) ) {
-		return [];
-	}
-
-	// Try to load the dependencies.
-	// phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable
-	$dependencies = require $dependency_file;
-	if ( empty( $dependencies['dependencies'] ) || ! is_array( $dependencies['dependencies'] ) ) {
-		return [];
-	}
-
-	return $dependencies['dependencies'];
+	return '';
 }
 
 /**
- * Get the contentHash for a given asset.
+ * Get the assets dependencies and version.
  *
- * @param string $asset Entry point and asset type separated by a '.'.
+ * @param string $dir_entry_name The entry point directory name.
  *
- * @return string The asset's hash.
+ * @return array                 An array of dependencies and version for this asset.
  */
-function get_asset_hash( string $asset ) : string {
-	return get_asset_property( $asset, 'hash' )
-		?? CREATE_WORDPRESS_PLUGIN_ASSET_MAP['hash']
-		?? '1.0.0';
-}
+function get_entry_asset_map( string $dir_entry_name ) {
+	$base_path = get_entry_dir_path( $dir_entry_name, true );
 
-/**
- * Get the URL for a given asset.
- *
- * @param string  $asset Entry point and asset type separated by a '.'.
- * @param boolean $dir   Optional. Whether to return the directory path or the plugin URL path. Defaults to false (returns URL).
- *
- * @return string The asset URL.
- */
-function get_asset_path( string $asset, bool $dir = false ) : string {
-	// Try to get the relative path.
-	$relative_path = get_asset_property( $asset, 'path' );
-	if ( empty( $relative_path ) ) {
-		return '';
-	}
+	if ( ! empty( $base_path ) ) {
+		$asset_file_path = trailingslashit( $base_path ) . 'index.asset.php';
 
-	// Negotiate the base path.
-	$base_path = true === $dir
-		? dirname( __DIR__ ) . '/build'
-		: plugins_url( 'build', __DIR__ );
-
-	return trailingslashit( $base_path ) . $relative_path;
-}
-
-/**
- * Get a property for a given asset.
- *
- * @param string $asset Entry point and asset type separated by a '.'.
- * @param string $prop The property to get from the entry object.
- *
- * @return string|null The asset property based on entry and type.
- */
-function get_asset_property( string $asset, string $prop ) : ?string {
-	/*
-	 * Appending a '.' ensures the explode() doesn't generate a notice while
-	 * allowing the variable names to be more readable via list().
-	 */
-	list( $entrypoint, $type ) = explode( '.', "$asset." );
-
-	$asset_property = CREATE_WORDPRESS_PLUGIN_ASSET_MAP[ $entrypoint ][ $type ][ $prop ] ?? null;
-
-	return $asset_property ? $asset_property : null;
-}
-
-/**
- * Creates a new Jed instance with specified locale data configuration.
- *
- * @param string $to_handle The script handle to attach the inline script to.
- */
-function inline_locale_data( string $to_handle ) {
-	// Define locale data for Jed.
-	$locale_data = [
-		'' => [
-			'domain' => 'create-wordpress-plugin',
-			'lang'   => is_admin() ? get_user_locale() : get_locale(),
-		],
-	];
-
-	// Pass the Jed configuration to the admin to properly register i18n.
-	wp_add_inline_script(
-		$to_handle,
-		'wp.i18n.setLocaleData( ' . wp_json_encode( $locale_data ) . ", 'create-wordpress-plugin' );"
-	);
-}
-
-/**
- * Decode the asset map at the given file path.
- *
- * @param string $path File path.
- *
- * @return array The asset map.
- */
-function read_asset_map( string $path ) : array {
-	if ( file_exists( $path ) && 0 === validate_file( $path ) ) {
-		ob_start();
-		include $path; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.IncludingFile, WordPressVIPMinimum.Files.IncludingFile.UsingVariable
-		return json_decode( ob_get_clean(), true );
+		if ( validate_path( $asset_file_path ) ) {
+			return include $asset_file_path; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.IncludingFile, WordPressVIPMinimum.Files.IncludingFile.UsingVariable
+		}
 	}
 
 	return [];
 }
+
+/**
+ * Get the dependency array for a given asset.
+ *
+ * @param string $dir_entry_name The entry point directory name.
+ *
+ * @return array The asset's dependency array.
+ */
+function get_asset_dependency_array( string $dir_entry_name ) : array {
+	$asset_arr = get_entry_asset_map( $dir_entry_name );
+	return $asset_arr['dependencies'] ?? [];
+}
+
+/**
+ * Get the version hash for a given asset.
+ *
+ * @param string $dir_entry_name The entry point directory name.
+ *
+ * @return string The asset's version hash.
+ */
+function get_asset_version( string $dir_entry_name ) : string {
+	$asset_arr = get_entry_asset_map( $dir_entry_name );
+	return $asset_arr['version'] ?? '1.0';
+}
+
+/**
+ * Get the public url for the assets entry file.
+ *
+ * @param string $dir_entry_name The entry point directory name.
+ * @param string $filename       The asset file name including the file type extension to get the public path for.
+ * @return string                The public URL to the asset, empty string otherwise.
+ */
+function get_entry_asset_url( string $dir_entry_name, $filename = 'index.js' ) {
+	if ( empty( $filename ) ) {
+		return '';
+	}
+
+	if ( validate_path( trailingslashit( get_entry_dir_path( $dir_entry_name, true ) ) . $filename ) ) {
+		$entry_base_url = get_entry_dir_path( $dir_entry_name );
+
+		if ( ! empty( $entry_base_url ) ) {
+			return trailingslashit( $entry_base_url ) . $filename;
+		}
+	}
+
+	return '';
+}
+
+/**
+ * Load the php index files from the build directory for blocks, slotfills, and any other scripts with an index.php file.
+ */
+function load_scripts() {
+	foreach ( glob( CREATE_WORDPRESS_PLUGIN_DIR . '/build/**/index.php' ) as $path ) {
+		if ( 0 === validate_file( $path ) && file_exists( $path ) ) {
+			require_once $path;  // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.IncludingFile, WordPressVIPMinimum.Files.IncludingFile.UsingVariable
+		}
+	}
+}
+
+load_scripts();

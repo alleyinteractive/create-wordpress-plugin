@@ -21,6 +21,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Root directory to this plugin.
+ *
+ * @var string
+ */
+define( 'CREATE_WORDPRESS_PLUGIN_DIR', __DIR__ );
+
 // Check if Composer is installed (remove if Composer is not required for your plugin).
 if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	\add_action(

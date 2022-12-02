@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "module": "es6",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "noImplicitAny": true,
+    "outDir": "build",
+    "paths": {
+      "@/*": ["*"]
+    },
+    "target": "es5"
+  },
+  "exclude": [
+    "vendor",
+    "node_modules",
+    "build/**/*"
+  ]
+}
