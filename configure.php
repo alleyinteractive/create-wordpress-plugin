@@ -14,12 +14,19 @@ if ( 0 === strpos( strtoupper( PHP_OS ), 'WIN' ) ) {
 	die( 'Not supported in Windows. 🪟' );
 }
 
-function ask( string $question, string $default = '' ): string {
+function ask( string $question, string $default = '', bool $allow_empty = true ): string {
 	$answer = readline(
 		$question . ( $default ? " [{$default}]" : '' ) . ': '
 	);
 
-	return $answer ?: $default;
+	$value = $answer ?: $default;
+
+	if ( ! $allow_empty && empty( $value ) ) {
+		echo "This value can't be empty." . PHP_EOL;
+		return ask( $question, $default, $allow_empty );
+	}
+
+	return $value;
 }
 
 function confirm( string $question, bool $default = false ): bool {
@@ -186,7 +193,7 @@ function remove_assets_require( string $file = 'plugin.php' ) {
 	);
 }
 
-function remove_assets_buddy( string $file = 'buddy.yml') {
+function remove_assets_buddy( string $file = 'buddy.yml' ) {
 	$contents = file_get_contents( $file );
 
 	$contents = trim( preg_replace( '/(- action: "npm audit".*)variables:/s', 'variables:', $contents ) ?: $contents );
@@ -221,29 +228,52 @@ function delete_files( string|array $paths ) {
 
 echo "\nWelcome friend to alleyinteractive/create-wordpress-plugin! 😀\nLet's setup your WordPress Plugin 🚀\n\n";
 
-$git_name    = run( 'git config user.name' );
-$author_name = ask( 'Author name?', $git_name );
+$author_name = ask(
+	question: 'Author name?',
+	default: run( 'git config user.name' ),
+	allow_empty: false,
+);
 
-$git_email    = run( 'git config user.email' );
-$author_email = ask( 'Author email?', $git_email );
+$author_email = ask(
+	question: 'Author email?',
+	default: run( 'git config user.email' ),
+	allow_empty: false,
+);
 
 $username_guess  = explode( ':', run( 'git config remote.origin.url' ) )[1] ?? '';
 $username_guess  = dirname( $username_guess );
 $username_guess  = basename( $username_guess );
-$author_username = ask( 'Author username?', $username_guess );
+$author_username = ask(
+	question: 'Author username?',
+	default: $username_guess,
+	allow_empty: false,
+);
 
-$vendor_name      = ask( 'Vendor name (usually the Github Organization)?', $username_guess );
-$vendor_slug      = slugify( $vendor_name );
+$vendor_name = ask(
+	question: 'Vendor name (usually the Github Organization)?',
+	default: $username_guess,
+	allow_empty: false,
+);
+$vendor_slug = slugify( $vendor_name );
 
 $current_dir = getcwd();
 $folder_name = ensure_capitalp( basename( $current_dir ) );
 
-$plugin_name      = ask( 'Plugin name?', str_replace( '_', ' ', title_case( $folder_name ) ) );
+$plugin_name = ask(
+	question: 'Plugin name?',
+	default: str_replace( '_', ' ', title_case( $folder_name ) ),
+	allow_empty: false,
+);
+
 $plugin_name_slug = slugify( $plugin_name );
 
-$namespace  = ask( 'Plugin namespace?', title_case( $plugin_name ) );
-$class_name = ask( 'Base class name for plugin?', title_case( $plugin_name ) );
+$namespace  = ask(
+	question: 'Plugin namespace?',
+	default: title_case( $plugin_name ),
+	allow_empty: false,
+);
 
+$class_name  = ask( 'Base class name for plugin?', title_case( $plugin_name ) );
 $description = ask( 'Plugin description?', "This is my plugin {$plugin_name}" );
 
 writeln( '------' );
@@ -262,25 +292,25 @@ if ( ! confirm( 'Modify files?', true ) ) {
 }
 
 $search_and_replace = [
-	'author_name'             => $author_name,
-	'author_username'         => $author_username,
-	'email@domain.com'        => $author_email,
+	'author_name'                 => $author_name,
+	'author_username'             => $author_username,
+	'email@domain.com'            => $author_email,
 
 	'A skeleton WordPress plugin' => $description,
 
-	'Create_WordPress_Plugin' => $namespace,
-	'Example_Plugin'          => $class_name,
+	'Create_WordPress_Plugin'     => $namespace,
+	'Example_Plugin'              => $class_name,
 
-	'create_wordpress_plugin' => str_replace( '-', '_', $plugin_name ),
-	'plugin_name'             => $plugin_name,
+	'create_wordpress_plugin'     => str_replace( '-', '_', $plugin_name ),
+	'plugin_name'                 => $plugin_name,
 
-	'create-wordpress-plugin' => $plugin_name_slug,
-	'Create WordPress Plugin' => $plugin_name,
+	'create-wordpress-plugin'     => $plugin_name_slug,
+	'Create WordPress Plugin'     => $plugin_name,
 
-	'CREATE_WORDPRESS_PLUGIN' => strtoupper( str_replace( '-', '_', $plugin_name ) ),
-	'Skeleton'                => $class_name,
-	'vendor_name'             => $vendor_name,
-	'alleyinteractive'        => $vendor_slug,
+	'CREATE_WORDPRESS_PLUGIN'     => strtoupper( str_replace( '-', '_', $plugin_name ) ),
+	'Skeleton'                    => $class_name,
+	'vendor_name'                 => $vendor_name,
+	'alleyinteractive'            => $vendor_slug,
 ];
 
 foreach ( list_all_files_for_replacement() as $path ) {
@@ -299,7 +329,7 @@ foreach ( list_all_files_for_replacement() as $path ) {
 echo "Done!\n\n";
 
 $needs_built_assets = false;
-$uses_composer = false;
+$uses_composer      = false;
 
 if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) ) {
 	$needs_built_assets = true;
@@ -382,22 +412,22 @@ if (
 
 	$needs_built_assets = false;
 
-	if ( confirm( "Do you want to remove project-based files, such as GitHub actions? (If this is a standalone plugin, these are probably in the root directory.)", true ) ) {
+	if ( confirm( 'Do you want to remove project-based files, such as GitHub actions? (If this is a standalone plugin, these are probably in the root directory.)', true ) ) {
 		remove_project_files();
 	}
 
 	// Offer to roll up this plugin's dependencies to the parent project's composer.
 	if ( $uses_composer && file_exists( '../../composer.json' ) ) {
 		$parent_composer = realpath( '../../composer.json' );
-		$parent_folder = dirname( $parent_composer );
+		$parent_folder   = dirname( $parent_composer );
 
 		if ( confirm( "Do you want to rollup the plugin's Composer dependencies to the parent project's composer.json file ({$parent_composer})? This will copy this plugin's dependencies to the parent project and delete the local composer.json file.", true ) ) {
-			$composer = json_decode( file_get_contents( $parent_composer ), true );
+			$composer        = json_decode( file_get_contents( $parent_composer ), true );
 			$plugin_composer = json_decode( file_get_contents( 'composer.json' ), true );
 
 			$original = $composer;
 
-			$composer['require'] = array_merge( $composer['require'], $plugin_composer['require'] );
+			$composer['require']     = array_merge( $composer['require'], $plugin_composer['require'] );
 			$composer['require-dev'] = array_merge( $composer['require-dev'], $plugin_composer['require-dev'] );
 			$composer['config']['allow-plugins']['alleyinteractive/composer-wordpress-autoloader'] = true;
 
