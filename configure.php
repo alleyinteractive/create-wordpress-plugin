@@ -129,6 +129,38 @@ function remove_project_files() {
 	echo 'Removed .buddy, buddy.yml, CHANGELOG.md, .deployignore, .editorconfig, .gitignore, .gitattributes, .github and LICENSE files.' . PHP_EOL;
 }
 
+function rollup_phpcs_to_parent( string $parent_file, string $local_file, string $plugin_name, string $plugin_domain ) {
+	$config = '<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="' . $plugin_name . ' Configuration" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
+  <description>PHP_CodeSniffer standard for ' . $plugin_name . '</description>
+
+  <!-- DO NOT ADD ADDITIONAL RULES TO THIS FILE. Modifications belong in the root-level configuration. -->
+
+  <!-- Include Root Rules -->
+  <rule ref="' . $parent_file . '" />
+
+  <rule ref="WordPress.WP.I18n">
+    <properties>
+      <!--
+      Verify that the text_domain is set to the desired text-domain.
+      Multiple valid text domains can be provided as a comma-delimited list.
+       -->
+      <property name="text_domain" type="array" value="' . $plugin_domain . '" />
+    </properties>
+  </rule>
+
+  <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+    <properties>
+      <property name="prefixes" type="array" value="' . $plugin_domain . ',ai_,_ai" />
+    </properties>
+  </rule>
+</ruleset>';
+
+	if ( file_put_contents( $local_file, $config ) ) {
+		echo "Updated {$local_file}.\n";
+	}
+}
+
 function remove_assets_readme( bool $keep_contents, string $file = 'README.md' ) {
 	$contents = file_get_contents( $file );
 
@@ -310,7 +342,7 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 	remove_assets_buddy();
 }
 
-if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloader already included!)', true ) ) {
+if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloader already included! phpcs and phpunit also rely on Composer being installed for testing.)', true ) ) {
 	$uses_composer = true;
 	$needs_built_assets = true;
 
@@ -336,7 +368,9 @@ if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloade
 $standalone = true;
 
 // Check if the plugin will be use standalone (as a single repository) or as a
-// part of larger project (such as a wp-content-rooted project).
+// part of larger project (such as a wp-content-rooted project). Assumes that
+// the parent project is located at /wp-content/ and this plugin is located at
+// /wp-content/plugins/:plugin/.
 if (
 	file_exists( '../../.git/index' )
 	&& ! confirm(
@@ -386,6 +420,30 @@ if (
 				}
 			}
 
+			$parent_files = [
+				$parent_folder . '/phpcs.xml',
+				$parent_folder . '/phpcs.xml.dist',
+				$parent_folder . '/.phpcs.xml',
+			];
+
+			if ( file_exists( __DIR__ . '/phpcs.xml' ) ) {
+				foreach ( $parent_files as $parent_file ) {
+					if ( ! file_exists( $parent_file ) ) {
+						continue;
+					}
+
+					if ( confirm( "Do you want to roll up the phpcs configuration to the parent? (This will change the plugin's phpcs configuration to inherit the parent configuration from {$parent_file}.)" ) ) {
+						rollup_phpcs_to_parent(
+							parent_file: '../../' . basename( $parent_file ),
+							local_file: __DIR__ . '/phpcs.xml',
+							plugin_name: $plugin_name,
+							plugin_domain: $plugin_name_slug,
+						);
+
+						break;
+					}
+				}
+			}
 		}
 	}
 
