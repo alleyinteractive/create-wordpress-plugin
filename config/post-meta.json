@@ -1,12 +1,12 @@
 {
-  "create_wordpress_plugin_underscore_open_graph_description": {
+  "create_wordpress_plugin_open_graph_description": {
     "default": "",
     "post_types": [
       "page",
       "post"
     ]
   },
-  "create_wordpress_plugin_underscore_open_graph_image": {
+  "create_wordpress_plugin_open_graph_image": {
     "default": 0,
     "post_types": [
       "page",
@@ -14,7 +14,7 @@
     ],
     "type": "integer"
   },
-  "create_wordpress_plugin_underscore_open_graph_title": {
+  "create_wordpress_plugin_open_graph_title": {
     "default": "",
     "post_types": [
       "page",

@@ -7,7 +7,7 @@
  * Author: author_name
  * Author URI: https://github.com/alleyinteractive/create-wordpress-plugin
  * Requires at least: 5.9
- * Tested up to: 5.9
+ * Tested up to: 6.1
  *
  * Text Domain: create-wordpress-plugin
  * Domain Path: /languages/
@@ -35,7 +35,7 @@ if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 		function() {
 			?>
 			<div class="notice notice-error">
-				<p><?php esc_html_e( 'Composer is not installed and create-wordpress-plugin cannot load. Try using a `*-built` branch if the plugin is being loaded as a submodule.', 'plugin_domain' ); ?></p>
+				<p><?php esc_html_e( 'Composer is not installed and create-wordpress-plugin cannot load. Try using a `*-built` branch if the plugin is being loaded as a submodule.', 'create-wordpress-plugin' ); ?></p>
 			</div>
 			<?php
 		}
