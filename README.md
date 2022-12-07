@@ -35,7 +35,7 @@ Stable tag: 0.1.0
 
 Requires at least: 5.9
 
-Tested up to: 6.0
+Tested up to: 6.1
 
 Requires PHP: 8.0
 
@@ -82,7 +82,7 @@ You can also include an `index.php` file in the entry point directory for enqueu
 
 ### Scaffold a block with `create-block`
 
-Use the `create-block` command to create custom blocks with [`@wordpress/create-block`](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-create-block/) and follow the prompts to generate all the block assets in the `blocks/` directory. 
+Use the `create-block` command to create custom blocks with [`@wordpress/create-block`](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-create-block/) and follow the prompts to generate all the block assets in the `blocks/` directory.
 Block registration, script creation, etc will be scaffolded from the `bin/create-block/templates/block/` templates. Run `npm run build` to compile and build the custom block. Blocks are enqueued using the `load_scripts()` function in `src/assets.php`.
 
 ### Updating WP Dependencies
