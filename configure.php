@@ -337,13 +337,13 @@ $search_and_replace = [
 	'Create_WordPress_Plugin'     => $namespace,
 	'Example_Plugin'              => $class_name,
 
-	'create_wordpress_plugin'     => str_replace( '-', '_', $plugin_name ),
+	'create_wordpress_plugin'     => str_replace( '-', '_', $plugin_name_slug ),
 	'plugin_name'                 => $plugin_name,
 
 	'create-wordpress-plugin'     => $plugin_name_slug,
 	'Create WordPress Plugin'     => $plugin_name,
 
-	'CREATE_WORDPRESS_PLUGIN'     => strtoupper( str_replace( '-', '_', $plugin_name ) ),
+	'CREATE_WORDPRESS_PLUGIN'     => strtoupper( str_replace( '-', '_', $plugin_name_slug ) ),
 	'Skeleton'                    => $class_name,
 	'vendor_name'                 => $vendor_name,
 	'alleyinteractive'            => $vendor_slug,
@@ -442,7 +442,7 @@ $standalone = true;
 if (
 	file_exists( '../../.git/index' )
 	&& ! confirm(
-		'Will this be a standalone plugin or will it be located within a larger project? For example, a standalone plugin will have a separate repository and will be distributed independently.',
+		'Will this be a standalone plugin, not located within a larger project? For example, a standalone plugin will have a separate repository and will be distributed independently.',
 		false,
 	)
 ) {
