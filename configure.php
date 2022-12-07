@@ -194,7 +194,7 @@ function rollup_phpcs_to_parent( string $parent_file, string $local_file, string
 
   <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
     <properties>
-      <property name="prefixes" type="array" value="' . $plugin_domain . '" />
+      <property name="prefixes" type="array" value="' . str_replace( '-', '_', $plugin_domain ) . '" />
     </properties>
   </rule>
 </ruleset>';
