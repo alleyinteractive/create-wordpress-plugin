@@ -3,7 +3,7 @@ name: Update WordPress Plugin
 on:
   pull_request:
   schedule:
-    - cron: '*/10 0 * * *'
+    - cron: '*/5 * * * *'
 
 permissions:
   contents: write
