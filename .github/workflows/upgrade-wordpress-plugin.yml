@@ -4,8 +4,8 @@ on:
   push:
     branches:
     - upgrade-wordpress-plugin
-  # schedule:
-  #   - cron: '0 0 * * *'
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   update-plugin:
