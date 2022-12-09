@@ -1,9 +1,6 @@
 name: "Update Changelog"
 
 on:
-  push:
-    branches:
-      - upgrade-wordpress-plugin
   release:
     types: [released]
 

@@ -1,6 +1,9 @@
 name: Update WordPress Plugin
 
 on:
+  push:
+    branches:
+      - upgrade-wordpress-plugin
   schedule:
     - cron: '*/10 * * * *'
 
