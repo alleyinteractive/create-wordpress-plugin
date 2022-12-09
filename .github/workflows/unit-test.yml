@@ -1,9 +1,6 @@
 name: Testing Suite
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
   schedule:
     - cron: '0 0 * * *'

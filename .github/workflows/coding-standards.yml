@@ -3,7 +3,7 @@ name: Coding Standards
 on:
   push:
     branches:
-      - main
+      - develop
   pull_request:
   schedule:
     - cron: '0 0 * * *'
