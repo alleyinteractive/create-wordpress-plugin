@@ -28,6 +28,7 @@
     "prestylelint": "check-node-version --package",
     "pretest:watch": "check-node-version --package",
     "pretest": "check-node-version --package",
+    "scaffold": "scaffold dir ./scaffold --theme=./",
     "start": "wp-scripts start --webpack-copy-php --webpack-src-dir=blocks",
     "stylelint:fix": "stylelint --fix \"**/*.scss\"",
     "stylelint": "stylelint \"**/*.scss\" --allow-empty-input",
