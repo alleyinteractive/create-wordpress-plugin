@@ -15,6 +15,10 @@ jobs:
       - name: Merge develop to scaffold
         shell: bash
         env:
+          # DEVELOP_BRANCH: develop
+          DEVELOP_BRANCH: remove-scaffold
+          SCAFFOLD_BRANCH: scaffold
+
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "$GITHUB_ACTOR"
@@ -22,10 +26,11 @@ jobs:
 
           echo "Cloning alleyinteractive/create-wordpress-plugin..."
           git clone --recursive --quiet https://$TOKEN@github.com/alleyinteractive/create-wordpress-plugin.git create-wordpress-plugin
+          cd create-wordpress-plugin
 
-          git fetch origin develop
-          git fetch origin scaffold
+          git fetch origin $DEVELOP_BRANCH
+          git fetch origin $SCAFFOLD_BRANCH
 
-          git checkout scaffold
-          git merge origin/develop --no-edit
-          git push -u origin scaffold
+          git checkout $SCAFFOLD_BRANCH
+          git merge origin/$DEVELOP_BRANCH --no-edit
+          git push -u origin $SCAFFOLD_BRANCH
