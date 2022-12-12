@@ -15,8 +15,7 @@ jobs:
       - name: Merge develop to scaffold
         shell: bash
         env:
-          # DEVELOP_BRANCH: develop
-          DEVELOP_BRANCH: remove-scaffold
+          DEVELOP_BRANCH: develop
           SCAFFOLD_BRANCH: scaffold
 
           TOKEN: ${{ secrets.GH_TOKEN }}
