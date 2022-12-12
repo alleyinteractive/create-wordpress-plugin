@@ -25,12 +25,11 @@ jobs:
           git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
           echo "Cloning alleyinteractive/create-wordpress-plugin..."
-          git clone --recursive --quiet https://$TOKEN@github.com/alleyinteractive/create-wordpress-plugin.git create-wordpress-plugin
+          git clone --recursive --quiet https://$TOKEN@github.com/alleyinteractive/create-wordpress-plugin.git create-wordpress-plugin -b $SCAFFOLD_BRANCH
           cd create-wordpress-plugin
 
           git fetch origin $DEVELOP_BRANCH
           git fetch origin $SCAFFOLD_BRANCH
 
-          git checkout $SCAFFOLD_BRANCH
           git merge origin/$DEVELOP_BRANCH --no-edit
           git push -u origin $SCAFFOLD_BRANCH
