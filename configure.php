@@ -264,6 +264,9 @@ function delete_files( string|array $paths ) {
 
 echo "\nWelcome friend to alleyinteractive/create-wordpress-plugin! 😀\nLet's setup your WordPress Plugin 🚀\n\n";
 
+// Always delete the 'merge-develop-to-scaffold.yml' file (this is never used in a scaffolded plugins).
+delete_files( '.github/workflows/merge-develop-to-scaffold.yml' );
+
 $author_name = ask(
 	question: 'Author name?',
 	default: $args['author_name'] ?? run( 'git config user.name' ),
