@@ -19,7 +19,7 @@ jobs:
           DEVELOP_BRANCH: remove-scaffold
           SCAFFOLD_BRANCH: scaffold
 
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           git config --global user.name "$GITHUB_ACTOR"
           git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
