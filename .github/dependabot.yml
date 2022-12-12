@@ -23,5 +23,3 @@ updates:
       timezone: "America/New_York"
     ignore:
       - dependency-name: "@wordpress/*"
-    labels:
-    - "dependabot"
