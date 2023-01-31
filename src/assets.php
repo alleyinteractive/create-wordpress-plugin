@@ -30,14 +30,16 @@ function action_wp_enqueue_scripts() {
 	|
 	*/
 
-	// wp_enqueue_script(
-	// 	'create-wordpress-plugin-example-entry',
-	// 	get_entry_asset_url( 'example-entry' ),
-	// 	get_asset_dependency_array( 'example-entry' ),
-	// 	get_asset_version( 'example-entry' ),
-	// 	true
-	// );
-	// wp_set_script_translations( 'create-wordpress-plugin-example-entry', 'create-wordpress-plugin' );
+	/* phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+	 * wp_enqueue_script(
+	 *     'create-wordpress-plugin-example-entry',
+	 *     get_entry_asset_url( 'example-entry' ),
+	 *     get_asset_dependency_array( 'example-entry' ),
+	 *     get_asset_version( 'example-entry' ),
+	 *     true
+	 * );
+	 * wp_set_script_translations( 'create-wordpress-plugin-example-entry', 'create-wordpress-plugin' );
+	 */
 }
 
 /**
@@ -54,14 +56,16 @@ function action_admin_enqueue_scripts() {
 	|
 	*/
 
-	// wp_enqueue_script(
-	// 	'create-wordpress-plugin-admin-handle',
-	// 	get_entry_asset_url( 'admin-handle' ),
-	// 	get_asset_dependency_array( 'admin-handle' ),
-	// 	get_asset_version( 'admin-handle' ),
-	// 	true
-	// );
-	// wp_set_script_translations( 'create-wordpress-plugin-admin-handle', 'create-wordpress-plugin' );
+	/* phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+	 * wp_enqueue_script(
+	 *     'create-wordpress-plugin-admin-handle',
+	 *     get_entry_asset_url( 'admin-handle' ),
+	 *     get_asset_dependency_array( 'admin-handle' ),
+	 *     get_asset_version( 'admin-handle' ),
+	 *     true
+	 * );
+	 * wp_set_script_translations( 'create-wordpress-plugin-admin-handle', 'create-wordpress-plugin' );
+	 */
 }
 
 /**
@@ -78,14 +82,16 @@ function action_enqueue_block_editor_assets() {
 	|
 	*/
 
-	// wp_enqueue_script(
-	// 	'create-wordpress-plugin-slotfills',
-	// 	get_entry_asset_url( 'slotfills' ),
-	// 	get_asset_dependency_array( 'slotfills' ),
-	// 	get_asset_version( 'slotfills' ),
-	// 	true
-	// );
-	// wp_set_script_translations( 'create-wordpress-plugin-slotfills', 'create-wordpress-plugin' );
+	/* phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+	 * wp_enqueue_script(
+	 *     'create-wordpress-plugin-slotfills',
+	 *     get_entry_asset_url( 'slotfills' ),
+	 *     get_asset_dependency_array( 'slotfills' ),
+	 *     get_asset_version( 'slotfills' ),
+	 *     true
+	 * );
+	 * wp_set_script_translations( 'create-wordpress-plugin-slotfills', 'create-wordpress-plugin' );
+	 */
 }
 
 /**
