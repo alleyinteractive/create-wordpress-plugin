@@ -5,6 +5,7 @@ on:
     tags:
       - 'v*.*.*'
       - '!*-built'
+      - 'set-output-test-*'
 
 jobs:
   built-tag:
