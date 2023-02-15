@@ -5,7 +5,8 @@ on:
     branches:
       - main
       - develop
+      - set-output
 
 jobs:
   built-branch:
-    uses: alleyinteractive/.github/.github/workflows/built-branch.yml@main
+    uses: alleyinteractive/.github/.github/workflows/built-branch.yml@set-output

@@ -10,6 +10,6 @@ on:
 
 jobs:
   node-tests:
-    uses: alleyinteractive/.github/.github/workflows/node-tests.yml@main
+    uses: alleyinteractive/.github/.github/workflows/node-tests.yml@set-output
     with:
       run-audit: true
