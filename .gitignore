@@ -1,26 +1,22 @@
-# Build files
-build
-vendor
-composer.lock
-node_modules
-
-# Log files
-*.log
-
-# Cache files
-.phpcs/*.json
-.phpunit.result.cache
-
-# Ignore temporary OS files
 .DS_Store
-.DS_Store?
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
-.thumbsdb
-
-# IDE files
-*.code-workspace
-.idea
-.vscode
+wp-cli.local.yml
+node_modules/
+*.sql
+*.tar.gz
+*.zip
+.phpunit.result.cache
+Dockerfile
+output.log
+.github
+tests
+bin
+composer.lock
+.phpcs.xml
+phpunit.xml
+configure.php
+DOCKER_ENV
+phpunit.xml
+tests
+.phpcs
+Makefile
