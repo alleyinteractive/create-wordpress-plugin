@@ -88,12 +88,12 @@ Block registration, script creation, etc will be scaffolded from the `bin/create
 
 ### Updating WP Dependencies
 
-Updates the [WordPress dependency packages](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-scripts/#packages-update) used in the project to their latest version.
+Update the [WordPress dependency packages](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-scripts/#packages-update) used in the project to their latest version.
 
 To update `@wordpress` dependencies to their latest version use the packages-update command:
 
 ```sh
-npm run packages-update
+npx wp-scripts packages-update
 ```
 
 This script provides the following custom options:
@@ -101,14 +101,14 @@ This script provides the following custom options:
 -   `--dist-tag` – allows specifying a custom dist-tag when updating npm packages. Defaults to `latest`. This is especially useful when using [`@wordpress/dependency-extraction-webpack-plugin`](https://www.npmjs.com/package/@wordpress/dependency-extraction-webpack-plugin). It lets installing the npm dependencies at versions used by the given WordPress major version for local testing, etc. Example:
 
 ```sh
-npm run packages-update --dist-tag=wp-WPVERSION`
+npx wp-scripts packages-update --dist-tag=wp-WPVERSION`
 ```
 
 Where `WPVERSION` is the version of WordPress you are targeting. The version
 must include both the major and minor version (e.g., `6.1`). For example:
 
 ```sh
-npm run packages-update --dist-tag=wp-6.1`
+npx wp-scripts packages-update --dist-tag=wp-6.1`
 ```
 
 ## Changelog
