@@ -60,11 +60,11 @@ module.exports = (env, { mode }) => ({
     new MiniCssExtractPlugin({
       filename: (pathData) => {
         const dirname = pathData.chunk.name;
-
         // Process all blocks.
         if (!pathData.chunk.name.includes('entries-')) {
           return '[name].css';
         }
+
         const srcDirname = dirname.replace('entries-', '');
         return `${srcDirname}/index.css`;
       },
