@@ -16,7 +16,6 @@
     "create-block": "cd blocks && npx @wordpress/create-block --template ../bin/create-block --no-plugin",
     "lint:fix": "eslint --ext .jsx --ext .js . --fix",
     "lint": "eslint --ext .jsx --ext .js .",
-    "packages-update": "wp-scripts packages-update",
     "postinstall": "rm -rf node_modules/.cache/babel-loader && rm -rf node_modules/.cache/webpack",
     "prebuild": "check-node-version --package",
     "predev": "check-node-version --package",
