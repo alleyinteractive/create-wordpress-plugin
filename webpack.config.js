@@ -4,6 +4,7 @@ const fs = require('fs');
 const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = (env, { mode }) => ({
   ...defaultConfig,
@@ -59,14 +60,29 @@ module.exports = (env, { mode }) => ({
     new MiniCssExtractPlugin({
       filename: (pathData) => {
         const dirname = pathData.chunk.name;
+
         // Process all blocks.
         if (!pathData.chunk.name.includes('entries-')) {
           return '[name].css';
         }
-
         const srcDirname = dirname.replace('entries-', '');
         return `${srcDirname}/index.css`;
       },
+    }),
+    new CleanWebpackPlugin({
+      cleanAfterEveryBuildPatterns: [
+        /**
+         * Remove duplicate entry CSS files generated from default
+         * MiniCssExtractPlugin plugin in wpScripts.
+         *
+         * The default MiniCssExtractPlugin filename is [name].css
+         * resulting in the generation of the entries-*.css files.
+         * The configuration in this file for MiniCssExtractPlugin outputs
+         * the entry CSS into the entry src directory name.
+         */
+        'entries-*.css',
+      ],
+      protectWebpackAssets: false,
     }),
   ],
 
