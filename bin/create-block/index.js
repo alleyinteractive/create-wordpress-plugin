@@ -18,7 +18,13 @@ module.exports = {
   },
   variants: {
     static: {},
+    'static-javascript': {
+      blockTemplatesPath: path.join(__dirname, 'templates', 'block', 'javascript'),
+    },
     dynamic: {},
+    'dynamic-javascript': {
+      blockTemplatesPath: path.join(__dirname, 'templates', 'block', 'javascript'),
+    },
   },
   blockTemplatesPath: path.join(__dirname, 'templates', 'block'),
 };
