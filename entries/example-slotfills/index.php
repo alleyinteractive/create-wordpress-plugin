@@ -36,7 +36,7 @@ function register_example_slotfills_scripts() {
 	|
 	*/
 	// Automatically load dependencies and version.
-	$asset_file = include plugin_dir_path( __FILE__ ) . 'index.asset.php';
+	$asset_file = include __DIR__ . 'index.asset.php';
 
 	/* phpcs:ignore Squiz.PHP.CommentedOutCode.Found
 	 * wp_register_script(
@@ -46,7 +46,7 @@ function register_example_slotfills_scripts() {
 	 *     $asset_file['version'],
 	 *     true
 	 * );
-	 * wp_set_script_translations( 'create-wordpress-plugin-example_slotfills', 'hollywoodlife-plugin' );
+	 * wp_set_script_translations( 'create-wordpress-plugin-example_slotfills', 'create-wordpress-plugin' );
 	 */
 }
 add_action( 'init', __NAMESPACE__ . '\register_example_slotfills_scripts' );
