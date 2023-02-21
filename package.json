@@ -13,6 +13,7 @@
   ],
   "scripts": {
     "build": "wp-scripts build --webpack-copy-php --webpack-src-dir=blocks",
+    "dev": "npm run start",
     "create-block": "cd blocks && npx @wordpress/create-block --template ../bin/create-block --no-plugin",
     "lint:fix": "eslint --ext .jsx --ext .js . --fix",
     "lint": "eslint --ext .jsx --ext .js .",
