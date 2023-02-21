@@ -26,5 +26,5 @@ module.exports = {
       blockTemplatesPath: path.join(__dirname, 'templates', 'block', 'javascript'),
     },
   },
-  blockTemplatesPath: path.join(__dirname, 'templates', 'block'),
+  blockTemplatesPath: path.join(__dirname, 'templates', 'block', 'typescript'),
 };
