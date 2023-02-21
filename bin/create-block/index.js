@@ -11,7 +11,7 @@ module.exports = {
     description: '',
     dashicon: 'palmtree',
     category: 'widgets',
-    editorScript: 'file:index.js',
+    editorScript: 'file:index.ts',
     editorStyle: 'file:index.css',
     style: ['file:style-index.css'],
     render: 'file:render.php',
