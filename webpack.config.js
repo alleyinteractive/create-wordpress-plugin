@@ -1,6 +1,5 @@
 const path = require('path');
 const fs = require('fs');
-const os = require('os');
 
 const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
