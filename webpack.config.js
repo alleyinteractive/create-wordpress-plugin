@@ -81,6 +81,8 @@ module.exports = (env, { mode }) => ({
          * the entry CSS into the entry src directory name.
          */
         'entries-*.css',
+        // Maps are built when running the start mode with wpScripts.
+        'entries-*.css.map',
       ],
       protectWebpackAssets: false,
     }),
