@@ -14,16 +14,18 @@ module.exports = {
     editorScript: 'file:index.ts',
     editorStyle: 'file:index.css',
     style: ['file:style-index.css'],
-    render: 'file:render.php',
   },
   variants: {
     static: {},
     'static-javascript': {
       blockTemplatesPath: path.join(__dirname, 'templates', 'block', 'javascript'),
     },
-    dynamic: {},
+    dynamic: {
+      render: 'file:render.php',
+    },
     'dynamic-javascript': {
       blockTemplatesPath: path.join(__dirname, 'templates', 'block', 'javascript'),
+      render: 'file:render.php',
     },
   },
   blockTemplatesPath: path.join(__dirname, 'templates', 'block', 'typescript'),
