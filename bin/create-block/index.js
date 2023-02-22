@@ -14,11 +14,12 @@ module.exports = {
     editorScript: 'file:index.js',
     editorStyle: 'file:index.css',
     style: ['file:style-index.css'],
-    render: 'file:render.php',
   },
   variants: {
     static: {},
-    dynamic: {},
+    dynamic: {
+      render: 'file:render.php',
+    },
   },
   blockTemplatesPath: path.join(__dirname, 'templates', 'block'),
 };
