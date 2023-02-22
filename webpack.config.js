@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 
 const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -103,5 +104,12 @@ module.exports = (env, { mode }) => ({
   cache: {
     ...defaultConfig.cache,
     type: 'filesystem',
+  },
+  devServer: mode === 'production' ? {} : {
+    ...defaultConfig.devServer,
+    allowedHosts: 'all',
+    static: {
+      directory: '/build',
+    },
   },
 });

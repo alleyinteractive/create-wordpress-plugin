@@ -28,6 +28,7 @@
     "pretest:watch": "check-node-version --package",
     "pretest": "check-node-version --package",
     "start": "wp-scripts start --webpack-copy-php --webpack-src-dir=blocks",
+    "start:hot": "wp-scripts start --webpack-copy-php --webpack-src-dir=blocks --hot",
     "stylelint:fix": "stylelint --fix \"**/*.scss\"",
     "stylelint": "stylelint \"**/*.scss\" --allow-empty-input",
     "test:watch": "jest --watch",
