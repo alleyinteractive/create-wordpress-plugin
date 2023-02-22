@@ -1,0 +1,55 @@
+{
+    "name": "alleyinteractive/composer-wordpress-autoloader",
+    "type": "composer-plugin",
+    "description": "Autoload files using WordPress File Conventions using Composer",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Alley Interactive",
+            "email": "info@alley.co"
+        },
+        {
+            "name": "Sean Fisher",
+            "email": "sean@alley.co"
+        }
+    ],
+    "require": {
+        "php": "^7.4.0|^8.0|^8.1",
+        "alleyinteractive/wordpress-autoloader": "^1.1.1",
+        "composer-plugin-api": "^2.0"
+    },
+    "require-dev": {
+        "composer/composer": "*",
+        "phpunit/phpunit": "^9.5.8",
+        "squizlabs/php_codesniffer": "^4.0"
+    },
+    "extra": {
+        "class": "ComposerWordPressAutoloader\\Plugin"
+    },
+    "autoload": {
+        "files": [
+            "src/autoload.php"
+        ],
+        "psr-4": {
+            "ComposerWordPressAutoloader\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "lint": "@phpcs",
+        "lint:fix": "@phpcbf",
+        "phpcbf": "phpcbf --standard=./phpcs.xml.dist .",
+        "phpcs": "phpcs --standard=./phpcs.xml.dist .",
+        "phpunit": "phpunit",
+        "test": [
+            "@phpcs",
+            "@phpunit"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}
