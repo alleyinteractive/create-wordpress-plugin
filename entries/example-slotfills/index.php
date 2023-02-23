@@ -36,7 +36,7 @@ function register_example_slotfills_scripts() {
 	|
 	*/
 	// Automatically load dependencies and version.
-	$asset_file = include __DIR__ . 'index.asset.php';
+	$asset_file = include __DIR__ . '/index.asset.php';
 
 	/* phpcs:ignore Squiz.PHP.CommentedOutCode.Found
 	 * wp_register_script(
