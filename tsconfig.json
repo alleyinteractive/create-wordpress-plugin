@@ -8,13 +8,15 @@
     "jsx": "react-jsx",
     "module": "es6",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
     "noImplicitAny": true,
     "outDir": "build",
     "paths": {
       "@/*": ["*"]
     },
-    "target": "es5"
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es2020"
   },
   "exclude": [
     "vendor",
