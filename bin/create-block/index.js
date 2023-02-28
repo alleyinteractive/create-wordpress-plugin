@@ -13,7 +13,7 @@ module.exports = {
     category: 'widgets',
     editorScript: 'file:index.ts',
     editorStyle: 'file:index.css',
-    style: ['file:style-index.css'],
+    style: ['file:index.css'],
   },
   variants: {
     static: {},
