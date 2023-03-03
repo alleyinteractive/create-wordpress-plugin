@@ -87,7 +87,6 @@ function action_enqueue_block_editor_assets() {
 		get_asset_version( 'slotfills' ),
 		true
 	);
-
 	wp_set_script_translations( 'create-wordpress-plugin-slotfills', 'create-wordpress-plugin' );
 }
 
