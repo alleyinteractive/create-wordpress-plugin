@@ -1,32 +1,51 @@
-const path = require('path');
+#!/usr/bin/env node
 
-/**
- * Custom Variables and templates for scaffolding blocks.
- * @see https://github.com/WordPress/gutenberg/blob/trunk/packages/create-block/docs/external-template.md#external-project-templates
- */
-module.exports = {
-  defaultValues: {
-    namespace: 'create-wordpress-plugin',
-    plugin: false,
-    description: '',
-    dashicon: 'palmtree',
-    category: 'widgets',
-    editorScript: 'file:index.ts',
-    editorStyle: 'file:index.css',
-    style: ['file:style-index.css'],
-  },
-  variants: {
-    static: {},
-    'static-javascript': {
-      blockTemplatesPath: path.join(__dirname, 'templates', 'block', 'javascript'),
-    },
-    dynamic: {
-      render: 'file:render.php',
-    },
-    'dynamic-javascript': {
-      blockTemplatesPath: path.join(__dirname, 'templates', 'block', 'javascript'),
-      render: 'file:render.php',
-    },
-  },
-  blockTemplatesPath: path.join(__dirname, 'templates', 'block', 'typescript'),
-};
+const prompts = require('prompts');
+const path = require('path');
+const { sync: spawn } = require('cross-spawn');
+
+const fs = require('fs');
+
+// The directory where the blocks will be created relative to the current working directory.
+const directoryName = 'blocks';
+
+if (!fs.existsSync(directoryName)) {
+  fs.mkdirSync(directoryName);
+  // eslint-disable-next-line no-console
+  console.log(`Directory '${directoryName}' created successfully!`);
+  // Navigate to the directory to create the block.
+  process.chdir(directoryName);
+} else {
+  process.chdir(directoryName);
+}
+
+(async () => {
+  const response = await prompts({
+    type: 'select',
+    name: 'blockLanguage',
+    message: 'Create a block in TypeScript or JavaScript?',
+    choices: [
+      { title: 'TypeScript', value: 'typescript' },
+      { title: 'JavaScript', value: 'javascript' },
+    ],
+    initial: 0,
+  });
+
+  const language = response?.blockLanguage || null;
+
+  if (language) {
+    process.env.blockLanguage = language;
+    const result = spawn(
+      'npx',
+      [
+        '@wordpress/create-block',
+        '--template', path.join(__dirname, 'selectTemplates.js'), '--no-plugin',
+      ],
+      { stdio: 'inherit' },
+    );
+
+    process.exit(result.status);
+  } else {
+    process.exit(1);
+  }
+})();
