@@ -13,8 +13,7 @@
   ],
   "scripts": {
     "build": "wp-scripts build --webpack-copy-php --webpack-src-dir=blocks",
-    "dev": "npm run start",
-    "create-block": "cd blocks && npx @wordpress/create-block --template ../bin/create-block --no-plugin",
+    "create-block": "node ./bin/create-block",
     "precheck-types": "check-node-version --package",
     "check-types": "tsc",
     "lint:fix": "eslint --ext .jsx --ext .js --ext .ts --ext .tsx . --fix",
@@ -30,6 +29,7 @@
     "pretest:watch": "check-node-version --package",
     "pretest": "check-node-version --package",
     "start": "wp-scripts start --webpack-copy-php --webpack-src-dir=blocks",
+    "start:hot": "wp-scripts start --webpack-copy-php --webpack-src-dir=blocks --hot",
     "stylelint:fix": "stylelint --fix \"**/*.scss\"",
     "stylelint": "stylelint \"**/*.scss\" --allow-empty-input",
     "test:watch": "jest --watch",
@@ -93,7 +93,9 @@
     "@wordpress/warning": "^2.22.0",
     "@wordpress/widgets": "^2.20.0",
     "@wordpress/wordcount": "^3.22.0",
+    "cross-spawn": "^7.0.3",
     "dompurify": "^3.0.0",
+    "prompts": "^2.4.2",
     "prop-types": "^15.8.1",
     "react": "17.0.2",
     "react-dom": "17.0.2"
