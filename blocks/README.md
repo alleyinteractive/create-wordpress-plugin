@@ -5,7 +5,8 @@ Custom blocks in this directory can be created by running the `create-block` scr
 ## Scaffold a block with `create-block`
 
 1. In the root directory run `npm run create-block`
-2. Follow the prompts to create a custom block.
+2. Choose whether to create a block in TypeScript or JavaScript.
+3. Follow the prompts to create a custom block.
 
 There are 2 variants of blocks which you can create:
 
@@ -53,7 +54,7 @@ The `index.php` contains the PHP block registration and will be autoloaded with 
 
 Block attributes should be defined in the `block.json` file. [Learn more about block.json in the block editor handbook.](https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/)
 
-Running `npm run build` will compile the JavaScript and copy the PHP files to a directory in the `build` folder using `@wordpress/scripts`. The blocks will be enqueued via `block.json` after block registration. The block `index.php` file will be read by the `load_scripts()` function found in the `function.php` file.
+Running `npm run build` will compile the JavaScript and copy the PHP files to a directory in the `build` folder using `@wordpress/scripts`. The blocks will be enqueued via `block.json` after block registration. The block `index.php` file will be read by the `load_scripts()` function found in the `src/assets.php` file.
 
 ## Customize the block scaffolding templates
 
