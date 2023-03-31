@@ -172,6 +172,3 @@
   - key: "WP_SKIP_DB_CREATE"
     value: "true"
     type: "VAR"
-  - key: "WP_PHPUNIT_PATH"
-    value: "composer run phpunit"
-    type: "VAR"
