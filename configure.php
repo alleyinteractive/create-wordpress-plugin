@@ -84,7 +84,7 @@ function writeln( string $line ): void {
 function run( string $command, string $dir = null ): string {
 	$command = $dir ? "cd {$dir} && {$command}" : $command;
 
-	return trim( shell_exec( $command ) );
+	return trim( (string) shell_exec( $command ) );
 }
 
 function str_after( string $subject, string $search ): string {
@@ -98,7 +98,7 @@ function str_after( string $subject, string $search ): string {
 }
 
 function slugify( string $subject ): string {
-	return strtolower( trim( preg_replace( '/[^A-Za-z0-9-]+/', '-', $subject ), '-' ) );
+	return strtolower( trim( (string) preg_replace( '/[^A-Za-z0-9-]+/', '-', $subject ), '-' ) );
 }
 
 function title_case( string $subject ): string {
@@ -109,15 +109,23 @@ function ensure_capitalp( string $text ): string {
 	return str_replace( 'Wordpress', 'WordPress', $text );
 }
 
+/**
+ * @param string $file
+ * @param array<string, string> $replacements
+ */
 function replace_in_file( string $file, array $replacements ): void {
 	$contents = file_get_contents( $file );
+
+	if ( empty( $contents ) ) {
+		return;
+	}
 
 	file_put_contents(
 		$file,
 		str_replace(
 			array_keys( $replacements ),
 			array_values( $replacements ),
-			$contents
+			$contents,
 		)
 	);
 }
@@ -125,24 +133,51 @@ function replace_in_file( string $file, array $replacements ): void {
 function remove_readme_paragraphs( string $file ): void {
 	$contents = file_get_contents( $file );
 
-	file_put_contents(
-		$file,
-		trim( preg_replace( '/<!--delete-->.*<!--\/delete-->/s', '', $contents ) ?: $contents ),
-	);
-}
-
-function remove_composer_require( string $file = 'plugin.php' ) {
-	$contents = file_get_contents( $file );
+	if ( empty( $contents ) ) {
+		return;
+	}
 
 	file_put_contents(
 		$file,
-		trim( preg_replace( '/\/\/ Check if Composer.*vendor\/autoload\.php\';\\n\\n?/s', '', $contents ) ?: $contents ),
+		trim( (string) preg_replace( '/<!--delete-->.*<!--\/delete-->/s', '', $contents ) ?: $contents ),
 	);
-
-	echo "Removed Composer's vendor/autoload.php from {$file}" . PHP_EOL;
 }
 
-function remove_composer_files() {
+function remove_composer_require(): void {
+	global $plugin_file;
+
+	$contents = file_get_contents( $plugin_file );
+
+	if ( empty( $contents ) ) {
+		return;
+	}
+
+	file_put_contents(
+		$plugin_file,
+		trim( (string) preg_replace( '/\n\/\* Start Composer Loader \*\/.*\/\* End Composer Loader \*\/\n/s', '', $contents ) ?: $contents ) . PHP_EOL,
+	);
+
+	echo "Removed Composer's vendor/autoload.php from {$plugin_file}" . PHP_EOL;
+}
+
+function remove_composer_wrapper_comments(): void {
+	global $plugin_file;
+
+	$contents = file_get_contents( $plugin_file );
+
+	if ( empty( $contents ) ) {
+		return;
+	}
+
+	file_put_contents(
+		$plugin_file,
+		trim( preg_replace( '/\n\/\* (Start|End) Composer Loader \*\/\n/', '', $contents ) ?: $contents ) . PHP_EOL,
+	);
+
+	echo "Removed Composer's wrapper comments from {$plugin_file}" . PHP_EOL;
+}
+
+function remove_composer_files(): void {
 	delete_files(
 		[
 			'composer.json',
@@ -154,7 +189,7 @@ function remove_composer_files() {
 	echo 'Removed composer.json, composer.lock and vendor/ files.' . PHP_EOL;
 }
 
-function remove_project_files() {
+function remove_project_files(): void {
 	delete_files(
 		[
 			'.buddy',
@@ -172,7 +207,7 @@ function remove_project_files() {
 	echo 'Removed .buddy, buddy.yml, CHANGELOG.md, .deployignore, .editorconfig, .gitignore, .gitattributes, .github and LICENSE files.' . PHP_EOL;
 }
 
-function rollup_phpcs_to_parent( string $parent_file, string $local_file, string $plugin_name, string $plugin_domain ) {
+function rollup_phpcs_to_parent( string $parent_file, string $local_file, string $plugin_name, string $plugin_domain ): void {
 	$config = '<?xml version="1.0"?>
 <ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="' . $plugin_name . ' Configuration" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
   <description>PHP_CodeSniffer standard for ' . $plugin_name . '</description>
@@ -200,12 +235,18 @@ function rollup_phpcs_to_parent( string $parent_file, string $local_file, string
 </ruleset>';
 
 	if ( file_put_contents( $local_file, $config ) ) {
+		delete_files( '.phpcs' );
+
 		echo "Updated {$local_file}.\n";
 	}
 }
 
-function remove_assets_readme( bool $keep_contents, string $file = 'README.md' ) {
+function remove_assets_readme( bool $keep_contents, string $file = 'README.md' ): void {
 	$contents = file_get_contents( $file );
+
+	if ( empty( $contents ) ) {
+		return;
+	}
 
 	if ( $keep_contents ) {
 		$contents = str_replace( '<!--front-end-->', '', $contents );
@@ -215,22 +256,32 @@ function remove_assets_readme( bool $keep_contents, string $file = 'README.md' )
 	} else {
 		file_put_contents(
 			$file,
-			trim( preg_replace( '/<!--front-end-->.*<!--\/front-end-->/s', '', $contents ) ?: $contents ),
+			trim( (string) preg_replace( '/<!--front-end-->.*<!--\/front-end-->/s', '', $contents ) ?: $contents ),
 		);
 	}
 }
 
-function remove_assets_require( string $file = 'plugin.php' ) {
-	$contents = file_get_contents( $file );
+function remove_assets_require(): void {
+	global $plugin_file;
+
+	$contents = file_get_contents( $plugin_file );
+
+	if ( empty( $contents ) ) {
+		return;
+	}
 
 	file_put_contents(
-		$file,
-		trim( preg_replace( '/require_once __DIR__ \. \'\/src\/assets.php\';\\n/s', '', $contents ) ?: $contents ),
+		$plugin_file,
+		trim( (string) preg_replace( '/require_once __DIR__ \. \'\/src\/assets.php\';\\n/s', '', $contents ) ?: $contents ) . PHP_EOL,
 	);
 }
 
-function remove_assets_buddy( string $file = 'buddy.yml' ) {
+function remove_assets_buddy( string $file = 'buddy.yml' ): void {
 	$contents = file_get_contents( $file );
+
+	if ( empty( $contents ) ) {
+		return;
+	}
 
 	$contents = trim( preg_replace( '/(- action: "npm audit".*)variables:/s', 'variables:', $contents ) ?: $contents );
 	$contents = str_replace( '    variables:', '  variables:', $contents );
@@ -242,11 +293,17 @@ function determine_separator( string $path ): string {
 	return str_replace( '/', DIRECTORY_SEPARATOR, $path );
 }
 
+/**
+ * @return array<int, string>
+ */
 function list_all_files_for_replacement(): array {
-	return explode( PHP_EOL, run( 'grep -R -l .  --exclude LICENSE --exclude configure.php --exclude composer.lock --exclude-dir .git --exclude-dir .github --exclude-dir vendor --exclude-dir webpack --exclude-dir modules --exclude-dir .phpcs' ) );
+	return explode( PHP_EOL, run( 'grep -R -l .  --exclude LICENSE --exclude configure.php --exclude .phpunit.result.cache --exclude-dir .phpcs --exclude composer.lock --exclude-dir .git --exclude-dir .github --exclude-dir vendor --exclude-dir node_modules --exclude-dir webpack --exclude-dir modules --exclude-dir .phpcs' ) );
 }
 
-function delete_files( string|array $paths ) {
+/**
+ * @param string|array<int, string> $paths
+ */
+function delete_files( string|array $paths ): void {
 	if ( ! is_array( $paths ) ) {
 		$paths = [ $paths ];
 	}
@@ -262,20 +319,57 @@ function delete_files( string|array $paths ) {
 	}
 }
 
+function remove_phpstan(): void {
+	delete_files( 'phpstan.neon' );
+
+	// Manually patch the Composer.json file.
+	if ( file_exists( 'composer.json' ) ) {
+		$composer_json = (array) json_decode( (string) file_get_contents( 'composer.json' ), true );
+
+		if ( isset( $composer_json['scripts']['phpstan'] ) ) { // @phpstan-ignore-line
+			unset( $composer_json['scripts']['phpstan'] ); // @phpstan-ignore-line
+
+			$composer_json['scripts']['test'] = [ // @phpstan-ignore-line
+				'@phpcs',
+				'@phpunit',
+			];
+
+			file_put_contents( 'composer.json', json_encode( $composer_json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) );
+		}
+	}
+}
+
 echo "\nWelcome friend to alleyinteractive/create-wordpress-plugin! 😀\nLet's setup your WordPress Plugin 🚀\n\n";
 
 // Always delete the 'merge-develop-to-scaffold.yml' file (this is never used in a scaffolded plugins).
 delete_files( '.github/workflows/merge-develop-to-scaffold.yml' );
 
+$current_dir = getcwd();
+
+if ( ! $current_dir ) {
+	echo "Could not determine current directory.\n";
+	exit( 1 );
+}
+
+$folder_name = ensure_capitalp( basename( $current_dir ) );
+
+$plugin_name = ask(
+	question: 'Plugin name?',
+	default: str_replace( '_', ' ', title_case( $folder_name ) ),
+	allow_empty: false,
+);
+
+$plugin_name_slug = slugify( $plugin_name );
+
 $author_name = ask(
 	question: 'Author name?',
-	default: $args['author_name'] ?? run( 'git config user.name' ),
+	default: (string) ( $args['author_name'] ?? run( 'git config user.name' ) ),
 	allow_empty: false,
 );
 
 $author_email = ask(
 	question: 'Author email?',
-	default: $args['author_email'] ?? run( 'git config user.email' ),
+	default: (string) ( $args['author_email'] ?? run( 'git config user.email' ) ),
 	allow_empty: false,
 );
 
@@ -295,17 +389,6 @@ $vendor_name = ask(
 );
 $vendor_slug = slugify( $vendor_name );
 
-$current_dir = getcwd();
-$folder_name = ensure_capitalp( basename( $current_dir ) );
-
-$plugin_name = ask(
-	question: 'Plugin name?',
-	default: str_replace( '_', ' ', title_case( $folder_name ) ),
-	allow_empty: false,
-);
-
-$plugin_name_slug = slugify( $plugin_name );
-
 $namespace  = ask(
 	question: 'Plugin namespace?',
 	default: title_case( $plugin_name ),
@@ -315,12 +398,31 @@ $namespace  = ask(
 $class_name  = ask( 'Base class name for plugin?', title_case( $plugin_name ) );
 $description = ask( 'Plugin description?', "This is my plugin {$plugin_name}" );
 
+while ( true ) {
+	$plugin_file = ask( 'Main plugin file?', "{$plugin_name_slug}.php" );
+
+	// Validate that plugin file is a valid file name.
+	if ( ! preg_match( '/^[a-zA-Z0-9-_\.]+\.php$/', $plugin_file ) ) {
+		echo "Invalid plugin file name. Please try again.\n";
+		continue;
+	}
+
+	// Validate that plugin file does not already exist.
+	if ( file_exists( $plugin_file ) ) {
+		echo "Plugin file already exists. Please try again.\n";
+		continue;
+	}
+
+	break;
+}
+
 writeln( '------' );
+writeln( "Plugin      : {$plugin_name} <{$plugin_name_slug}>" );
 writeln( "Author      : {$author_name} ({$author_email})" );
 writeln( "Vendor      : {$vendor_name} ({$vendor_slug})" );
-writeln( "Plugin      : {$plugin_name} <{$plugin_name_slug}>" );
 writeln( "Description : {$description}" );
 writeln( "Namespace   : {$namespace}" );
+writeln( "Main File   : {$plugin_file}" );
 writeln( "Main Class  : {$class_name}" );
 writeln( '------' );
 
@@ -350,6 +452,7 @@ $search_and_replace = [
 	'Skeleton'                    => $class_name,
 	'vendor_name'                 => $vendor_name,
 	'alleyinteractive'            => $vendor_slug,
+	'plugin.php'                  => $plugin_file,
 ];
 
 foreach ( list_all_files_for_replacement() as $path ) {
@@ -363,6 +466,12 @@ foreach ( list_all_files_for_replacement() as $path ) {
 	if ( str_contains( $path, 'README.md' ) ) {
 		remove_readme_paragraphs( $path );
 	}
+}
+
+if ( 'plugin.php' !== $plugin_file ) {
+	rename( 'plugin.php', $plugin_file );
+
+	echo "Renamed plugin.php to {$plugin_file}\n";
 }
 
 echo "Done!\n\n";
@@ -417,6 +526,8 @@ if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloade
 	$uses_composer = true;
 	$needs_built_assets = true;
 
+	remove_composer_wrapper_comments();
+
 	if ( confirm( 'Do you want to run `composer install`?', true ) ) {
 		if ( file_exists( __DIR__ . '/composer.lock' ) ) {
 			echo run( 'composer update' );
@@ -431,9 +542,13 @@ if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloade
 
 	// Prompt the user to delete the composer.json file. Plugins often still
 	// keep this around for development and Packagist.
-	if ( confirm( 'Do you want to delete the composer.json and composer.lock files?', false ) ) {
+	if ( confirm( 'Do you want to delete the composer.json and composer.lock files? (This will prevent you from using PHPCS/PHPStan/Composer entirely).', false ) ) {
 		remove_composer_files();
 	}
+}
+
+if ( file_exists( 'composer.json') && ! confirm(' Using PHPStan? (PHPStan is a great static analyzer to help find bugs in your code.)', true) ) {
+	remove_phpstan();
 }
 
 $standalone = true;
@@ -459,17 +574,25 @@ if (
 
 	// Offer to roll up this plugin's dependencies to the parent project's composer.
 	if ( $uses_composer && file_exists( '../../composer.json' ) ) {
-		$parent_composer = realpath( '../../composer.json' );
+		$parent_composer = (string) realpath( '../../composer.json' );
 		$parent_folder   = dirname( $parent_composer );
 
 		if ( confirm( "Do you want to rollup the plugin's Composer dependencies to the parent project's composer.json file ({$parent_composer})? This will copy this plugin's dependencies to the parent project and delete the local composer.json file.", true ) ) {
-			$composer        = json_decode( file_get_contents( $parent_composer ), true );
-			$plugin_composer = json_decode( file_get_contents( 'composer.json' ), true );
+			$composer        = (array) json_decode( (string) file_get_contents( $parent_composer ), true );
+			$plugin_composer = (array) json_decode( (string) file_get_contents( 'composer.json' ), true );
 
 			$original = $composer;
 
-			$composer['require']     = array_merge( $composer['require'], $plugin_composer['require'] );
-			$composer['require-dev'] = array_merge( $composer['require-dev'], $plugin_composer['require-dev'] );
+			$composer['require']     = array_merge(
+				(array) ( $composer['require'] ?? [] ),
+				(array) ( $plugin_composer['require'] ?? [] ),
+			);
+
+			$composer['require-dev'] = array_merge(
+				(array) ( $composer['require-dev'] ?? [] ),
+				(array) ( $plugin_composer['require-dev'] ?? [] ),
+			);
+
 			$composer['config']['allow-plugins']['alleyinteractive/composer-wordpress-autoloader'] = true;
 
 			ksort( $composer['require'] );
@@ -523,6 +646,7 @@ if (
 	}
 }
 
+// Offer to delete the built asset workflows if built assets aren't needed.
 if ( ! $needs_built_assets && file_exists( '.github/workflows/built-branch.yml' ) && confirm( 'Delete the Github actions for built assets?', true ) ) {
 	delete_files(
 		[

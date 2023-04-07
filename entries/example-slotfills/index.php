@@ -18,7 +18,7 @@ add_action(
  * Registers all slotfill assets so that they can be enqueued through Gutenberg in
  * the corresponding context.
  */
-function register_example_slotfills_scripts() {
+function register_example_slotfills_scripts(): void {
 	/*
 	|--------------------------------------------------------------------------
 	| Register slotfills assets from entry.
@@ -54,6 +54,6 @@ add_action( 'init', __NAMESPACE__ . '\register_example_slotfills_scripts' );
 /**
  * Enqueue block editor assets for this slotfill.
  */
-function action_enqueue_example_slotfills_assets() {
+function action_enqueue_example_slotfills_assets(): void {
 	wp_enqueue_script( 'create-wordpress-plugin-example_slotfills' );
 }
