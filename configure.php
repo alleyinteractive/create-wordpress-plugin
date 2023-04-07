@@ -489,6 +489,10 @@ $search_and_replace = [
 
 	'A skeleton WordPress plugin' => $description,
 
+	// Escape the namespace used in composer.json.
+	'"Create_WordPress_Plugin\\"'        => (string) json_encode( $namespace ),
+	'"Create_WordPress_Plugin\\Tests\\"' => (string) json_encode( $namespace . '\\Tests' ),
+
 	'Create_WordPress_Plugin'     => $namespace,
 	'Example_Plugin'              => $class_name,
 
