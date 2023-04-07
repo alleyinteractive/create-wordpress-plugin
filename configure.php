@@ -26,6 +26,20 @@ if ( version_compare( PHP_VERSION, '8.0.0', '<' ) ) {
 	die( 'PHP 8.0.0 or greater is required.' );
 }
 
+// Get the width of the terminal.
+$terminal_width = (int) exec( 'tput cols' );
+
+// Write text to the terminal that will properly wrap.
+function write( string $text ): void {
+	global $terminal_width;
+
+	$lines = explode( "\n", wordwrap( $text, $terminal_width - 1 ) );
+
+	foreach ( $lines as $line ) {
+		echo $line . PHP_EOL;
+	}
+}
+
 // Parse the command line arguments from $argv.
 $args         = [];
 $previous_key = null;
@@ -75,10 +89,6 @@ function confirm( string $question, bool $default = false ): bool {
 	}
 
 	return in_array( strtolower( trim( $answer ) ), [ 'y', 'yes', 'true', '1' ], true );
-}
-
-function writeln( string $line ): void {
-	echo $line . PHP_EOL;
 }
 
 function run( string $command, string $dir = null ): string {
@@ -186,7 +196,7 @@ function remove_composer_files(): void {
 		]
 	);
 
-	echo 'Removed composer.json, composer.lock and vendor/ files.' . PHP_EOL;
+	write( 'Removed composer.json, composer.lock and vendor/ files.' );
 }
 
 function remove_project_files(): void {
@@ -204,7 +214,7 @@ function remove_project_files(): void {
 		]
 	);
 
-	echo 'Removed .buddy, buddy.yml, CHANGELOG.md, .deployignore, .editorconfig, .gitignore, .gitattributes, .github and LICENSE files.' . PHP_EOL;
+	write( 'Removed .buddy, buddy.yml, CHANGELOG.md, .deployignore, .editorconfig, .gitignore, .gitattributes, .github and LICENSE files.' );
 }
 
 function rollup_phpcs_to_parent( string $parent_file, string $local_file, string $plugin_name, string $plugin_domain ): void {
@@ -340,8 +350,8 @@ function remove_phpstan(): void {
 }
 
 function contributing_message( string $message ): void {
-	echo "\n{$message}\n";
-	echo "\n\t\e]8;;https://github.com/alleyinteractive/.github/blob/main/CONTRIBUTING.md#best-practices\e\\CONTRIBUTING.md\e]8;;\e\\\n\n";
+	write( "\n{$message}\n" );
+	echo "\t\e]8;;https://github.com/alleyinteractive/.github/blob/main/CONTRIBUTING.md#best-practices\e\\CONTRIBUTING.md\e]8;;\e\\\n\n";
 }
 
 echo "\nWelcome friend to alleyinteractive/create-wordpress-plugin! 😀\nLet's setup your WordPress Plugin 🚀\n\n";
@@ -462,17 +472,17 @@ while ( true ) {
 	break;
 }
 
-writeln( '------' );
-writeln( "Plugin      : {$plugin_name} <{$plugin_name_slug}>" );
-writeln( "Author      : {$author_name} ({$author_email})" );
-writeln( "Vendor      : {$vendor_name} ({$vendor_slug})" );
-writeln( "Description : {$description}" );
-writeln( "Namespace   : {$namespace}" );
-writeln( "Main File   : {$plugin_file}" );
-writeln( "Main Class  : {$class_name}" );
-writeln( '------' );
+write( '------' );
+write( "Plugin      : {$plugin_name} <{$plugin_name_slug}>" );
+write( "Author      : {$author_name} ({$author_email})" );
+write( "Vendor      : {$vendor_name} ({$vendor_slug})" );
+write( "Description : {$description}" );
+write( "Namespace   : {$namespace}" );
+write( "Main File   : {$plugin_file}" );
+write( "Main Class  : {$class_name}" );
+write( '------' );
 
-writeln( 'This script will replace the above values in all relevant files in the project directory.' );
+write( 'This script will replace the above values in all relevant files in the project directory.' );
 
 if ( ! confirm( 'Modify files?', true ) ) {
 	exit( 1 );
