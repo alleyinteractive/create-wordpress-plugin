@@ -29,14 +29,18 @@ if ( version_compare( PHP_VERSION, '8.0.0', '<' ) ) {
 // Get the width of the terminal.
 $terminal_width = (int) exec( 'tput cols' );
 
-// Write text to the terminal that will properly wrap.
-function write( string $text ): void {
+function write( string $text, bool $include_new_line = false ): void {
 	global $terminal_width;
 
-	$lines = explode( "\n", wordwrap( $text, $terminal_width - 1 ) );
+	$lines    = explode( "\n", wordwrap( $text, $terminal_width - 1 ) );
+	$last_key = array_key_last( $lines );
 
-	foreach ( $lines as $line ) {
-		echo $line . PHP_EOL;
+	foreach ( $lines as $i => $line ) {
+		if ( $include_new_line && $i === $last_key ) {
+			echo $line;
+		} else {
+			echo $line . PHP_EOL;
+		}
 	}
 }
 
@@ -65,24 +69,26 @@ foreach ( $argv as $value ) {
 }
 
 function ask( string $question, string $default = '', bool $allow_empty = true ): string {
-	$answer = readline(
-		$question . ( $default ? " [{$default}]" : '' ) . ': '
-	);
+	while ( true ) {
+		write( $question . ( $default ? " [{$default}]" : '' ) . ': ', true );
 
-	$value = $answer ?: $default;
+		$answer = readline();
 
-	if ( ! $allow_empty && empty( $value ) ) {
-		echo "This value can't be empty." . PHP_EOL;
-		return ask( $question, $default, $allow_empty );
+		$value = $answer ?: $default;
+
+		if ( ! $allow_empty && empty( $value ) ) {
+			echo "This value can't be empty." . PHP_EOL;
+			continue;
+		}
+
+		return $value;
 	}
-
-	return $value;
 }
 
 function confirm( string $question, bool $default = false ): bool {
-	$answer = readline(
-		"{$question} (yes/no) [" . ( $default ? 'yes' : 'no' ) . ']: '
-	);
+	write( "{$question} (yes/no) [" . ( $default ? 'yes' : 'no' ) . ']: ', true );
+
+	$answer = readline();
 
 	if ( ! $answer ) {
 		return $default;
@@ -90,6 +96,7 @@ function confirm( string $question, bool $default = false ): bool {
 
 	return in_array( strtolower( trim( $answer ) ), [ 'y', 'yes', 'true', '1' ], true );
 }
+
 
 function run( string $command, string $dir = null ): string {
 	$command = $dir ? "cd {$dir} && {$command}" : $command;
