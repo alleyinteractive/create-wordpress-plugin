@@ -17,7 +17,7 @@ add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\action_enqueue_bloc
 /**
  * A callback for the wp_enqueue_scripts hook.
  */
-function action_wp_enqueue_scripts() {
+function action_wp_enqueue_scripts(): void {
 	/*
 	|--------------------------------------------------------------------------
 	| Enqueue site assets using the asset/entry helper functions.
@@ -45,7 +45,7 @@ function action_wp_enqueue_scripts() {
 /**
  * A callback for the admin_enqueue_scripts hook.
  */
-function action_admin_enqueue_scripts() {
+function action_admin_enqueue_scripts(): void {
 	/*
 	|--------------------------------------------------------------------------
 	| Enqueue admin assets using the asset/entry helper functions.
@@ -69,7 +69,7 @@ function action_admin_enqueue_scripts() {
 /**
  * A callback for the enqueue_block_editor_assets hook.
  */
-function action_enqueue_block_editor_assets() {
+function action_enqueue_block_editor_assets(): void {
 	/*
 	|--------------------------------------------------------------------------
 	| Enqueue block editor assets using the asset/entry helper functions.
@@ -108,13 +108,13 @@ function validate_path( string $path ) : bool {
  *
  * @return string
  */
-function get_entry_dir_path( string $dir_entry_name, bool $dir = false ) {
+function get_entry_dir_path( string $dir_entry_name, bool $dir = false ): string {
 	// The relative path from the plugin root.
 	$asset_build_dir = "/build/{$dir_entry_name}/";
 	// Set the absolute file path from the root directory.
 	$asset_dir_path = CREATE_WORDPRESS_PLUGIN_DIR . $asset_build_dir;
 
-	if ( ! empty( $asset_dir_path ) && validate_path( $asset_dir_path ) ) {
+	if ( validate_path( $asset_dir_path ) ) {
 		// Negotiate the base path.
 		return true === $dir
 			? $asset_dir_path
@@ -129,9 +129,9 @@ function get_entry_dir_path( string $dir_entry_name, bool $dir = false ) {
  *
  * @param string $dir_entry_name The entry point directory name.
  *
- * @return array                 An array of dependencies and version for this asset.
+ * @return array{dependencies?: string[], version?: string}
  */
-function get_entry_asset_map( string $dir_entry_name ) {
+function get_entry_asset_map( string $dir_entry_name ): array {
 	$base_path = get_entry_dir_path( $dir_entry_name, true );
 
 	if ( ! empty( $base_path ) ) {
@@ -150,7 +150,7 @@ function get_entry_asset_map( string $dir_entry_name ) {
  *
  * @param string $dir_entry_name The entry point directory name.
  *
- * @return array The asset's dependency array.
+ * @return array<int, string> The asset's dependency array.
  */
 function get_asset_dependency_array( string $dir_entry_name ) : array {
 	$asset_arr = get_entry_asset_map( $dir_entry_name );
@@ -195,10 +195,14 @@ function get_entry_asset_url( string $dir_entry_name, $filename = 'index.js' ) {
 /**
  * Load the php index files from the build directory for blocks, slotfills, and any other scripts with an index.php file.
  */
-function load_scripts() {
-	foreach ( glob( CREATE_WORDPRESS_PLUGIN_DIR . '/build/**/index.php' ) as $path ) {
-		if ( 0 === validate_file( $path ) && file_exists( $path ) ) {
-			require_once $path;  // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.IncludingFile, WordPressVIPMinimum.Files.IncludingFile.UsingVariable
+function load_scripts(): void {
+	$files = glob( CREATE_WORDPRESS_PLUGIN_DIR . '/build/**/index.php' );
+
+	if ( ! empty( $files ) ) {
+		foreach ( $files as $path ) {
+			if ( 0 === validate_file( $path ) && file_exists( $path ) ) {
+				require_once $path;  // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.IncludingFile, WordPressVIPMinimum.Files.IncludingFile.UsingVariable
+			}
 		}
 	}
 }
