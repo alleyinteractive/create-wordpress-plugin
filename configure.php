@@ -402,7 +402,7 @@ while ( true ) {
 	$plugin_file = ask( 'Main plugin file?', "{$plugin_name_slug}.php" );
 
 	// Validate that plugin file is a valid file name.
-	if ( ! preg_match( '/^[a-zA-Z0-9-_]+$/', $plugin_file ) ) {
+	if ( ! preg_match( '/^[a-zA-Z0-9-_\.]+\.php$/', $plugin_file ) ) {
 		echo "Invalid plugin file name. Please try again.\n";
 		continue;
 	}
