@@ -6,6 +6,8 @@ parameters:
 	level: max
 
 	paths:
+		- blocks/
+		- entries/
 		- src/
 		- plugin.php
 

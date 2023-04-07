@@ -136,10 +136,21 @@ function remove_composer_require( string $file = 'plugin.php' ) {
 
 	file_put_contents(
 		$file,
-		trim( preg_replace( '/\/\/ Check if Composer.*vendor\/autoload\.php\';\\n\\n?/s', '', $contents ) ?: $contents ),
+		trim( preg_replace( '/\n\/\* Start Composer Loader \*\/.*\/\* End Composer Loader \*\/\n/s', '', $contents ) ?: $contents ),
 	);
 
 	echo "Removed Composer's vendor/autoload.php from {$file}" . PHP_EOL;
+}
+
+function remove_composer_wrapper_comments( string $file = 'plugin.php' ) {
+	$contents = file_get_contents( $file );
+
+	file_put_contents(
+		$file,
+		trim( preg_replace( '/\n\/\* (Start|End) Composer Loader \*\/\n/g', '', $contents ) ?: $contents ),
+	);
+
+	echo "Removed Composer's wrapper comments from {$file}" . PHP_EOL;
 }
 
 function remove_composer_files() {
@@ -200,6 +211,8 @@ function rollup_phpcs_to_parent( string $parent_file, string $local_file, string
 </ruleset>';
 
 	if ( file_put_contents( $local_file, $config ) ) {
+		delete_files( '.phpcs' );
+
 		echo "Updated {$local_file}.\n";
 	}
 }
@@ -262,6 +275,24 @@ function delete_files( string|array $paths ) {
 	}
 }
 
+function remove_phpstan() {
+	delete_files( 'phpstan.neon' );
+
+	// Manually patch the Composer.json file.
+	if ( file_exists( 'composer.json' ) ) {
+		$composer_json = json_decode( file_get_contents( 'composer.json' ), true );
+
+		unset( $composer_json['scripts']['phpstan'] );
+
+		$composer_json['scripts']['test'] = [
+			'@phpcs',
+			'@phpunit',
+		];
+
+		file_put_contents( 'composer.json', json_encode( $composer_json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) );
+	}
+}
+
 echo "\nWelcome friend to alleyinteractive/create-wordpress-plugin! 😀\nLet's setup your WordPress Plugin 🚀\n\n";
 
 // Always delete the 'merge-develop-to-scaffold.yml' file (this is never used in a scaffolded plugins).
@@ -269,13 +300,13 @@ delete_files( '.github/workflows/merge-develop-to-scaffold.yml' );
 
 $author_name = ask(
 	question: 'Author name?',
-	default: $args['author_name'] ?? run( 'git config user.name' ),
+	default: (string) ( $args['author_name'] ?? run( 'git config user.name' ) ),
 	allow_empty: false,
 );
 
 $author_email = ask(
 	question: 'Author email?',
-	default: $args['author_email'] ?? run( 'git config user.email' ),
+	default: (string) ( $args['author_email'] ?? run( 'git config user.email' ) ),
 	allow_empty: false,
 );
 
@@ -296,7 +327,7 @@ $vendor_name = ask(
 $vendor_slug = slugify( $vendor_name );
 
 $current_dir = getcwd();
-$folder_name = ensure_capitalp( basename( $current_dir ) );
+$folder_name = ensure_capitalp( (string) basename( $current_dir ) );
 
 $plugin_name = ask(
 	question: 'Plugin name?',
@@ -417,6 +448,8 @@ if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloade
 	$uses_composer = true;
 	$needs_built_assets = true;
 
+	remove_composer_wrapper_comments();
+
 	if ( confirm( 'Do you want to run `composer install`?', true ) ) {
 		if ( file_exists( __DIR__ . '/composer.lock' ) ) {
 			echo run( 'composer update' );
@@ -431,9 +464,13 @@ if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloade
 
 	// Prompt the user to delete the composer.json file. Plugins often still
 	// keep this around for development and Packagist.
-	if ( confirm( 'Do you want to delete the composer.json and composer.lock files?', false ) ) {
+	if ( confirm( 'Do you want to delete the composer.json and composer.lock files? (This will prevent you from using PHPCS/PHPStan/Composer entirely).', false ) ) {
 		remove_composer_files();
 	}
+}
+
+if ( file_exists( 'composer.json') && ! confirm(' Using PHPStan? (PHPStan is a great static analyzer to help find bugs in your code.)', true) ) {
+	remove_phpstan();
 }
 
 $standalone = true;
@@ -523,6 +560,7 @@ if (
 	}
 }
 
+// Offer to delete the built asset workflows if built assets aren't needed.
 if ( ! $needs_built_assets && file_exists( '.github/workflows/built-branch.yml' ) && confirm( 'Delete the Github actions for built assets?', true ) ) {
 	delete_files(
 		[

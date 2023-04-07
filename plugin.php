@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 define( 'CREATE_WORDPRESS_PLUGIN_DIR', __DIR__ );
 
-/* Start Composer loader. */
+/* Start Composer Loader */
 
 // Check if Composer is installed (remove if Composer is not required for your plugin).
 if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
@@ -53,7 +53,7 @@ if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
 }
 
-/* End Composer loader. */
+/* End Composer Loader */
 
 // Load the plugin's main files.
 require_once __DIR__ . '/src/assets.php';
