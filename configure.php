@@ -339,6 +339,11 @@ function remove_phpstan(): void {
 	}
 }
 
+function contributing_message( string $message ): void {
+	echo "\n{$message}\n";
+	echo "\n\t\e]8;;https://github.com/alleyinteractive/.github/blob/main/CONTRIBUTING.md#best-practices\e\\CONTRIBUTING.md\e]8;;\e\\\n\n";
+}
+
 echo "\nWelcome friend to alleyinteractive/create-wordpress-plugin! 😀\nLet's setup your WordPress Plugin 🚀\n\n";
 
 // Always delete the 'merge-develop-to-scaffold.yml' file (this is never used in a scaffolded plugins).
@@ -352,20 +357,6 @@ if ( ! $current_dir ) {
 }
 
 $folder_name = ensure_capitalp( basename( $current_dir ) );
-
-$plugin_name = ask(
-	question: 'Plugin name?',
-	default: str_replace( '_', ' ', title_case( $folder_name ) ),
-	allow_empty: false,
-);
-
-$plugin_name_slug = slugify( $plugin_name );
-
-$author_name = ask(
-	question: 'Author name?',
-	default: (string) ( $args['author_name'] ?? run( 'git config user.name' ) ),
-	allow_empty: false,
-);
 
 $author_email = ask(
 	question: 'Author email?',
@@ -382,18 +373,73 @@ $author_username = ask(
 	allow_empty: false,
 );
 
+$author_name = ask(
+	question: 'Author name?',
+	default: (string) ( $args['author_name'] ?? run( 'git config user.name' ) ),
+	allow_empty: false,
+);
+
 $vendor_name = ask(
 	question: 'Vendor name (usually the Github Organization)?',
 	default: $username_guess,
 	allow_empty: false,
 );
-$vendor_slug = slugify( $vendor_name );
 
-$namespace  = ask(
-	question: 'Plugin namespace?',
-	default: title_case( $plugin_name ),
+$vendor_slug     = slugify( $vendor_name );
+$is_alley_plugin = 'alleyinteractive' === $vendor_slug;
+
+$plugin_name = ask(
+	question: 'Plugin name?',
+	default: (string) ( $args['plugin_name'] ?? str_replace( '_', ' ', title_case( $folder_name ) ) ),
 	allow_empty: false,
 );
+
+while ( true ) {
+	$plugin_name_slug = slugify( ask(
+		question: 'Plugin slug?',
+		default: slugify( $plugin_name ),
+		allow_empty: false,
+	) );
+
+	// Suggest a different plugin name if this is an Alley plugin.
+	if ( $is_alley_plugin && 0 !== strpos( $plugin_name_slug, 'wp-' ) ) {
+		$example_slug = "wp-{$plugin_name_slug}";
+
+		contributing_message( "Alley Interactive WordPress plugin slugs should be prefixed with \"wp-\". For example, {$example_slug} would be a great slug. If this plugin isn't meant to be published anywhere, this is fine to ignore. See our CONTRIBUTING.md for more details." );
+
+		if ( ! confirm( 'Do you wish to continue anyway?', false ) ) {
+			continue;
+		}
+	}
+
+	break;
+}
+
+while ( true ) {
+	$namespace  = ask(
+		question: 'Plugin namespace?',
+		default: $is_alley_plugin ? 'Alley\\WP\\' . title_case( $plugin_name ) : title_case( $plugin_name ),
+		allow_empty: false,
+	);
+
+	// Check if the namespace is valid.
+	if ( ! preg_match( '/^[a-zA-Z0-9_\\\\]+$/', $namespace ) ) {
+		echo "Invalid namespace, please try again.\n";
+		continue;
+	}
+
+	// Offer to fix the namespace if this is an Alley plugin.
+	if ( $is_alley_plugin && 0 !== strpos( $namespace, 'Alley\\WP\\' ) ) {
+		$example_namespace = 'Alley\\WP\\' . title_case( $plugin_name );
+		contributing_message( "Alley Interactive WordPress plugins should be prefixed with \"Alley\\WP\\\". A namespace such as \"{$example_namespace}\" would work well. If this plugin isn't meant to be published anywhere, this is fine to ignore. See our CONTRIBUTING.md for more details." );
+
+		if ( confirm( 'Do you wish to continue anyway?', false ) ) {
+			break;
+		}
+	}
+
+	break;
+}
 
 $class_name  = ask( 'Base class name for plugin?', title_case( $plugin_name ) );
 $description = ask( 'Plugin description?', "This is my plugin {$plugin_name}" );
