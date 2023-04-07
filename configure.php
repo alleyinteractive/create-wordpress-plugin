@@ -344,6 +344,23 @@ echo "\nWelcome friend to alleyinteractive/create-wordpress-plugin! 😀\nLet's 
 // Always delete the 'merge-develop-to-scaffold.yml' file (this is never used in a scaffolded plugins).
 delete_files( '.github/workflows/merge-develop-to-scaffold.yml' );
 
+$current_dir = getcwd();
+
+if ( ! $current_dir ) {
+	echo "Could not determine current directory.\n";
+	exit( 1 );
+}
+
+$folder_name = ensure_capitalp( basename( $current_dir ) );
+
+$plugin_name = ask(
+	question: 'Plugin name?',
+	default: str_replace( '_', ' ', title_case( $folder_name ) ),
+	allow_empty: false,
+);
+
+$plugin_name_slug = slugify( $plugin_name );
+
 $author_name = ask(
 	question: 'Author name?',
 	default: (string) ( $args['author_name'] ?? run( 'git config user.name' ) ),
@@ -371,23 +388,6 @@ $vendor_name = ask(
 	allow_empty: false,
 );
 $vendor_slug = slugify( $vendor_name );
-
-$current_dir = getcwd();
-
-if ( ! $current_dir ) {
-	echo "Could not determine current directory.\n";
-	exit( 1 );
-}
-
-$folder_name = ensure_capitalp( basename( $current_dir ) );
-
-$plugin_name = ask(
-	question: 'Plugin name?',
-	default: str_replace( '_', ' ', title_case( $folder_name ) ),
-	allow_empty: false,
-);
-
-$plugin_name_slug = slugify( $plugin_name );
 
 $namespace  = ask(
 	question: 'Plugin namespace?',
@@ -417,13 +417,13 @@ while ( true ) {
 }
 
 writeln( '------' );
+writeln( "Plugin      : {$plugin_name} <{$plugin_name_slug}>" );
 writeln( "Author      : {$author_name} ({$author_email})" );
 writeln( "Vendor      : {$vendor_name} ({$vendor_slug})" );
-writeln( "Plugin      : {$plugin_name} <{$plugin_name_slug}>" );
 writeln( "Description : {$description}" );
 writeln( "Namespace   : {$namespace}" );
-writeln( "Main Class  : {$class_name}" );
 writeln( "Main File   : {$plugin_file}" );
+writeln( "Main Class  : {$class_name}" );
 writeln( '------' );
 
 writeln( 'This script will replace the above values in all relevant files in the project directory.' );
