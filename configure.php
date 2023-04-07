@@ -405,7 +405,7 @@ while ( true ) {
 	if ( $is_alley_plugin && 0 !== strpos( $plugin_name_slug, 'wp-' ) ) {
 		$example_slug = "wp-{$plugin_name_slug}";
 
-		contributing_message( "Alley Interactive WordPress plugin slugs should be prefixed with \"wp-\". For example, {$example_slug} would be a great slug. If this plugin isn't meant to be published anywhere, this is fine to ignore. See our CONTRIBUTING.md for more details." );
+		contributing_message( "Alley WordPress plugin slugs should be prefixed with \"wp-\". For example, {$example_slug} would be a great slug. If this plugin isn't meant to be published anywhere, this is fine to ignore. See our CONTRIBUTING.md for more details." );
 
 		if ( ! confirm( 'Do you wish to continue anyway?', false ) ) {
 			continue;
@@ -431,7 +431,7 @@ while ( true ) {
 	// Offer to fix the namespace if this is an Alley plugin.
 	if ( $is_alley_plugin && 0 !== strpos( $namespace, 'Alley\\WP\\' ) ) {
 		$example_namespace = 'Alley\\WP\\' . title_case( $plugin_name );
-		contributing_message( "Alley Interactive WordPress plugins should be prefixed with \"Alley\\WP\\\". A namespace such as \"{$example_namespace}\" would work well. If this plugin isn't meant to be published anywhere, this is fine to ignore. See our CONTRIBUTING.md for more details." );
+		contributing_message( "Alley WordPress plugins should be prefixed with \"Alley\\WP\\\". A namespace such as \"{$example_namespace}\" would work well. If this plugin isn't meant to be published anywhere, this is fine to ignore. See our CONTRIBUTING.md for more details." );
 
 		if ( confirm( 'Do you wish to continue anyway?', false ) ) {
 			break;
