@@ -26,24 +26,6 @@ if ( version_compare( PHP_VERSION, '8.0.0', '<' ) ) {
 	die( 'PHP 8.0.0 or greater is required.' );
 }
 
-// Get the width of the terminal.
-$terminal_width = (int) exec( 'tput cols' );
-
-function write( string $text, bool $include_new_line = false ): void {
-	global $terminal_width;
-
-	$lines    = explode( "\n", wordwrap( $text, $terminal_width - 1 ) );
-	$last_key = array_key_last( $lines );
-
-	foreach ( $lines as $i => $line ) {
-		if ( $include_new_line && $i === $last_key ) {
-			echo $line;
-		} else {
-			echo $line . PHP_EOL;
-		}
-	}
-}
-
 // Parse the command line arguments from $argv.
 $args         = [];
 $previous_key = null;
@@ -68,11 +50,17 @@ foreach ( $argv as $value ) {
 	}
 }
 
+$terminal_width = (int) exec( 'tput cols' );
+
+function write( string $text ): void {
+	global $terminal_width;
+	echo wordwrap( $text, $terminal_width - 1 ) . PHP_EOL;
+}
+
 function ask( string $question, string $default = '', bool $allow_empty = true ): string {
 	while ( true ) {
-		write( $question . ( $default ? " [{$default}]" : '' ) . ': ', true );
-
-		$answer = readline();
+		write( $question . ( $default ? " [{$default}]" : '' ) . ': ' );
+		$answer = readline( '> ' );
 
 		$value = $answer ?: $default;
 
@@ -86,9 +74,9 @@ function ask( string $question, string $default = '', bool $allow_empty = true )
 }
 
 function confirm( string $question, bool $default = false ): bool {
-	write( "{$question} (yes/no) [" . ( $default ? 'yes' : 'no' ) . ']: ', true );
+	write( "{$question} (yes/no) [" . ( $default ? 'yes' : 'no' ) . ']: ' );
 
-	$answer = readline();
+	$answer = readline( '> ' );
 
 	if ( ! $answer ) {
 		return $default;
@@ -96,7 +84,6 @@ function confirm( string $question, bool $default = false ): bool {
 
 	return in_array( strtolower( trim( $answer ) ), [ 'y', 'yes', 'true', '1' ], true );
 }
-
 
 function run( string $command, string $dir = null ): string {
 	$command = $dir ? "cd {$dir} && {$command}" : $command;
