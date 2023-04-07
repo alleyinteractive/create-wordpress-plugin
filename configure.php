@@ -256,7 +256,7 @@ function determine_separator( string $path ): string {
 }
 
 function list_all_files_for_replacement(): array {
-	return explode( PHP_EOL, run( 'grep -R -l .  --exclude LICENSE --exclude configure.php --exclude composer.lock --exclude-dir .git --exclude-dir .github --exclude-dir vendor --exclude-dir webpack --exclude-dir modules --exclude-dir .phpcs' ) );
+	return explode( PHP_EOL, run( 'grep -R -l .  --exclude LICENSE --exclude configure.php --exclude .phpunit.result.cache --exclude-dir .phpcs --exclude composer.lock --exclude-dir .git --exclude-dir .github --exclude-dir vendor --exclude-dir node_modules --exclude-dir webpack --exclude-dir modules --exclude-dir .phpcs' ) );
 }
 
 function delete_files( string|array $paths ) {
