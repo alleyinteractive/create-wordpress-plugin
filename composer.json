@@ -21,7 +21,6 @@
     "require-dev": {
         "alleyinteractive/alley-coding-standards": "^1.0",
         "mantle-framework/testkit": "^0.10",
-        "nunomaduro/collision": "^5.0",
         "szepeviktor/phpstan-wordpress": "^1.1"
     },
     "config": {
