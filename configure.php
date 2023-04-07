@@ -154,7 +154,7 @@ function remove_composer_require(): void {
 
 	file_put_contents(
 		$plugin_file,
-		trim( (string) preg_replace( '/\n\/\* Start Composer Loader \*\/.*\/\* End Composer Loader \*\/\n/s', '', $contents ) ?: $contents ),
+		trim( (string) preg_replace( '/\n\/\* Start Composer Loader \*\/.*\/\* End Composer Loader \*\/\n/s', '', $contents ) ?: $contents ) . PHP_EOL,
 	);
 
 	echo "Removed Composer's vendor/autoload.php from {$plugin_file}" . PHP_EOL;
@@ -171,7 +171,7 @@ function remove_composer_wrapper_comments(): void {
 
 	file_put_contents(
 		$plugin_file,
-		trim( preg_replace( '/\n\/\* (Start|End) Composer Loader \*\/\n/', '', $contents ) ?: $contents ),
+		trim( preg_replace( '/\n\/\* (Start|End) Composer Loader \*\/\n/', '', $contents ) ?: $contents ) . PHP_EOL,
 	);
 
 	echo "Removed Composer's wrapper comments from {$plugin_file}" . PHP_EOL;
@@ -272,7 +272,7 @@ function remove_assets_require(): void {
 
 	file_put_contents(
 		$plugin_file,
-		trim( (string) preg_replace( '/require_once __DIR__ \. \'\/src\/assets.php\';\\n/s', '', $contents ) ?: $contents ),
+		trim( (string) preg_replace( '/require_once __DIR__ \. \'\/src\/assets.php\';\\n/s', '', $contents ) ?: $contents ) . PHP_EOL,
 	);
 }
 
