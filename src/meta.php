@@ -18,10 +18,10 @@ register_post_meta_from_defs();
  * @see \register_post_meta
  * @see \register_term_meta
  *
- * @param string $object_type  The type of meta to register, which must be one of 'post' or 'term'.
- * @param array  $object_slugs The post type or taxonomy slugs to register with.
- * @param string $meta_key     The meta key to register.
- * @param array  $args         Optional. Additional arguments for register_post_meta or register_term_meta. Defaults to an empty array.
+ * @param string               $object_type  The type of meta to register, which must be one of 'post' or 'term'.
+ * @param string[]             $object_slugs The post type or taxonomy slugs to register with.
+ * @param string               $meta_key     The meta key to register.
+ * @param array<string, mixed> $args         Optional. Additional arguments for register_post_meta or register_term_meta. Defaults to an empty array.
  * @return bool True if the meta key was successfully registered in the global array, false if not.
  */
 function register_meta_helper(
@@ -112,7 +112,7 @@ function register_meta_helper(
 /**
  * Reads the post meta definitions from config and registers them.
  */
-function register_post_meta_from_defs() {
+function register_post_meta_from_defs(): void {
 	// Ensure the config file exists.
 	$filepath = dirname( __DIR__ ) . '/config/post-meta.json';
 	if ( ! file_exists( $filepath )
@@ -123,8 +123,8 @@ function register_post_meta_from_defs() {
 
 	// Try to read the file's contents. We can dismiss the "uncached" warning here because it is a local file.
 	// phpcs:ignore WordPressVIPMinimum.Performance.FetchingRemoteData.FileGetContentsUnknown
-	$definitions = json_decode( file_get_contents( $filepath ), true );
-	if ( empty( $definitions ) ) {
+	$definitions = json_decode( (string) file_get_contents( $filepath ), true );
+	if ( empty( $definitions ) || ! is_array( $definitions ) ) {
 		return;
 	}
 

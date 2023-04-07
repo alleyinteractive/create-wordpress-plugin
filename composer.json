@@ -51,6 +51,7 @@
         "phpstan": "phpstan --memory-limit=512M",
         "test": [
             "@phpcs",
+            "@phpstan",
             "@phpunit"
         ]
     }
