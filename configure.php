@@ -346,6 +346,24 @@ $namespace  = ask(
 $class_name  = ask( 'Base class name for plugin?', title_case( $plugin_name ) );
 $description = ask( 'Plugin description?', "This is my plugin {$plugin_name}" );
 
+while ( true ) {
+	$plugin_file = ask( 'Main plugin file?', "{$plugin_name_slug}.php" );
+
+	// Validate that plugin file is a valid file name.
+	if ( ! preg_match( '/^[a-zA-Z0-9-_]+$/', $plugin_file ) ) {
+		echo "Invalid plugin file name. Please try again.\n";
+		continue;
+	}
+
+	// Validate that plugin file does not already exist.
+	if ( file_exists( $plugin_file ) ) {
+		echo "Plugin file already exists. Please try again.\n";
+		continue;
+	}
+
+	break;
+}
+
 writeln( '------' );
 writeln( "Author      : {$author_name} ({$author_email})" );
 writeln( "Vendor      : {$vendor_name} ({$vendor_slug})" );
@@ -353,6 +371,7 @@ writeln( "Plugin      : {$plugin_name} <{$plugin_name_slug}>" );
 writeln( "Description : {$description}" );
 writeln( "Namespace   : {$namespace}" );
 writeln( "Main Class  : {$class_name}" );
+writeln( "Main File   : {$plugin_file}" );
 writeln( '------' );
 
 writeln( 'This script will replace the above values in all relevant files in the project directory.' );
@@ -381,6 +400,7 @@ $search_and_replace = [
 	'Skeleton'                    => $class_name,
 	'vendor_name'                 => $vendor_name,
 	'alleyinteractive'            => $vendor_slug,
+	'plugin.php'                  => $plugin_file,
 ];
 
 foreach ( list_all_files_for_replacement() as $path ) {
@@ -394,6 +414,12 @@ foreach ( list_all_files_for_replacement() as $path ) {
 	if ( str_contains( $path, 'README.md' ) ) {
 		remove_readme_paragraphs( $path );
 	}
+}
+
+if ( 'plugin.php' !== $plugin_file ) {
+	rename( 'plugin.php', $plugin_file );
+
+	echo "Renamed plugin.php to {$plugin_file}\n";
 }
 
 echo "Done!\n\n";
