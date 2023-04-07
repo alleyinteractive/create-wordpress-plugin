@@ -509,8 +509,22 @@ $search_and_replace = [
 	'plugin.php'                  => $plugin_file,
 ];
 
+// Patch the Composer.json namespace first before search and replace.
+run(
+	'composer config extra.wordpress-autoloader.autoload --json \'' . json_encode( [
+		$namespace => 'src',
+	] ) . '\'',
+);
+
+run(
+	'composer config extra.wordpress-autoloader.autoload-dev --json \'' . json_encode( [
+		$namespace . '\\Tests' => 'tests',
+	] ) . '\'',
+);
+
 foreach ( list_all_files_for_replacement() as $path ) {
 	echo "Updating $path...\n";
+
 	replace_in_file( $path, $search_and_replace );
 
 	if ( str_contains( $path, determine_separator( 'src/class-example-plugin.php' ) ) ) {
@@ -522,6 +536,7 @@ foreach ( list_all_files_for_replacement() as $path ) {
 	}
 }
 
+// Attempt to rename the main plugin file.
 if ( 'plugin.php' !== $plugin_file ) {
 	rename( 'plugin.php', $plugin_file );
 
