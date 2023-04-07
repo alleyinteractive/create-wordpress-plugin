@@ -23,8 +23,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Root directory to this plugin.
- *
- * @var string
  */
 define( 'CREATE_WORDPRESS_PLUGIN_DIR', __DIR__ );
 

@@ -114,7 +114,7 @@ function get_entry_dir_path( string $dir_entry_name, bool $dir = false ) {
 	// Set the absolute file path from the root directory.
 	$asset_dir_path = CREATE_WORDPRESS_PLUGIN_DIR . $asset_build_dir;
 
-	if ( ! empty( $asset_dir_path ) && validate_path( $asset_dir_path ) ) {
+	if ( validate_path( $asset_dir_path ) ) {
 		// Negotiate the base path.
 		return true === $dir
 			? $asset_dir_path
