@@ -14,6 +14,8 @@
  * phpcs:disable
  */
 
+namespace Create_WordPress_Plugin\Configure;
+
 if ( ! defined( 'STDIN' ) ) {
 	die( 'Not in CLI mode.' );
 }
@@ -178,33 +180,33 @@ function remove_composer_wrapper_comments(): void {
 }
 
 function remove_composer_files(): void {
-	delete_files(
-		[
-			'composer.json',
-			'composer.lock',
-			'vendor/',
-		]
-	);
+	$file_list = [
+		'composer.json',
+		'composer.lock',
+		'vendor/',
+	];
 
-	echo 'Removed composer.json, composer.lock and vendor/ files.' . PHP_EOL;
+	delete_files( $file_list );
+
+	printf( 'Removed %s files.%s', implode( ', ', $file_list ), PHP_EOL );
 }
 
 function remove_project_files(): void {
-	delete_files(
-		[
-			'.buddy',
-			'buddy.yml',
-			'CHANGELOG.md',
-			'.deployignore',
-			'.editorconfig',
-			'.gitignore',
-			'.gitattributes',
-			'.github',
-			'LICENSE',
-		]
-	);
+	$file_list = [
+		'.buddy',
+		'buddy.yml',
+		'CHANGELOG.md',
+		'.deployignore',
+		'.editorconfig',
+		'.gitignore',
+		'.gitattributes',
+		'.github',
+		'LICENSE',
+	];
 
-	echo 'Removed .buddy, buddy.yml, CHANGELOG.md, .deployignore, .editorconfig, .gitignore, .gitattributes, .github and LICENSE files.' . PHP_EOL;
+	delete_files( $file_list );
+
+	printf( 'Removed %s files.%s', implode( ', ', $file_list ), PHP_EOL );
 }
 
 function rollup_phpcs_to_parent( string $parent_file, string $local_file, string $plugin_name, string $plugin_domain ): void {
