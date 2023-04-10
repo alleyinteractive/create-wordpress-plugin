@@ -50,35 +50,39 @@ foreach ( $argv as $value ) {
 	}
 }
 
+$terminal_width = (int) exec( 'tput cols' );
+
+function write( string $text ): void {
+	global $terminal_width;
+	echo wordwrap( $text, $terminal_width - 1 ) . PHP_EOL;
+}
+
 function ask( string $question, string $default = '', bool $allow_empty = true ): string {
-	$answer = readline(
-		$question . ( $default ? " [{$default}]" : '' ) . ': '
-	);
+	while ( true ) {
+		write( $question . ( $default ? " [{$default}]" : '' ) . ': ' );
+		$answer = readline( '> ' );
 
-	$value = $answer ?: $default;
+		$value = $answer ?: $default;
 
-	if ( ! $allow_empty && empty( $value ) ) {
-		echo "This value can't be empty." . PHP_EOL;
-		return ask( $question, $default, $allow_empty );
+		if ( ! $allow_empty && empty( $value ) ) {
+			echo "This value can't be empty." . PHP_EOL;
+			continue;
+		}
+
+		return $value;
 	}
-
-	return $value;
 }
 
 function confirm( string $question, bool $default = false ): bool {
-	$answer = readline(
-		"{$question} (yes/no) [" . ( $default ? 'yes' : 'no' ) . ']: '
-	);
+	write( "{$question} (yes/no) [" . ( $default ? 'yes' : 'no' ) . ']: ' );
+
+	$answer = readline( '> ' );
 
 	if ( ! $answer ) {
 		return $default;
 	}
 
 	return in_array( strtolower( trim( $answer ) ), [ 'y', 'yes', 'true', '1' ], true );
-}
-
-function writeln( string $line ): void {
-	echo $line . PHP_EOL;
 }
 
 function run( string $command, string $dir = null ): string {
@@ -186,7 +190,7 @@ function remove_composer_files(): void {
 		]
 	);
 
-	echo 'Removed composer.json, composer.lock and vendor/ files.' . PHP_EOL;
+	write( 'Removed composer.json, composer.lock and vendor/ files.' );
 }
 
 function remove_project_files(): void {
@@ -204,7 +208,7 @@ function remove_project_files(): void {
 		]
 	);
 
-	echo 'Removed .buddy, buddy.yml, CHANGELOG.md, .deployignore, .editorconfig, .gitignore, .gitattributes, .github and LICENSE files.' . PHP_EOL;
+	write( 'Removed .buddy, buddy.yml, CHANGELOG.md, .deployignore, .editorconfig, .gitignore, .gitattributes, .github and LICENSE files.' );
 }
 
 function rollup_phpcs_to_parent( string $parent_file, string $local_file, string $plugin_name, string $plugin_domain ): void {
@@ -339,6 +343,11 @@ function remove_phpstan(): void {
 	}
 }
 
+function contributing_message( string $message ): void {
+	write( "\n{$message}\n" );
+	echo "\t\e]8;;https://github.com/alleyinteractive/.github/blob/main/CONTRIBUTING.md#best-practices\e\\CONTRIBUTING.md\e]8;;\e\\\n\n";
+}
+
 echo "\nWelcome friend to alleyinteractive/create-wordpress-plugin! 😀\nLet's setup your WordPress Plugin 🚀\n\n";
 
 // Always delete the 'merge-develop-to-scaffold.yml' file (this is never used in a scaffolded plugins).
@@ -352,20 +361,6 @@ if ( ! $current_dir ) {
 }
 
 $folder_name = ensure_capitalp( basename( $current_dir ) );
-
-$plugin_name = ask(
-	question: 'Plugin name?',
-	default: str_replace( '_', ' ', title_case( $folder_name ) ),
-	allow_empty: false,
-);
-
-$plugin_name_slug = slugify( $plugin_name );
-
-$author_name = ask(
-	question: 'Author name?',
-	default: (string) ( $args['author_name'] ?? run( 'git config user.name' ) ),
-	allow_empty: false,
-);
 
 $author_email = ask(
 	question: 'Author email?',
@@ -382,18 +377,73 @@ $author_username = ask(
 	allow_empty: false,
 );
 
+$author_name = ask(
+	question: 'Author name?',
+	default: (string) ( $args['author_name'] ?? run( 'git config user.name' ) ),
+	allow_empty: false,
+);
+
 $vendor_name = ask(
 	question: 'Vendor name (usually the Github Organization)?',
 	default: $username_guess,
 	allow_empty: false,
 );
-$vendor_slug = slugify( $vendor_name );
 
-$namespace  = ask(
-	question: 'Plugin namespace?',
-	default: title_case( $plugin_name ),
+$vendor_slug     = slugify( $vendor_name );
+$is_alley_plugin = 'alleyinteractive' === $vendor_slug;
+
+$plugin_name = ask(
+	question: 'Plugin name?',
+	default: (string) ( $args['plugin_name'] ?? str_replace( '_', ' ', title_case( $folder_name ) ) ),
 	allow_empty: false,
 );
+
+while ( true ) {
+	$plugin_name_slug = slugify( ask(
+		question: 'Plugin slug?',
+		default: slugify( $plugin_name ),
+		allow_empty: false,
+	) );
+
+	// Suggest a different plugin name if this is an Alley plugin.
+	if ( $is_alley_plugin && 0 !== strpos( $plugin_name_slug, 'wp-' ) ) {
+		$example_slug = "wp-{$plugin_name_slug}";
+
+		contributing_message( "Alley WordPress plugin slugs should be prefixed with \"wp-\". For example, {$example_slug} would be a great slug. If this plugin isn't meant to be published anywhere, this is fine to ignore. See our CONTRIBUTING.md for more details." );
+
+		if ( ! confirm( 'Do you wish to continue anyway?', false ) ) {
+			continue;
+		}
+	}
+
+	break;
+}
+
+while ( true ) {
+	$namespace  = ask(
+		question: 'Plugin namespace?',
+		default: $is_alley_plugin ? 'Alley\\WP\\' . title_case( $plugin_name ) : title_case( $plugin_name ),
+		allow_empty: false,
+	);
+
+	// Check if the namespace is valid.
+	if ( ! preg_match( '/^[a-zA-Z0-9_\\\\]+$/', $namespace ) ) {
+		echo "Invalid namespace, please try again.\n";
+		continue;
+	}
+
+	// Offer to fix the namespace if this is an Alley plugin.
+	if ( $is_alley_plugin && 0 !== strpos( $namespace, 'Alley\\WP\\' ) ) {
+		$example_namespace = 'Alley\\WP\\' . title_case( $plugin_name );
+		contributing_message( "Alley WordPress plugins should be prefixed with \"Alley\\WP\\\". A namespace such as \"{$example_namespace}\" would work well. If this plugin isn't meant to be published anywhere, this is fine to ignore. See our CONTRIBUTING.md for more details." );
+
+		if ( confirm( 'Do you wish to continue anyway?', false ) ) {
+			break;
+		}
+	}
+
+	break;
+}
 
 $class_name  = ask( 'Base class name for plugin?', title_case( $plugin_name ) );
 $description = ask( 'Plugin description?', "This is my plugin {$plugin_name}" );
@@ -416,17 +466,17 @@ while ( true ) {
 	break;
 }
 
-writeln( '------' );
-writeln( "Plugin      : {$plugin_name} <{$plugin_name_slug}>" );
-writeln( "Author      : {$author_name} ({$author_email})" );
-writeln( "Vendor      : {$vendor_name} ({$vendor_slug})" );
-writeln( "Description : {$description}" );
-writeln( "Namespace   : {$namespace}" );
-writeln( "Main File   : {$plugin_file}" );
-writeln( "Main Class  : {$class_name}" );
-writeln( '------' );
+write( '------' );
+write( "Plugin      : {$plugin_name} <{$plugin_name_slug}>" );
+write( "Author      : {$author_name} ({$author_email})" );
+write( "Vendor      : {$vendor_name} ({$vendor_slug})" );
+write( "Description : {$description}" );
+write( "Namespace   : {$namespace}" );
+write( "Main File   : {$plugin_file}" );
+write( "Main Class  : {$class_name}" );
+write( '------' );
 
-writeln( 'This script will replace the above values in all relevant files in the project directory.' );
+write( 'This script will replace the above values in all relevant files in the project directory.' );
 
 if ( ! confirm( 'Modify files?', true ) ) {
 	exit( 1 );
@@ -438,6 +488,10 @@ $search_and_replace = [
 	'email@domain.com'            => $author_email,
 
 	'A skeleton WordPress plugin' => $description,
+
+	// Escape the namespace used in composer.json.
+	'"Create_WordPress_Plugin\\"'        => (string) json_encode( $namespace ),
+	'"Create_WordPress_Plugin\\Tests\\"' => (string) json_encode( $namespace . '\\Tests' ),
 
 	'Create_WordPress_Plugin'     => $namespace,
 	'Example_Plugin'              => $class_name,
@@ -455,8 +509,22 @@ $search_and_replace = [
 	'plugin.php'                  => $plugin_file,
 ];
 
+// Patch the Composer.json namespace first before search and replace.
+run(
+	'composer config extra.wordpress-autoloader.autoload --json \'' . json_encode( [
+		$namespace => 'src',
+	] ) . '\'',
+);
+
+run(
+	'composer config extra.wordpress-autoloader.autoload-dev --json \'' . json_encode( [
+		$namespace . '\\Tests' => 'tests',
+	] ) . '\'',
+);
+
 foreach ( list_all_files_for_replacement() as $path ) {
 	echo "Updating $path...\n";
+
 	replace_in_file( $path, $search_and_replace );
 
 	if ( str_contains( $path, determine_separator( 'src/class-example-plugin.php' ) ) ) {
@@ -468,6 +536,7 @@ foreach ( list_all_files_for_replacement() as $path ) {
 	}
 }
 
+// Attempt to rename the main plugin file.
 if ( 'plugin.php' !== $plugin_file ) {
 	rename( 'plugin.php', $plugin_file );
 
