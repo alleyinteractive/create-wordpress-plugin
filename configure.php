@@ -539,6 +539,8 @@ foreach ( list_all_files_for_replacement() as $path ) {
 // Attempt to rename the main plugin file.
 if ( 'plugin.php' !== $plugin_file ) {
 	rename( 'plugin.php', $plugin_file );
+	
+	replace_in_file( './.github/workflows/upgrade-wordpress-plugin.yml', $search_and_replace );
 
 	echo "Renamed plugin.php to {$plugin_file}\n";
 }
