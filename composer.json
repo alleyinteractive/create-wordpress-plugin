@@ -46,7 +46,7 @@
     "scripts": {
         "phpcbf": "phpcbf .",
         "phpcs": "phpcs .",
-        "phpunit": "phpunit",
+        "phpunit": "MANTLE_TESTING_DEBUG=1 phpunit",
         "phpstan": "phpstan --memory-limit=512M",
         "test": [
             "@phpcs",

@@ -3,8 +3,6 @@
  * create-wordpress-plugin Test Bootstrap
  */
 
-define( 'MANTLE_TESTING_DEBUG', true );
-
 /**
  * Visit {@see https://mantle.alley.co/testing/test-framework.html} to learn more.
  */
