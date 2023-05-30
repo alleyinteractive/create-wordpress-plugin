@@ -7,4 +7,4 @@ on:
 
 jobs:
   unit-tests:
-    uses: alleyinteractive/.github/.github/workflows/php-tests.yml@main
+    uses: alleyinteractive/.github/.github/workflows/php-tests.yml@caching
