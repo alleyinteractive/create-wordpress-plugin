@@ -582,6 +582,7 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 			'entries/',
 			'services/',
 			'slotfills/',
+			'blocks/',
 			'build/',
 			'bin/',
 			'node_modules/',

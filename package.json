@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "build": "wp-scripts build --webpack-copy-php --webpack-src-dir=blocks",
-    "create-block": "node ./bin/create-block",
+    "create-block": "npx @alleyinteractive/create-block -n create-wordpress-plugin",
     "precheck-types": "check-node-version --package",
     "check-types": "tsc",
     "lint:fix": "eslint --ext .jsx --ext .js --ext .ts --ext .tsx . --fix",
@@ -52,7 +52,6 @@
     "@wordpress/components": "^23.7.0",
     "@wordpress/compose": "^6.7.0",
     "@wordpress/core-data": "^6.7.0",
-    "@wordpress/create-block": "^4.14.0",
     "@wordpress/customize-widgets": "^4.7.0",
     "@wordpress/data": "^9.0.0",
     "@wordpress/data-controls": "^2.30.0",
@@ -93,9 +92,7 @@
     "@wordpress/warning": "^2.30.0",
     "@wordpress/widgets": "^3.7.0",
     "@wordpress/wordcount": "^3.30.0",
-    "cross-spawn": "^7.0.3",
     "dompurify": "^3.0.3",
-    "prompts": "^2.4.2",
     "prop-types": "^15.8.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
