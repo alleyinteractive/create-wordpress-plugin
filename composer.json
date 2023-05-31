@@ -20,7 +20,7 @@
     },
     "require-dev": {
         "alleyinteractive/alley-coding-standards": "^1.0",
-        "mantle-framework/testkit": "^0.10",
+        "mantle-framework/testkit": "^0.11",
         "szepeviktor/phpstan-wordpress": "^1.1"
     },
     "config": {
