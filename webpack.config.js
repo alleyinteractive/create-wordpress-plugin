@@ -13,18 +13,36 @@ module.exports = (env, { mode }) => ({
   entry: () => {
     const blocks = defaultConfig.entry();
 
-    return {
-      ...blocks,
-      ...fs
-        .readdirSync('./entries')
+    /**
+     * Get the entry points from a directory.
+     *
+     * @returns {Object} An object of entries.
+     */
+    function getEntries(entryDirName) {
+      const directoryPath = `./${entryDirName}`;
+      const directoryExists = fs.existsSync(directoryPath);
+
+      if (directoryExists) {
+        return fs
+        .readdirSync(directoryPath)
         .reduce((acc, dirPath) => {
           acc[
-            `entries-${dirPath}`
-          ] = `./entries/${dirPath}`;
+            `${entryDirName}-${dirPath}`
+          ] = `./${entryDirName}/${dirPath}`;
           return acc;
-        }, {
-          // All other custom entry points can be included here.
-        }),
+        }, {});
+      } else {
+        console.log(`Directory "${entryDirName}" does not exist.`);
+        return {};
+      }
+    };
+
+    return {
+      ...blocks,
+      ...getEntries('entries'),
+      ...{
+        // All other custom entry points can be included here.
+      },
     };
   },
 
