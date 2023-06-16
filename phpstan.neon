@@ -4,17 +4,16 @@ includes:
 parameters:
 	# Level 9 is the highest level
 	level: max
-	rootDir: %rootDir%
 
 	paths:
 		- blocks/
-		- %rootDir%/entries/
+		- %env:PROJECT_ROOT%/entries/
 		- src/
 		- plugin.php
 
 #    ignoreErrors:
 #        - '#PHPDoc tag @var#'
-#        - '#.*Path does not exist: %rootDir%/entries#'
+#        - '#.*Path does not exist: %env:PROJECT_ROOT%/entries#'
 #
 #    excludePaths:
 #        - ./*/*/FileToBeExcluded.php
