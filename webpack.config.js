@@ -26,6 +26,11 @@ module.exports = (env, { mode }) => ({
         return fs
           .readdirSync(directoryPath)
           .reduce((acc, dirPath) => {
+            // Ignore .gitkeep files.
+            if (dirPath?.includes('.gitkeep')) {
+              return acc;
+            }
+
             acc[
               `${entryDirName}-${dirPath}`
             ] = `./${entryDirName}/${dirPath}`;

@@ -7,7 +7,7 @@ parameters:
 
 	paths:
 		- blocks/
-		- entries/*
+		- entries/
 		- src/
 		- plugin.php
 
