@@ -24,18 +24,18 @@ module.exports = (env, { mode }) => ({
 
       if (directoryExists) {
         return fs
-        .readdirSync(directoryPath)
-        .reduce((acc, dirPath) => {
-          acc[
-            `${entryDirName}-${dirPath}`
-          ] = `./${entryDirName}/${dirPath}`;
-          return acc;
-        }, {});
-      } else {
-        console.log(`Directory "${entryDirName}" does not exist.`);
-        return {};
+          .readdirSync(directoryPath)
+          .reduce((acc, dirPath) => {
+            acc[
+              `${entryDirName}-${dirPath}`
+            ] = `./${entryDirName}/${dirPath}`;
+            return acc;
+          }, {});
       }
-    };
+      // eslint-disable-next-line no-console
+      console.log(`Directory "${entryDirName}" does not exist.`);
+      return {};
+    }
 
     return {
       ...blocks,
