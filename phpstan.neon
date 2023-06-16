@@ -7,13 +7,12 @@ parameters:
 
 	paths:
 		- blocks/
-		- entries/
+		- entries/*
 		- src/
 		- plugin.php
 
 #    ignoreErrors:
 #        - '#PHPDoc tag @var#'
-#        - '#Path /home/runner/work/create-wordpress-plugin/create-wordpress-plugin/entries does not exist#'
 #
 #    excludePaths:
 #        - ./*/*/FileToBeExcluded.php
