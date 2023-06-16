@@ -77,6 +77,24 @@ Run `composer test` to run tests against PHPUnit and the PHP code in the plugin.
 
 All directories created in the `entries` directory can serve as entry points and will be compiled with [@wordpress/scripts](https://github.com/WordPress/gutenberg/blob/trunk/packages/scripts/README.md#scripts) into the `build` directory with an accompanied `index.asset.php` asset map.
 
+#### Scaffolding an entry point
+
+To generate a new entry point, run the following command:
+```sh
+npm run create-entry
+```
+
+To generate a new slotfill, run the following command:
+```sh
+npm run create-slotfill
+```
+
+The command will prompt the user through several options for creating an entry or slotfill. The entries are scaffolded with the `@alleyinteractive/create-entry` script. Run the help command to see all the options:
+```sh
+npx @alleyinteractive/create-entry --help
+```
+[Visit the package README](https://www.npmjs.com/package/@alleyinteractive/create-entry) for more information.
+
 #### Enqueuing Entry Points
 
 You can also include an `index.php` file in the entry point directory for enqueueing or registering a script. This file will then be moved to the build directory and will be auto-loaded with the `load_scripts()` function in the `functions.php` file. Alternatively, if a script is to be enqueued elsewhere there are helper functions in the `src/assets.php` file for getting the assets.
