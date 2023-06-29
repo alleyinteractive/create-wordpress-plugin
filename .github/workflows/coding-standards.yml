@@ -1,13 +1,17 @@
-name: Coding Standards
+name: Composer Tests
 
 on:
   push:
     branches:
-      - develop
+      - main
   pull_request:
-  schedule:
-    - cron: '0 0 * * *'
 
 jobs:
-  coding-standards:
-    uses: alleyinteractive/.github/.github/workflows/php-coding-standards.yml@main
+  code-quality:
+    name: Composer PHPCS and PHPStan
+    uses: alleyinteractive/.github/.github/workflows/php-composer-command.yml@composer-command
+    with:
+      php: 8.1
+      command: |
+        phpcs
+        phpstan

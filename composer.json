@@ -44,6 +44,11 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
+        "lint": [
+            "@phpcs",
+            "@phpstan"
+        ],
+        "lint:fix": "@phpcbf",
         "phpcbf": "phpcbf .",
         "phpcs": "phpcs .",
         "phpunit": "phpunit",
