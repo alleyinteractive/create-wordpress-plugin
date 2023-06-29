@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  code-quality:
+  composer-phpcs-phpstan:
     name: Composer PHPCS and PHPStan
     uses: alleyinteractive/.github/.github/workflows/php-composer-command.yml@composer-command
     with:
