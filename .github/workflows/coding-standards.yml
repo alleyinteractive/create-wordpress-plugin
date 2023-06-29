@@ -1,4 +1,4 @@
-name: Composer Tests
+name: Linting Tests
 
 on:
   push:
