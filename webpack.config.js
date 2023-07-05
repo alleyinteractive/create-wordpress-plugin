@@ -16,11 +16,11 @@ module.exports = (env, { mode }) => ({
     return {
       ...blocks,
       ...fs
-        .readdirSync('./entries')
+        .readdirSync(path.join(__dirname, 'entries'))
         .reduce((acc, dirPath) => {
           acc[
             `entries-${dirPath}`
-          ] = `./entries/${dirPath}`;
+          ] = path.join(__dirname, 'entries', dirPath);
           return acc;
         }, {
           // All other custom entry points can be included here.
