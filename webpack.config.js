@@ -20,7 +20,7 @@ module.exports = (env, { mode }) => ({
         .reduce((acc, dirPath) => {
           acc[
             `entries-${dirPath}`
-            ] = path.join(__dirname, 'entries', dirPath);
+          ] = path.join(__dirname, 'entries', dirPath);
           return acc;
         }, {
           // All other custom entry points can be included here.
