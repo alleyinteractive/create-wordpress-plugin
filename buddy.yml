@@ -52,16 +52,16 @@
       setup_commands:
         - "echo \"extension=memcache.so\" >> /usr/local/etc/php/conf.d/buddy.ini"
       services:
-        - type: "MARIADB"
-          version: "10.3"
+        - type: "MYSQL"
+          version: "8.0"
           connection:
-            host: "mariadb"
+            host: "mysql"
             port: 3306
             user: "root"
             password: "root"
             db: "wordpress_unit_tests"
         - type: "MEMCACHED"
-          version: "1.5.6"
+          version: "1.6.21"
           connection:
             host: "memcached"
             port: 11211
