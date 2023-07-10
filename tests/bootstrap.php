@@ -1,10 +1,12 @@
 <?php
 /**
- * create-wordpress-plugin Test Bootstrap
+ * Create WordPress Plugin Tests: Bootstrap
+ *
+ * @package create-wordpress-plugin
  */
 
 /**
- * Visit {@see https://mantle.alley.co/testing/test-framework.html} to learn more.
+ * Visit {@see https://mantle.alley.com/testing/test-framework.html} to learn more.
  */
 \Mantle\Testing\manager()
 	->maybe_rsync_plugin()
