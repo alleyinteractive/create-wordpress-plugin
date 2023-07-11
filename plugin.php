@@ -29,7 +29,7 @@ define( 'CREATE_WORDPRESS_PLUGIN_DIR', __DIR__ );
 /* Start Composer Loader */
 
 // Check if Composer is installed (remove if Composer is not required for your plugin).
-if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+if ( ! file_exists( __DIR__ . '/vendor/wordpress-autoload.php' ) ) {
 	// Will also check for the presence of an already loaded Composer autoloader
 	// to see if the Composer dependencies have been installed in a parent
 	// folder. This is useful for when the plugin is loaded as a Composer
@@ -50,7 +50,7 @@ if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	}
 } else {
 	// Load Composer dependencies.
-	require_once __DIR__ . '/vendor/autoload.php';
+	require_once __DIR__ . '/vendor/wordpress-autoload.php';
 }
 
 /* End Composer Loader */
