@@ -99,7 +99,7 @@
   },
   "devDependencies": {
     "@alleyinteractive/eslint-config": "^0.1.0",
-    "@alleyinteractive/stylelint-config": "file:../alley-scripts/packages/eslint-config",
+    "@alleyinteractive/stylelint-config": "^0.0.2",
     "@babel/preset-env": "^7.22.9",
     "@wordpress/babel-preset-default": "^7.14.0",
     "babel-jest": "^29.5.0",
