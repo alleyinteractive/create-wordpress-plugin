@@ -19,14 +19,14 @@ register_post_meta_from_defs();
  * @see \register_term_meta
  *
  * @param string               $object_type  The type of meta to register, which must be one of 'post' or 'term'.
- * @param string[]             $object_slugs The post type or taxonomy slugs to register with.
+ * @param string|string[]      $object_slugs The post type or taxonomy slugs to register with.
  * @param string               $meta_key     The meta key to register.
  * @param array<string, mixed> $args         Optional. Additional arguments for register_post_meta or register_term_meta. Defaults to an empty array.
  * @return bool True if the meta key was successfully registered in the global array, false if not.
  */
 function register_meta_helper(
 	string $object_type,
-	array $object_slugs,
+	string|array $object_slugs,
 	string $meta_key,
 	array $args = []
 ) : bool {
@@ -46,7 +46,7 @@ function register_meta_helper(
 	 *
 	 * @link https://developer.wordpress.org/reference/functions/register_meta/
 	 *
-	 * @param array  $args {
+	 * @param array           $args {
 	 *     Array of args to be passed to register_meta().
 	 *
 	 *     @type string     $object_subtype    A subtype; e.g. if the object type is "post", the post type. If left empty,
@@ -67,9 +67,9 @@ function register_meta_helper(
 	 *                                         complex meta values this argument may optionally be an array with 'schema'
 	 *                                         or 'prepare_callback' keys instead of a boolean.
 	 * }
-	 * @param string $object_type  The type of meta to register, which must be one of 'post' or 'term'.
-	 * @param array  $object_slugs The post type or taxonomy slugs to register with.
-	 * @param string $meta_key     The meta key to register.
+	 * @param string          $object_type  The type of meta to register, which must be one of 'post' or 'term'.
+	 * @param string|string[] $object_slugs The post type or taxonomy slugs to register with.
+	 * @param string          $meta_key     The meta key to register.
 	 */
 	$args = apply_filters(
 		'create_wordpress_plugin_register_meta_helper_args', // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
@@ -85,6 +85,26 @@ function register_meta_helper(
 		$object_slugs,
 		$meta_key
 	);
+
+	// Allow setting meta for all of an object type.
+	if (
+		(
+			is_array( $object_slugs ) &&
+			count( $object_slugs ) === 1 &&
+			'all' === $object_slugs[0]
+		) ||
+		(
+			is_string( $object_slugs ) &&
+			'all' === $object_slugs
+		)
+	) {
+		return register_meta( $object_type, $meta_key, $args );
+	}
+
+	// Fix potential errors since we're allowing `$object_slugs` to be a string or array.
+	if ( is_string( $object_slugs ) ) {
+		$object_slugs = [ $object_slugs ];
+	}
 
 	// Fork for object type.
 	switch ( $object_type ) {
