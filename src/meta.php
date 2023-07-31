@@ -90,7 +90,7 @@ function register_meta_helper(
 	if (
 		(
 			is_array( $object_slugs ) &&
-			count( $object_slugs ) === 1 &&
+			1 === count( $object_slugs ) &&
 			'all' === $object_slugs[0]
 		) ||
 		(
