@@ -13,8 +13,8 @@
   ],
   "scripts": {
     "build": "wp-scripts build --webpack-copy-php --webpack-src-dir=blocks",
-    "create-block": "npx @alleyinteractive/create-block -n create-wordpress-plugin",
-    "create-entry": "npx @alleyinteractive/create-entry -n create-wordpress-plugin -t create-wordpress-plugin",
+    "create-block": "npx @alleyinteractive/create-block@latest -n create-wordpress-plugin",
+    "create-entry": "npx @alleyinteractive/create-entry@latest -n create-wordpress-plugin -t create-wordpress-plugin",
     "create-slotfill": "npx @alleyinteractive/create-entry -s -n create-wordpress-plugin -t create-wordpress-plugin",
     "precheck-types": "check-node-version --package",
     "check-types": "tsc",
