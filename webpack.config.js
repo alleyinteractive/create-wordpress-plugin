@@ -13,18 +13,41 @@ module.exports = (env, { mode }) => ({
   entry: () => {
     const blocks = defaultConfig.entry();
 
+    /**
+     * Get the entry points from a directory.
+     *
+     * @returns {Object} An object of entries.
+     */
+    function getEntries(entryDirName) {
+      const directoryPath = path.join(__dirname, entryDirName);
+      const directoryExists = fs.existsSync(directoryPath);
+
+      if (directoryExists) {
+        return fs
+          .readdirSync(directoryPath)
+          .reduce((acc, dirPath) => {
+            // Ignore .gitkeep files.
+            if (dirPath?.includes('.gitkeep')) {
+              return acc;
+            }
+
+            acc[
+              `${entryDirName}-${dirPath}`
+            ] = path.join(__dirname, entryDirName, dirPath);
+            return acc;
+          }, {});
+      }
+      // eslint-disable-next-line no-console
+      console.log(`Directory "${entryDirName}" does not exist.`);
+      return {};
+    }
+
     return {
       ...blocks,
-      ...fs
-        .readdirSync(path.join(__dirname, 'entries'))
-        .reduce((acc, dirPath) => {
-          acc[
-            `entries-${dirPath}`
-          ] = path.join(__dirname, 'entries', dirPath);
-          return acc;
-        }, {
-          // All other custom entry points can be included here.
-        }),
+      ...getEntries('entries'),
+      ...{
+        // All other custom entry points can be included here.
+      },
     };
   },
 
