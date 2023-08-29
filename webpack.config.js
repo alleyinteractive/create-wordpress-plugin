@@ -78,6 +78,11 @@ module.exports = (env, { mode }) => ({
           context: 'entries',
           noErrorOnMissing: true,
         },
+        {
+          from: '**/*.svg',
+          context: path.join(__dirname, 'blocks'),
+          noErrorOnMissing: true,
+        },
       ],
     }),
     new MiniCssExtractPlugin({
