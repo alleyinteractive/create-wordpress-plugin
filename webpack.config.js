@@ -19,7 +19,7 @@ module.exports = (env, { mode }) => ({
      * @returns {Object} An object of entries.
      */
     function getEntries(entryDirName) {
-      const directoryPath = `./${entryDirName}`;
+      const directoryPath = path.join(__dirname, entryDirName);
       const directoryExists = fs.existsSync(directoryPath);
 
       if (directoryExists) {
@@ -33,7 +33,7 @@ module.exports = (env, { mode }) => ({
 
             acc[
               `${entryDirName}-${dirPath}`
-            ] = `./${entryDirName}/${dirPath}`;
+            ] = path.join(__dirname, entryDirName, dirPath);
             return acc;
           }, {});
       }
