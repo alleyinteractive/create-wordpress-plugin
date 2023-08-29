@@ -541,7 +541,7 @@ foreach ( list_all_files_for_replacement() as $path ) {
 // Attempt to rename the main plugin file.
 if ( 'plugin.php' !== $plugin_file ) {
 	rename( 'plugin.php', $plugin_file );
-	
+
 	replace_in_file( './.github/workflows/upgrade-wordpress-plugin.yml', $search_and_replace );
 
 	echo "Renamed plugin.php to {$plugin_file}\n";
@@ -731,7 +731,7 @@ if ( ! $needs_built_assets && file_exists( '.github/workflows/built-branch.yml' 
 }
 
 if (
-	$standalone && file_exists( __DIR__ . '/buddy.yml' ) && confirm( 'Do you need the Buddy CI configuration? (Alley devs only -- if the plugin is open-source it will not be needed)', false )
+	$standalone && file_exists( __DIR__ . '/buddy.yml' ) && ! confirm( 'Do you need the Buddy CI configuration? (Alley devs only -- if the plugin is open-source it will not be needed)', false )
 ) {
 	delete_files( [ '.buddy', 'buddy.yml' ] );
 }
