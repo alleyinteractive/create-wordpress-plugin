@@ -12,7 +12,7 @@
       type: "BUILD"
       working_directory: "/buddy/create-wordpress-plugin"
       docker_image_name: "alleyops/ci-resources"
-      docker_image_tag: "8.0-fpm-wp"
+      docker_image_tag: "8.2-fpm-wp"
       execute_commands:
         - "if [[ ! -z $(git ls-files -i --exclude-standard) ]]; then exit 1; fi"
       volume_mappings:
@@ -24,7 +24,7 @@
       type: "BUILD"
       working_directory: "/buddy/create-wordpress-plugin"
       docker_image_name: "alleyops/ci-resources"
-      docker_image_tag: "8.0-fpm-wp"
+      docker_image_tag: "8.2-fpm-wp"
       execute_commands:
         - "! git grep -E '<<<<<<< |>>>>>>> ' -- './*' ':(exclude)buddy.yml' ':(exclude).buddy/*'"
       volume_mappings:
@@ -35,7 +35,7 @@
       type: "BUILD"
       working_directory: "/buddy/create-wordpress-plugin"
       docker_image_name: "alleyops/ci-resources"
-      docker_image_tag: "8.0-fpm-wp"
+      docker_image_tag: "8.2-fpm-wp"
       execute_commands:
         - "composer install -q"
       volume_mappings:
@@ -46,7 +46,7 @@
       type: "BUILD"
       working_directory: "/buddy/create-wordpress-plugin"
       docker_image_name: "alleyops/ci-resources"
-      docker_image_tag: "8.0-fpm-wp"
+      docker_image_tag: "8.2-fpm-wp"
       execute_commands:
         - "composer phpunit"
       setup_commands:
@@ -74,7 +74,7 @@
       type: "BUILD"
       working_directory: "/buddy/create-wordpress-plugin"
       docker_image_name: "alleyops/ci-resources"
-      docker_image_tag: "8.0-fpm-wp"
+      docker_image_tag: "8.2-fpm-wp"
       execute_commands:
         - "composer phpcs"
       volume_mappings:
