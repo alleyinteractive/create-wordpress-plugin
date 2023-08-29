@@ -6,6 +6,43 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
+/**
+ * Process the filename and chunkFilename for Webpack output and MiniCssExtractPlugin.
+ * This reusable function dynamically generates filenames based on the provided `pathData`,
+ * a flag to determine whether to set the filename as 'index', the file extension (`ext`),
+ * and a parameter to explicitly specify whether to use 'runtime' or 'name' as the dirname source.
+ *
+ * For non-entries entries, it returns a filename in the format '[name].[ext]'.
+ * For entries, it constructs a filename with the directory name (stripping 'entries-')
+ * and appends '/index' or '/[name]' (if a name is present) followed by the file extension.
+ *
+ * @param   {Object}  pathData      - The path data object provided by Webpack.
+ * @param   {boolean} setAsIndex    - A flag to determine whether to set the filename as 'index'
+ *                                    when processing entries. Pass `true` to use 'index' or `false`
+ *                                    to use '[name]'.
+ * @param   {string}  ext           - The file extension to be used for the output filename.
+ * @param   {string}  dirnameSource - The pathData.chunk prop to set the directory name.
+ *                                    'runtime' or 'name'. Defaults to 'name' if not provided.
+ * @returns {string}                  The generated filename.
+ */
+const processFilename = (pathData, setAsIndex, ext, dirnameSource = 'name') => {
+  const dirname = dirnameSource === 'runtime'
+    ? pathData.chunk.runtime : pathData.chunk.name;
+
+  let filename = '[name]';
+  if (typeof setAsIndex === 'boolean' && setAsIndex) {
+    filename = 'index';
+  }
+
+  // Process all non-entries entries.
+  if (!dirname.includes('entries-')) {
+    return `[name].${ext}`;
+  }
+
+  const srcDirname = dirname.replace('entries-', '');
+  return `${srcDirname}/${filename}.${ext}`;
+};
+
 module.exports = (env, { mode }) => ({
   ...defaultConfig,
 
@@ -54,17 +91,8 @@ module.exports = (env, { mode }) => ({
   // Use different filenames for production and development builds for clarity.
   output: {
     clean: mode === 'production',
-    filename: (pathData) => {
-      const dirname = pathData.chunk.name;
-
-      // Process all non-entries entries.
-      if (!pathData.chunk.name.includes('entries-')) {
-        return '[name].js';
-      }
-
-      const srcDirname = dirname.replace('entries-', '');
-      return `${srcDirname}/index.js`;
-    },
+    filename: (pathData) => processFilename(pathData, true, 'js'),
+    chunkFilename: (pathData) => processFilename(pathData, false, 'js', 'runtime'),
     path: path.join(__dirname, 'build'),
   },
 
@@ -81,16 +109,8 @@ module.exports = (env, { mode }) => ({
       ],
     }),
     new MiniCssExtractPlugin({
-      filename: (pathData) => {
-        const dirname = pathData.chunk.name;
-        // Process all blocks.
-        if (!pathData.chunk.name.includes('entries-')) {
-          return '[name].css';
-        }
-
-        const srcDirname = dirname.replace('entries-', '');
-        return `${srcDirname}/index.css`;
-      },
+      filename: (pathData) => processFilename(pathData, true, 'css'),
+      chunkFilename: (pathData) => processFilename(pathData, false, 'css', 'runtime'),
     }),
     new CleanWebpackPlugin({
       cleanAfterEveryBuildPatterns: [
