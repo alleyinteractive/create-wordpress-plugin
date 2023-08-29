@@ -63,8 +63,8 @@ module.exports = (env, { mode }) => ({
         return fs
           .readdirSync(directoryPath)
           .reduce((acc, dirPath) => {
-            // Ignore .gitkeep files.
-            if (dirPath?.includes('.gitkeep')) {
+            // Ignore .gitkeep files and README.md files.
+            if (dirPath?.includes('.gitkeep') || dirPath?.includes('README.md')) {
               return acc;
             }
 
