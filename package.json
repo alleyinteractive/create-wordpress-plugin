@@ -103,7 +103,7 @@
     "@alleyinteractive/create-entry": "^0.0.2",
     "@alleyinteractive/eslint-config": "^0.1.1",
     "@alleyinteractive/stylelint-config": "^0.0.2",
-    "@babel/preset-env": "^7.22.9",
+    "@babel/preset-env": "^7.22.14",
     "@wordpress/babel-preset-default": "^7.14.0",
     "babel-jest": "^29.5.0",
     "check-node-version": "^4.2.1",
