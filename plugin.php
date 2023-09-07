@@ -37,7 +37,7 @@ if ( ! file_exists( __DIR__ . '/vendor/wordpress-autoload.php' ) ) {
 	if ( ! class_exists( \Composer\InstalledVersions::class ) ) {
 		\add_action(
 			'admin_notices',
-			function() {
+			function () {
 				?>
 				<div class="notice notice-error">
 					<p><?php esc_html_e( 'Composer is not installed and create-wordpress-plugin cannot load. Try using a `*-built` branch if the plugin is being loaded as a submodule.', 'create-wordpress-plugin' ); ?></p>
