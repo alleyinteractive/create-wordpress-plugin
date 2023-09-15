@@ -320,7 +320,7 @@ function delete_files( string|array $paths ): void {
 		if ( is_dir( $path ) ) {
 			run( "rm -rf {$path}" );
 		} elseif ( file_exists( $path ) ) {
-			unlink( $path );
+			@unlink( $path );
 		}
 	}
 }
@@ -721,11 +721,11 @@ if (
 }
 
 // Offer to delete the built asset workflows if built assets aren't needed.
-if ( ! $needs_built_assets && file_exists( '.github/workflows/built-branch.yml' ) && confirm( 'Delete the Github actions for built assets?', true ) ) {
+if ( ! $needs_built_assets && file_exists( '.github/workflows/built-release.yml' ) && confirm( 'Delete the Github actions for built assets?', true ) ) {
 	delete_files(
 		[
 			'.github/workflows/built-branch.yml',
-			'.github/workflows/built-tag.yml',
+			'.github/workflows/built-release.yml',
 		]
 	);
 }
@@ -746,5 +746,22 @@ if ( confirm( 'Let this script delete itself?', true ) ) {
 }
 
 echo "\n\nWe're done! 🎉\n\n";
+
+// Offer some information about built releases if the workflow still exists.
+if ( file_exists( '.github/workflows/built-release.yml' ) ) {
+	echo <<<INFO
+When you are ready to release the plugin, you can run `npm run release`
+to generate a new release.
+
+The Built Release workflow will take create of the rest by building the plugin's
+front-end assets (if any), pushing up a tag, and creating a GitHub release for
+the new version.
+
+For more information, check out the README file:
+
+	https://github.com/alleyinteractive/.github#built-releases
+
+INFO;
+}
 
 die( 0 );
