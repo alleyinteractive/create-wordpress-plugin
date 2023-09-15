@@ -3,6 +3,8 @@ name: Built Release
 on:
   push:
     branches:
+      - develop
+      - main
       - production
 
 jobs:
