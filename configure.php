@@ -753,7 +753,7 @@ if ( file_exists( '.github/workflows/built-release.yml' ) ) {
 When you are ready to release the plugin, you can run `npm run release`
 to generate a new release.
 
-The Built Release workflow will take create of the rest by building the plugin's
+The Built Release workflow will take care of the rest by building the plugin's
 front-end assets (if any), pushing up a tag, and creating a GitHub release for
 the new version.
 
