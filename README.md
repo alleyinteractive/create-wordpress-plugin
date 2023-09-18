@@ -143,8 +143,8 @@ build the plugin and tag it with a new version. The built tag will contain all
 the required front-end assets the plugin may require. This works well for
 publishing to WordPress.org or for submodule-ing.
 
-When you are ready to release a new version of the plugin, you can run `composer
-release` to start the process of setting up a new release.
+When you are ready to release a new version of the plugin, you can run
+`npm run release` to start the process of setting up a new release.
 
 ## Changelog
 
