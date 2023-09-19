@@ -30,7 +30,7 @@
     "pretest:watch": "check-node-version --package",
     "pretest": "check-node-version --package",
     "prerelease": "check-node-version --package",
-    "release": "npx @alleyinteractive/release@latest",
+    "release": "npx @alleyinteractive/create-release@latest",
     "start": "wp-scripts start --webpack-copy-php --webpack-src-dir=blocks",
     "start:hot": "wp-scripts start --webpack-copy-php --webpack-src-dir=blocks --hot",
     "stylelint:fix": "stylelint --fix \"**/*.scss\"",
