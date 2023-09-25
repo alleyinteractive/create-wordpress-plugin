@@ -5,13 +5,15 @@ This is a skeleton WordPress plugin that can scaffold a WordPress plugin. This
 template includes a base plugin file, autoloaded PHP files, unit tests powered
 by [Mantle](https://mantle.alley.com/), front-end assets compiled via Webpack,
 and Continuous Integration [via GitHub Actions](.github/workflows). Actions are
-configured to test the plugin and also build it for release. A `main-built`
-branch and `v0.1.0-built` tags will be created with all dependencies included
-for use when submoduling a plugin. The built branches will include Composer
-dependencies and any compiled front-end assets (if using them).
+configured to test the plugin and also build it for releases. A built tag
+workflow will create `*-built` branches as well as a built release workflow that
+will build and tag/release the plugin automatically. The built branches and
+releases will include any compiled front-end assets (if using them).
 
 The plugin supports front-end assets which can be enqueued inside
-`src/assets.php` or from within an entry points `index.php` file. For plugins that don't require front-end assets, the configuration script below will prompt you to delete the front-end files if you don't wish to use them.
+`src/assets.php` or from within an entry points `index.php` file. For plugins
+that don't require front-end assets, the configuration script below will prompt
+you to delete the front-end files if you don't wish to use them.
 
 ## Getting Started
 
@@ -80,16 +82,19 @@ All directories created in the `entries` directory can serve as entry points and
 #### Scaffolding an entry point
 
 To generate a new entry point, run the following command:
+
 ```sh
 npm run create-entry
 ```
 
 To generate a new slotfill, run the following command:
+
 ```sh
 npm run create-slotfill
 ```
 
 The command will prompt the user through several options for creating an entry or slotfill. The entries are scaffolded with the `@alleyinteractive/create-entry` script. Run the help command to see all the options:
+
 ```sh
 npx @alleyinteractive/create-entry --help
 ```
@@ -128,6 +133,18 @@ must include both the major and minor version (e.g., `6.1`). For example:
 ```sh
 npx wp-scripts packages-update --dist-tag=wp-6.1`
 ```
+
+## Releasing the Plugin
+
+The plugin uses a [built release workflow](./.github/workflows/built-release.yml)
+to compile and tag releases. Whenever a new version is detected in the root
+`composer.json` file or in the plugin's headers, the workflow will automatically
+build the plugin and tag it with a new version. The built tag will contain all
+the required front-end assets the plugin may require. This works well for
+publishing to WordPress.org or for submodule-ing.
+
+When you are ready to release a new version of the plugin, you can run
+`npm run release` to start the process of setting up a new release.
 
 ## Changelog
 

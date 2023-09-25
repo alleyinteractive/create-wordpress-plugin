@@ -29,12 +29,12 @@ function register_meta_helper(
 	string|array $object_slugs,
 	string $meta_key,
 	array $args = []
-) : bool {
+): bool {
 
 	// Object type must be either post or term.
 	if ( ! in_array( $object_type, [ 'post', 'term' ], true ) ) {
 		throw new \InvalidArgumentException(
-			__(
+			esc_html__(
 				'Object type must be one of "post", "term".',
 				'create-wordpress-plugin'
 			)
