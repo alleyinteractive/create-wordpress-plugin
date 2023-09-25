@@ -303,7 +303,7 @@ function determine_separator( string $path ): string {
  * @return array<int, string>
  */
 function list_all_files_for_replacement(): array {
-	return explode( PHP_EOL, run( 'grep -R -l .  --exclude LICENSE --exclude configure.php --exclude .phpunit.result.cache --exclude-dir .phpcs --exclude composer.lock --exclude-dir .git --exclude-dir .github --exclude-dir vendor --exclude-dir node_modules --exclude-dir webpack --exclude-dir modules --exclude-dir .phpcs' ) );
+	return explode( PHP_EOL, run( 'grep -R -l .  --exclude LICENSE --exclude configure.php --exclude .phpunit.result.cache --exclude-dir .phpcs --exclude composer.lock --exclude-dir .git --exclude-dir .github --exclude-dir vendor --exclude-dir node_modules --exclude-dir modules --exclude-dir .phpcs' ) );
 }
 
 /**
@@ -561,7 +561,7 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 	}
 
 	remove_assets_readme( true );
-} elseif ( confirm( 'Do you want to delete the front-end files? (Such as package.json, webpack.config.js, etc.)', true ) ) {
+} elseif ( confirm( 'Do you want to delete the front-end files? (Such as package.json, etc.)', true ) ) {
 	echo "Deleting...\n";
 
 	delete_files(
@@ -577,11 +577,7 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 			'package.json',
 			'package-lock.json',
 			'tsconfig.json',
-			'webpack.config.js',
-			'webpack/',
 			'entries/',
-			'services/',
-			'slotfills/',
 			'blocks/',
 			'build/',
 			'bin/',
