@@ -6,6 +6,5 @@
   },
   "include": [
     "**/*",
-    "./.eslintrc.js",
   ]
 }
