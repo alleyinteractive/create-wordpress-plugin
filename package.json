@@ -95,13 +95,13 @@
     "@wordpress/warning": "^2.35.1",
     "@wordpress/widgets": "^3.12.15",
     "@wordpress/wordcount": "^3.35.1",
-    "dompurify": "^3.0.5",
+    "dompurify": "^3.0.6",
     "prop-types": "^15.8.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@alleyinteractive/build-tool": "^0.1.0",
+    "@alleyinteractive/build-tool": "^0.1.1",
     "@alleyinteractive/create-entry": "^0.0.3",
     "@alleyinteractive/eslint-config": "^0.1.4",
     "@alleyinteractive/stylelint-config": "^0.0.2",
