@@ -1,6 +1,6 @@
 {
   "extends": ["@alleyinteractive/eslint-config/typescript-react"],
-  "settings": {
-    "import/resolver": "webpack"
+  "parserOptions": {
+    "project": "./tsconfig.eslint.json"
   }
 }
