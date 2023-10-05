@@ -21,7 +21,7 @@
     "lint": "npm run check-types && eslint --ext .jsx --ext .js --ext .ts --ext .tsx .",
     "postinstall": "rm -rf node_modules/.cache/babel-loader && rm -rf node_modules/.cache/webpack",
     "prebuild": "check-node-version --package",
-    "predev": "check-node-version --package",
+    "prestart": "check-node-version --package",
     "preinstall": "check-node-version --package",
     "prelint:fix": "check-node-version --package",
     "prelint": "check-node-version --package",
