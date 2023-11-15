@@ -15,7 +15,4 @@
 			<directory suffix=".php">tests/unit</directory>
 		</testsuite>
 	</testsuites>
-  <php>
-    <!-- <env name="MANTLE_SQLITE" value="true" /> -->
-  </php>
 </phpunit>
