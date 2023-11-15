@@ -33,7 +33,7 @@ Contributors: author_username
 
 Tags: vendor_name, create-wordpress-plugin
 
-Stable tag: 0.1.0
+Stable tag: 0.0.0
 
 Requires at least: 5.9
 
