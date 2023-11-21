@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @link https://mantle.alley.com/testing/test-framework.html
  */
-class Example_Unit_Test extends TestCase {
+class ExampleUnitTest extends TestCase {
 	/**
 	 * An example unit test. In practice, this should be updated to test a function in isolation.
 	 */
