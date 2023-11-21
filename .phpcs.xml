@@ -53,4 +53,8 @@
   <rule ref="Squiz.Commenting.InlineComment">
     <exclude-pattern>src/assets.php</exclude-pattern>
   </rule>
+
+  <rule ref="WordPress.Files.FileName">
+    <exclude-pattern>tests/*</exclude-pattern>
+  </rule>
 </ruleset>
