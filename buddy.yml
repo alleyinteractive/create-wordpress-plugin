@@ -167,7 +167,7 @@
     value: "root"
     type: "VAR"
   - key: "WP_DB_HOST"
-    value: "mariadb"
+    value: "mysql"
     type: "VAR"
   - key: "WP_SKIP_DB_CREATE"
     value: "true"
