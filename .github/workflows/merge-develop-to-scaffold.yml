@@ -1,3 +1,8 @@
+# This workflow is used on alleyinteractive/create-wordpress-plugin to merge the
+# develop branch into the scaffold branch and is NOT meant to be used on other
+# repositories. This workflow will be deleted automatically when the
+# configuration script is run.
+
 name: Merge Develop to Scaffold Branch
 
 on:
@@ -9,6 +14,7 @@ on:
 jobs:
   merge-develop-to-scaffold:
     name: merge develop to scaffold
+    if: ${{ github.repository == 'alleyinteractive/create-wordpress-plugin' }}
     runs-on: ubuntu-latest
 
     steps:
