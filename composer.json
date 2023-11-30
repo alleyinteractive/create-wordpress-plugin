@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "alleyinteractive/composer-wordpress-autoloader": "^1.0"
     },
     "require-dev": {
