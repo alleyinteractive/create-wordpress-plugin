@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<ruleset name="phpcodesniffer-composer-installer">
+    <description>Coding standards for Composer WordPress Autoload Plugin</description>
+
+    <arg name="extensions" value="php" />
+    <!-- Show sniff codes in all reports, and progress when running -->
+    <arg value="sp" />
+    <!-- Strip the filepaths down to the relevant bit. -->
+    <arg name="basepath" value="." />
+
+    <file>.</file>
+    <exclude-pattern>*/.github/*</exclude-pattern>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>tests/fixtures/*</exclude-pattern>
+
+    <rule ref="PSR12">
+        <!-- Constant visibility can not be declared (yet) as the minimum supported PHP version is 5.3
+             and constant visibility was only introduced in PHP 7.1. -->
+        <exclude name="PSR12.Properties.ConstantVisibility.NotFound" />
+    </rule>
+</ruleset>
