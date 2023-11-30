@@ -9,6 +9,7 @@ on:
 jobs:
   merge-develop-to-scaffold:
     name: merge develop to scaffold
+    if: ${{ github.repository == 'alleyinteractive/create-wordpress-plugin' }}
     runs-on: ubuntu-latest
 
     steps:
