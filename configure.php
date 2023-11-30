@@ -352,7 +352,8 @@ function contributing_message( string $message ): void {
 
 echo "\nWelcome friend to alleyinteractive/create-wordpress-plugin! 😀\nLet's setup your WordPress Plugin 🚀\n\n";
 
-// Always delete the 'merge-develop-to-scaffold.yml' file (this is never used in a scaffolded plugins).
+// Always delete the 'merge-develop-to-scaffold.yml' file (this is never used in
+// a scaffolded plugins).
 delete_files( '.github/workflows/merge-develop-to-scaffold.yml' );
 
 $current_dir = getcwd();
