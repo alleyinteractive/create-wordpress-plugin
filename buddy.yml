@@ -53,7 +53,7 @@
         - "echo \"extension=memcache.so\" >> /usr/local/etc/php/conf.d/buddy.ini"
       services:
         - type: "MYSQL"
-          version: "8.0"
+          version: "1"
           connection:
             host: "mysql"
             port: 3306
