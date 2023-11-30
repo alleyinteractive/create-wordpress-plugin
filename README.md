@@ -39,7 +39,7 @@ Requires at least: 5.9
 
 Tested up to: 6.1
 
-Requires PHP: 8.0
+Requires PHP: 8.1
 
 License: GPL v2 or later
 
