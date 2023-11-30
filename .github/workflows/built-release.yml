@@ -10,6 +10,5 @@ on:
 jobs:
   built-release:
     uses: alleyinteractive/.github/.github/workflows/built-release.yml@main
-    if: ${{ github.repository != 'alleyinteractive/create-wordpress-plugin' }}
     with:
       node: 16
