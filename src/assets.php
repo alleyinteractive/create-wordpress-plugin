@@ -16,7 +16,7 @@ namespace Create_WordPress_Plugin;
  * @return bool        True if the path is valid and the file exists.
  */
 function validate_path( string $path ): bool {
-	return 0 === validate_file( $path ) && file_exists( $path );
+	return ( 0 === validate_file( $path ) || 2 === validate_file( $path ) ) && file_exists( $path );
 }
 
 /**
