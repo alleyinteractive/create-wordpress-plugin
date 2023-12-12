@@ -119,7 +119,7 @@ function load_scripts(): void {
 
 	if ( ! empty( $files ) ) {
 		foreach ( $files as $path ) {
-			if ( 0 === validate_file( $path ) && file_exists( $path ) ) {
+			if ( validate_path( $path ) ) {
 				require_once $path;  // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.IncludingFile, WordPressVIPMinimum.Files.IncludingFile.UsingVariable
 			}
 		}
