@@ -135,9 +135,7 @@ function register_meta_helper(
 function register_post_meta_from_defs(): void {
 	// Ensure the config file exists.
 	$filepath = dirname( __DIR__ ) . '/config/post-meta.json';
-	if ( ! file_exists( $filepath )
-		|| 0 !== validate_file( $filepath )
-	) {
+	if ( ! validate_path( $filepath ) ) {
 		return;
 	}
 
