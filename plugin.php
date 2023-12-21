@@ -106,9 +106,11 @@ function main(): void {
 
 	$feature_manager = new Feature_Manager( $features );
 	// Add a feature using the add_feature method.
-	// $feature_manager->add_feature( 'Create_WordPress_Plugin\Features\Hello', [ 'lyrics' => $lyrics ] );
+	$feature_manager->add_feature( 'Create_WordPress_Plugin\Features\Hello', [ 'lyrics' => $lyrics ] );
 	$feature_manager->boot();
 	// Get the instance of the feature.
 	$hello_feature = $feature_manager->get_feature( 'Create_WordPress_Plugin\Features\Hello' );
+	// Once we have the instance, we can remove hooks from inside the instance.
+	// remove_action( 'admin_head', [ $hello_feature, 'dolly_css' ] );
 }
 main();

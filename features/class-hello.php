@@ -9,6 +9,9 @@ namespace Create_WordPress_Plugin\Features;
 
 use Alley\WP\Types\Feature;
 
+/**
+ * Hello class file
+ */
 final class Hello implements Feature {
 	/**
 	 * Set up.
@@ -27,15 +30,22 @@ final class Hello implements Feature {
 		add_action( 'admin_head', [ $this, 'dolly_css' ] );
 	}
 
+	/**
+	 * Gets a random lyric from the lyric string.
+	 *
+	 * @return void
+	 */
 	public function hello_dolly_get_lyric() {
 		// Here we split the lyrics into lines.
 		$lyrics = explode( "\n", $this->lyrics );
 
 		// And then randomly choose a line.
-		return wptexturize( $lyrics[ mt_rand( 0, count( $lyrics ) - 1 ) ] );
+		return wptexturize( $lyrics[ wp_rand( 0, count( $lyrics ) - 1 ) ] );
 	}
 
-	// This just echoes the chosen line, we'll position it later.
+	/**
+	 * Echos the chosen line.
+	 */
 	public function hello_dolly() {
 		$chosen = $this->hello_dolly_get_lyric();
 		$lang   = '';
@@ -45,13 +55,15 @@ final class Hello implements Feature {
 
 		printf(
 			'<p id="dolly"><span class="screen-reader-text">%s </span><span dir="ltr"%s>%s</span></p>',
-			__( 'Quote from Hello Dolly song, by Jerry Herman:' ),
-			$lang,
-			$chosen
+			esc_html__( 'Quote from Hello Dolly song, by Jerry Herman:' ),
+			esc_attr( $lang ),
+			esc_html( $chosen )
 		);
 	}
 
-	// We need some CSS to position the paragraph.
+	/**
+	 * Output css to position the paragraph.
+	 */
 	public function dolly_css() {
 		echo "
 		<style type='text/css'>
