@@ -58,11 +58,19 @@ if ( ! file_exists( __DIR__ . '/vendor/wordpress-autoload.php' ) ) {
 // Load the plugin's main files.
 require_once __DIR__ . '/src/assets.php';
 require_once __DIR__ . '/src/meta.php';
+require_once __DIR__ . '/src/class-feature-manager.php';
 
 /**
  * Instantiate the plugin.
  */
 function main(): void {
-	// ...
+
+	$features =[
+		'Create_WordPress_Plugin\Features\Featured_Image_Caption' => [],
+	];
+	$features = apply_filters( 'create_wordpress_plugin_features', $features );
+
+	$feature_manager = new Feature_Manager( $features );
+	$feature_manager->boot();
 }
 main();
