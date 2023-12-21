@@ -64,53 +64,10 @@ require_once __DIR__ . '/src/class-feature-manager.php';
  * Instantiate the plugin.
  */
 function main(): void {
-	$lyrics = "Hello, Dolly
-		Well, hello, Dolly
-		It's so nice to have you back where you belong
-		You're lookin' swell, Dolly
-		I can tell, Dolly
-		You're still glowin', you're still crowin'
-		You're still goin' strong
-		I feel the room swayin'
-		While the band's playin'
-		One of our old favorite songs from way back when
-		So, take her wrap, fellas
-		Dolly, never go away again
-		Hello, Dolly
-		Well, hello, Dolly
-		It's so nice to have you back where you belong
-		You're lookin' swell, Dolly
-		I can tell, Dolly
-		You're still glowin', you're still crowin'
-		You're still goin' strong
-		I feel the room swayin'
-		While the band's playin'
-		One of our old favorite songs from way back when
-		So, golly, gee, fellas
-		Have a little faith in me, fellas
-		Dolly, never go away
-		Promise, you'll never go away
-		Dolly'll never go away again";
-
-	// Add a feature using the filter.
-	// add_filter( 'create_wordpress_plugin_features', function ( array $features ) use ( $lyrics ): array {
-	// 	$features[ 'Create_WordPress_Plugin\Features\Hello' ] = [ 'lyrics' => $lyrics ];
-	// 	return $features;
-	// } );
-
-	// Add a feature using the array on construct.
-	$features =[
-		// 'Create_WordPress_Plugin\Features\Hello' => [ 'lyrics' => $lyrics ],
+	$features = [
+		// Add initial features here.
 	];
 	$features = apply_filters( 'create_wordpress_plugin_features', $features );
-
-	$feature_manager = new Feature_Manager( $features );
-	// Add a feature using the add_feature method.
-	$feature_manager->add_feature( 'Create_WordPress_Plugin\Features\Hello', [ 'lyrics' => $lyrics ] );
-	$feature_manager->boot();
-	// Get the instance of the feature.
-	$hello_feature = $feature_manager->get_feature( 'Create_WordPress_Plugin\Features\Hello' );
-	// Once we have the instance, we can remove hooks from inside the instance.
-	// remove_action( 'admin_head', [ $hello_feature, 'dolly_css' ] );
+	Feature_Manager::add_features( $features );
 }
 main();
