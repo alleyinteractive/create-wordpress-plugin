@@ -30,7 +30,7 @@ add_filter( 'create_wordpress_plugin_features', function ( array $features ) use
     return $features;
 } );
 ```
-### Add a feature using the add_features method
+### Add a feature using the `add_features` method
 ```
 $features = [
     'Create_WordPress_Plugin\Features\Hello' => [ 'lyrics' => $lyrics ],
@@ -39,11 +39,11 @@ $features = apply_filters( 'create_wordpress_plugin_features', $features );
 
 Feature_Manager::add_features( $features );
 ```
-### Add a feature using the add_feature method
+### Add a feature using the `add_feature` method
 ```
 Feature_Manager::add_feature( 'Create_WordPress_Plugin\Features\Hello', [ 'lyrics' => $lyrics ] );
 ```
-## Get the instance of an added feature
+## Get the instance of an added feature with the `get_feature` method
 ```
 $hello_feature = Feature_Manager::get_feature( 'Create_WordPress_Plugin\Features\Hello' );
 ```
