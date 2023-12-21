@@ -15,7 +15,7 @@ class Feature_Manager implements Feature {
 	 *
 	 * @var Feature[]
 	 */
-	private array $features;
+	private array $features = [];
 
     /**
      * Have the features been booted?
@@ -30,9 +30,6 @@ class Feature_Manager implements Feature {
 	 * @param Feature ...$features Features.
 	 */
 	public function __construct( array $features_to_create = [] ) {
-        if ( empty( $this->features ) ) {
-            $this->features = [];
-        }
         $this->autoload_features( CREATE_WORDPRESS_PLUGIN_DIR . '/features' );
 
         foreach ( $features_to_create as $feature_class => $args ) {
@@ -44,9 +41,6 @@ class Feature_Manager implements Feature {
 	 * Boot the feature.
 	 */
 	public function boot(): void {
-        // if ( empty( $this->features ) ) {
-        //     $this->features = [];
-        // }
 		foreach ( $this->features as $feature ) {
 			$feature->boot();
 		}
@@ -65,25 +59,28 @@ class Feature_Manager implements Feature {
     /**
      * Add a feature to the plugin.
      *
-     * @param Feature $feature The new feature.
-     * @return void
+     * @param string $feature_class The feature class to add.
+     * @param array  $args          The arguments to pass to the feature constructor.
+     * @return Feature The feature that was added.
      */
-    public function add_feature( Feature $feature ) {
+    public function add_feature( string $feature_class, array $args = [] ) {
+        $feature = new $feature_class( ...$args );
         $this->features[] = $feature;
         if ( $this->booted ) {
             $feature->boot();
         }
+        return $feature;
     }
 
     /**
-     * Get a feature by name.
+     * Get a feature by class name.
      *
      * @param string $feature_name The name of the feature to get.
      * @return Feature|null The feature or null if it doesn't exist.
      */
     public function get_feature( string $feature_name ) {
         foreach ( $this->features as $feature ) {
-            if ( $feature->get_name() === $feature_name ) {
+            if ( get_class( $feature ) === $feature_name ) {
                 return $feature;
             }
         }
@@ -92,6 +89,7 @@ class Feature_Manager implements Feature {
 
     /**
      * Autoload features from a directory.
+     * This only includes the files. It does not boot the features.
      *
      * @param string $path The directory path.
      * @return void
