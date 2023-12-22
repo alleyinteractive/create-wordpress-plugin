@@ -33,9 +33,9 @@ final class Hello implements Feature {
 	/**
 	 * Gets a random lyric from the lyric string.
 	 *
-	 * @return void
+	 * @return string
 	 */
-	public function hello_dolly_get_lyric() {
+	public function hello_dolly_get_lyric(): string {
 		// Here we split the lyrics into lines.
 		$lyrics = explode( "\n", $this->lyrics );
 
@@ -46,7 +46,7 @@ final class Hello implements Feature {
 	/**
 	 * Echos the chosen line.
 	 */
-	public function hello_dolly() {
+	public function hello_dolly(): void {
 		$chosen = $this->hello_dolly_get_lyric();
 		$lang   = '';
 		if ( 'en_' !== substr( get_user_locale(), 0, 3 ) ) {
@@ -64,7 +64,7 @@ final class Hello implements Feature {
 	/**
 	 * Output css to position the paragraph.
 	 */
-	public function dolly_css() {
+	public function dolly_css(): void {
 		echo "
 		<style type='text/css'>
 		#dolly {
