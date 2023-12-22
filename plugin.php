@@ -63,7 +63,7 @@ require_once __DIR__ . '/src/meta.php';
  * Instantiate the plugin.
  */
 function main(): void {
-	// This should be an array with keys set to feature classnames and arguments
+	// This should be an array with keys set to feature classnames and arguments.
 	$features = [
 		// Add initial features here.
 	];

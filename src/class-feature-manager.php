@@ -7,8 +7,11 @@
 
 namespace Create_WordPress_Plugin;
 
-use \Alley\WP\Types\Feature;
+use Alley\WP\Types\Feature;
 
+/**
+ * The Feature Manager class.
+ */
 class Feature_Manager {
 	/**
 	 * Collected features.
@@ -46,7 +49,9 @@ class Feature_Manager {
 	 * @param array  $args          The arguments to pass to the feature constructor.
 	 *
 	 * @phpstan-param array{string?: mixed} $args
+	 *
 	 * @return object The instatiated feature that was added.
+	 * @throws \Exception If the feature class does not implement Feature.
 	 */
 	public static function add_feature( string $feature_class, array $args = [] ): object {
 		if ( ! in_array( Feature::class, class_implements( $feature_class ) ?: [], true ) ) {
