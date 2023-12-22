@@ -33,6 +33,9 @@ Feature_Manager::add_features( $features );
 ```
 
 > 💡 If you `apply_filters` to the features array before passing it to `add_features`, you can modify it with a filter.
+```
+$features = apply_filters( 'create_wordpress_plugin_features', $features );
+```
 
 ### Add a feature using the `add_feature` method
 ```
