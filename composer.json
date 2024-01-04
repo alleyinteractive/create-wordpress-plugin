@@ -14,16 +14,10 @@
             "email": "email@domain.com"
         }
     ],
-    "repositories": [
-        {
-            "type": "github",
-            "url": "https://github.com/alleyinteractive/wp-type-extensions"
-        }
-    ],
     "require": {
         "php": "^8.1",
         "alleyinteractive/composer-wordpress-autoloader": "^1.0",
-        "alleyinteractive/wp-type-extensions": "dev-main"
+        "alleyinteractive/wp-type-extensions": "^1.0"
     },
     "require-dev": {
         "alleyinteractive/alley-coding-standards": "^2.0",
