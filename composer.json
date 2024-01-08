@@ -21,7 +21,9 @@
     },
     "require-dev": {
         "alleyinteractive/alley-coding-standards": "^2.0",
+        "humbug/php-scoper": "^0.18",
         "mantle-framework/testkit": "^1.0",
+        "sniccowp/php-scoper-wordpress-excludes": "^6.4",
         "szepeviktor/phpstan-wordpress": "^1.1"
     },
     "config": {
@@ -54,6 +56,10 @@
         "phpcs": "phpcs .",
         "phpunit": "phpunit",
         "phpstan": "phpstan --memory-limit=512M",
+        "scoper": [
+          "php-scoper add-prefix -c .scoper/config.php -f",
+          "rsync -vha --delete ./build/ ./ && rm -rf ./build"
+        ],
         "test": [
             "@phpcs",
             "@phpstan",
