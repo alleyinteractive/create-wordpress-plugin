@@ -512,6 +512,15 @@ $search_and_replace = [
 	'plugin.php'                  => $plugin_file,
 ];
 
+// Search and replaces performed after the initial replacements to reference
+// back to @alleyinteractive.
+$cleanup_search_and_replaces = [
+	"@{$vendor_slug}/{$plugin_name_slug}" => "@{$vendor_slug}/{$plugin_name_slug}",
+	"\"{$vendor_slug}/"                   => '"alleyinteractive/',
+	"@{$vendor_slug}"                     => '@alleyinteractive',
+	"\"name\": \"{$vendor_slug}\""        => '"name": "alleyinteractive"',
+];
+
 // Patch the Composer.json namespace first before search and replace.
 run(
 	'composer config extra.wordpress-autoloader.autoload --json \'' . json_encode( [
@@ -529,6 +538,7 @@ foreach ( list_all_files_for_replacement() as $path ) {
 	echo "Updating $path...\n";
 
 	replace_in_file( $path, $search_and_replace );
+	replace_in_file( $path, $cleanup_search_and_replaces );
 
 	if ( str_contains( $path, determine_separator( 'src/class-example-plugin.php' ) ) ) {
 		rename( $path, determine_separator( './src/class-' . str_replace( '_', '-', strtolower( $class_name ) ) . '.php' ) );
