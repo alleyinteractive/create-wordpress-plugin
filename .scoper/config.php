@@ -53,7 +53,7 @@ return [
 
     // The base output directory for the prefixed files.
     // This will be overridden by the 'output-dir' command line option if present.
-    'output-dir' => $baseDir.'/.scoped/build',
+    'output-dir' => $baseDir.'/.scoper/build',
 
     // By default when running php-scoper add-prefix, it will prefix all relevant code found in the current working
     // directory. You can however define which files should be scoped by defining a collection of Finders in the
