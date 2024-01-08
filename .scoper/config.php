@@ -9,6 +9,10 @@ ini_set('memory_limit', '512M');
 
 $baseDir = dirname(__DIR__);
 
+if (!is_dir($baseDir.'/vendor')) {
+	throw new RuntimeException('Unable to find the vendor directory, have you executed composer install?');
+}
+
 // You can do your own things here, e.g. collecting symbols to expose dynamically
 // or files to exclude.
 // However beware that this file is executed by PHP-Scoper, hence if you are using
@@ -49,7 +53,7 @@ return [
 
     // The base output directory for the prefixed files.
     // This will be overridden by the 'output-dir' command line option if present.
-    // 'output-dir' => $baseDir.'/scoped',
+    'output-dir' => $baseDir.'/.scoped/build',
 
     // By default when running php-scoper add-prefix, it will prefix all relevant code found in the current working
     // directory. You can however define which files should be scoped by defining a collection of Finders in the

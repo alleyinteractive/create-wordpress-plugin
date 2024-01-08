@@ -58,7 +58,7 @@
         "phpstan": "phpstan --memory-limit=512M",
         "scoper": [
           "php-scoper add-prefix -c .scoper/config.php -f",
-          "rsync -vha --delete ./build/ ./ && rm -rf ./build"
+          "rsync -av ./build/ ./ && rm -rf ./build"
         ],
         "test": [
             "@phpcs",

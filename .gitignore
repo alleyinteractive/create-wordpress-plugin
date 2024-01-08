@@ -1,6 +1,7 @@
 # Build files
 build
 vendor
+.scoped/build
 composer.lock
 node_modules
 
