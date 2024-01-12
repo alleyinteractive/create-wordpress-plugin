@@ -1,0 +1,16 @@
+name: Feature
+
+inputs:
+  - name: feature-name
+    description: "Feature Name"
+    type: string
+  - name: tests
+    description: "Include Tests"
+    type: boolean
+
+files:
+  - source: feature.stub
+    destination: src/features/${{ inputs.feature }}.php
+  - source: test.stub
+    if: ${{ inputs.tests }}
+    destination: tests/features/test-${{ inputs.feature }}.php
