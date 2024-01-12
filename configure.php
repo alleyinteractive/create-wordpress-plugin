@@ -512,6 +512,14 @@ $search_and_replace = [
 	'plugin.php'                  => $plugin_file,
 ];
 
+// A more refined list of search and replaces for files that contain references
+// back to @alleyinteractive and should stay that way.
+$refined_search_and_replaces = [
+	'alleyinteractive/create-wordpress-plugin' => "{$vendor_slug}/{$plugin_name_slug}",
+	'A skeleton WordPress plugin'              => $description,
+	'""alleyinteractive""'                     => "\"{$vendor_slug}\"",
+	'"create-wordpress-plugin"'                => "\"{$plugin_name_slug}\"",
+
 // Search and replaces performed after the initial replacements to reference
 // back to @alleyinteractive.
 $cleanup_search_and_replaces = [
