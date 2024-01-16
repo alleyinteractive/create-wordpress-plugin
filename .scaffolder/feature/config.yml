@@ -11,7 +11,7 @@ inputs:
 
 files:
   - source: feature.njk
-    destination: src/features/${{ inputs.featureName | wpClassFilename }}.php
+    destination: src/features/class-${{ inputs.featureName | wpClassFilename }}.php
   - source: test.njk
     if: ${{ inputs.tests }}
     destination: tests/features/test-${{ inputs.featureName | wpClassFilename }}.php
