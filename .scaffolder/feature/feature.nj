@@ -1,6 +1,6 @@
 <?php
 /**
- * {{ className }} class file
+ * ${{ inputs.featureName | wpClassName }} class file
  *
  * @package Create_WordPress_Plugin
  */
@@ -10,9 +10,9 @@ namespace Create_WordPress_Plugin\Features;
 use Alley\WP\Types\Feature;
 
 /**
- * {{ className.replace( '_', ' ' ) }} Feature
+ * ${{ inputs.featureName | wpClassName | replace('_', ' ') }} Feature
  */
-final class {{ className }} implements Feature {
+final class ${{ inputs.featureName | wpClassName }} implements Feature {
 	/**
 	 * Set up the feature.
 	 */

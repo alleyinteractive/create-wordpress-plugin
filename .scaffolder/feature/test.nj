@@ -1,6 +1,6 @@
 <?php
 /**
- * {{ className }} test class file
+ * ${{ name | wpClassName }} test class file
  *
  * @package create-wordpress-plugin
  */
@@ -10,11 +10,11 @@ namespace Create_WordPress_Plugin\Tests\Feature;
 use Create_WordPress_Plugin\Tests\TestCase;
 
 /**
- * {{ className.replace( '_', ' ' ) }} Test
+ * ${{ nputs.featureName | wpClassName | replace('_', ' ') }} Test
  *
  * @link https://mantle.alley.com/docs/testing
  */
-class {{ className }} extends TestCase {
+class ${{ inputs.featureName | wpClassName }} extends TestCase {
 	/**
 	 * An example test for the feature.
 	 */

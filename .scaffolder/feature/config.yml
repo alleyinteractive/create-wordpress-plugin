@@ -1,16 +1,17 @@
-name: Feature
+name: Plugin Feature
 
 inputs:
-  - name: feature-name
+  - name: featureName
     description: "Feature Name"
     type: string
   - name: tests
-    description: "Include Tests"
+    description: "Include Tests?"
     type: boolean
+    default: true
 
 files:
   - source: feature.stub
-    destination: src/features/${{ inputs.feature }}.php
+    destination: src/features/${{ inputs.featureName | wpClassFilename }}.php
   - source: test.stub
     if: ${{ inputs.tests }}
-    destination: tests/features/test-${{ inputs.feature }}.php
+    destination: tests/features/test-${{ inputs.featureName | wpClassFilename }}.php
