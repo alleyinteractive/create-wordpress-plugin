@@ -10,8 +10,8 @@ inputs:
     default: true
 
 files:
-  - source: feature.njk
-    destination: src/features/class-${{ inputs.featureName | wpClassFilename }}.php
-  - source: test.njk
+  - source: feature.stub
+    destination: src/features/${{ inputs.featureName | wpClassFilename }}
+  - source: test.stub
     if: ${{ inputs.tests }}
-    destination: tests/features/test-${{ inputs.featureName | wpClassFilename }}.php
+    destination: tests/features/${{ inputs.featureName | wpClassFilename('test-') }}
