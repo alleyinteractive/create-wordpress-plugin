@@ -5,7 +5,7 @@
  * @package Create_WordPress_Plugin
  */
 
-namespace Create_WordPress_Plugin\${{ namespace }};
+namespace Create_WordPress_Plugin\${{ inputs.featureName | wpNamespace('Features') }};
 
 use Alley\WP\Types\Feature;
 

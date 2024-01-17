@@ -14,4 +14,4 @@ files:
     destination: src/features/${{ inputs.featureName | wpClassFilename }}
   - source: test.stub
     if: ${{ inputs.tests }}
-    destination: tests/features/${{ inputs.featureName | wpClassFilename('test-') }}
+    destination: tests/Features/${{ inputs.featureName | psrClassFilename('', 'Test.php') }}

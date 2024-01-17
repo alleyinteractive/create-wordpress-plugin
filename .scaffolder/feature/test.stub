@@ -1,20 +1,21 @@
 <?php
 /**
- * ${{ name | wpClassName }} test class file
+ * ${{ name | psrClassName }} test class file
  *
  * @package create-wordpress-plugin
  */
 
-namespace Create_WordPress_Plugin\Tests\Feature;
+namespace Create_WordPress_Plugin\${{ inputs.featureName | wpNamespace('Tests\\Features') }};
 
 use Create_WordPress_Plugin\Tests\TestCase;
+use Create_WordPress_Plugin\${{ inputs.featureName | wpNamespace('Features') }}\${{ inputs.featureName | wpClassName }};
 
 /**
- * ${{ inputs.featureName | wpClassName | replace('_', ' ') }} Test
+ * ${{ inputs.featureName | psrClassName | replace('_', ' ') }} Test for the ${{ inputs.featureName | wpClassName }} class.
  *
  * @link https://mantle.alley.com/docs/testing
  */
-class ${{ inputs.featureName | wpClassName }} extends TestCase {
+class ${{ inputs.featureName | psrClassName }} extends TestCase {
 	/**
 	 * An example test for the feature.
 	 */
