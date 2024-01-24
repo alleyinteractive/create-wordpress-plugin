@@ -1,4 +1,4 @@
-name: Plugin Feature
+name: create-wordpress-plugin@feature
 
 inputs:
   - name: featureName
