@@ -5,17 +5,17 @@
  * @package create-wordpress-plugin
  */
 
-namespace Create_WordPress_Plugin\{{ wpNamespace inputs.featureName prefix="Tests\\Features" }};
+namespace Create_WordPress_Plugin\\{{ wpNamespace inputs.featureName prefix="Tests\Features" }};
 
 use Create_WordPress_Plugin\Tests\TestCase;
-use Create_WordPress_Plugin\{{ wpNamespace inputs.featureName prefix="Features" }}\{{ wpClassName inputs.featureName }};
+use Create_WordPress_Plugin\\{{ wpNamespace inputs.featureName prefix="Features" }}\\{{ wpClassName inputs.featureName }};
 
 /**
  * {{ replace (psrClassName inputs.featureName) "_" " " }} Test for the {{ wpClassName inputs.featureName }} class.
  *
  * @link https://mantle.alley.com/docs/testing
  */
-class {{ psrClassName inputs.featureName }} extends TestCase {
+class {{ psrClassName inputs.featureName suffix="Test" }} extends TestCase {
 	/**
 	 * An example test for the feature.
 	 */
