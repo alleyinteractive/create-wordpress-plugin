@@ -10,8 +10,8 @@ inputs:
     default: true
 
 files:
-  - source: feature.stub
-    destination: src/features/${{ inputs.featureName | wpClassFilename }}
-  - source: test.stub
-    if: ${{ inputs.tests }}
-    destination: tests/Features/${{ inputs.featureName | psrClassFilename('', 'Test.php') }}
+  - source: feature.php.hbs
+    destination: src/features/{{ wpClassFilename inputs.featureName }}
+  - source: test.php.hbs
+    if: {{ inputs.tests }}
+    destination: tests/Features/{{ psrClassFilename inputs.featureName suffix="Test.php" }}
