@@ -303,7 +303,39 @@ function determine_separator( string $path ): string {
  * @return array<int, string>
  */
 function list_all_files_for_replacement(): array {
-	return explode( PHP_EOL, run( 'grep -R -l .  --exclude LICENSE --exclude configure.php --exclude .phpunit.result.cache --exclude-dir .phpcs --exclude composer.lock --exclude-dir .git --exclude-dir .github --exclude-dir vendor --exclude-dir node_modules --exclude-dir modules --exclude-dir .phpcs' ) );
+	$exclude = [
+		'LICENSE',
+		'configure.php',
+		'.phpunit.result.cache',
+		'.phpcs',
+		'composer.lock',
+	];
+
+	$exclude_dirs = [
+		'.git',
+		'pantheon-mu-plugin',
+		'vendor',
+		'node_modules',
+		'.phpcs',
+		'.scaffolder',
+	];
+
+	$exclude = array_map(
+		fn ( string $file ) => "--exclude {$file}",
+		$exclude,
+	);
+
+	$exclude_dirs = array_map(
+		fn ( string $dir ) => "--exclude-dir {$dir}",
+		$exclude_dirs,
+	);
+
+	return explode(
+		PHP_EOL,
+		run(
+			"grep -R -l . " . implode( ' ', $exclude_dirs ) . ' ' . implode( ' ', $exclude ),
+		),
+	);
 }
 
 /**
