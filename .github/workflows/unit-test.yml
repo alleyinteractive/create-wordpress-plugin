@@ -17,6 +17,5 @@ jobs:
         wordpress: ["latest"]
     uses: alleyinteractive/.github/.github/workflows/php-tests.yml@main
     with:
-      database: ''
       php: ${{ matrix.php }}
       wordpress: ${{ matrix.wordpress }}

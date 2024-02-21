@@ -350,6 +350,36 @@ function contributing_message( string $message ): void {
 	echo "\t\e]8;;https://github.com/alleyinteractive/.github/blob/main/CONTRIBUTING.md#best-practices\e\\CONTRIBUTING.md\e]8;;\e\\\n\n";
 }
 
+function enable_sqlite_testing(): void {
+	if ( ! file_exists( __DIR__ . '/phpunit.xml' ) ) {
+		return;
+	}
+
+	file_put_contents(
+		__DIR__ . '/phpunit.xml',
+		str_replace(
+			'<!-- <env name="MANTLE_USE_SQLITE" value="true" />  -->',
+			'<env name="MANTLE_USE_SQLITE" value="true" />',
+			(string) file_get_contents( __DIR__ . '/phpunit.xml' ),
+		),
+	);
+
+	if ( file_exists( __DIR__ . '/.github/workflows/unit-test.yml' ) ) {
+		file_put_contents(
+			__DIR__ . '/.github/workflows/unit-test.yml',
+			str_replace(
+				'with:',
+				"with:\n      database: 'false'",
+				(string) file_get_contents( __DIR__ . '/.github/workflows/unit-test.yml' ),
+			),
+		);
+	}
+}
+
+// ---------------------------------------------------------
+// Start of the script. Above this line are the functions.
+// ---------------------------------------------------------
+
 echo "\nWelcome friend to alleyinteractive/create-wordpress-plugin! 😀\nLet's setup your WordPress Plugin 🚀\n\n";
 
 // Always delete the 'merge-develop-to-scaffold.yml' file (this is never used in
@@ -715,6 +745,10 @@ if (
 	if ( confirm( 'Do you want to remove the git repository for the plugin?', true ) ) {
 		delete_files( '.git' );
 	}
+}
+
+if ( $standalone && confirm( 'Do you want to use SQLite for unit testing?', true ) ) {
+	enable_sqlite_testing();
 }
 
 // Offer to delete the built asset workflows if built assets aren't needed.
