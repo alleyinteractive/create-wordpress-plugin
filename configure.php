@@ -359,7 +359,7 @@ function enable_sqlite_testing(): void {
 		__DIR__ . '/phpunit.xml',
 		str_replace(
 			[
-				'<!-- <env name="MANTLE_USE_SQLITE" value="true" />  -->',
+				'<!-- <env name="MANTLE_USE_SQLITE" value="true" /> -->',
 				'<!-- <env name="WP_SKIP_DB_CREATE" value="true" /> -->',
 			],
 			[
