@@ -7,8 +7,6 @@
  * @package create-wordpress-plugin
  */
 
-putenv( 'MANTLE_CI_BRANCH=feature/sqlite-wordpress' );
-
 /**
  * Visit {@see https://mantle.alley.com/testing/test-framework.html} to learn more.
  */

@@ -350,7 +350,7 @@ function contributing_message( string $message ): void {
 	echo "\t\e]8;;https://github.com/alleyinteractive/.github/blob/main/CONTRIBUTING.md#best-practices\e\\CONTRIBUTING.md\e]8;;\e\\\n\n";
 }
 
-function enable_sqlite_testing(): void {
+function nable_sqlite_testing(): void {
 	if ( ! file_exists( __DIR__ . '/phpunit.xml' ) ) {
 		return;
 	}
@@ -358,8 +358,14 @@ function enable_sqlite_testing(): void {
 	file_put_contents(
 		__DIR__ . '/phpunit.xml',
 		str_replace(
-			'<!-- <env name="MANTLE_USE_SQLITE" value="true" />  -->',
-			'<env name="MANTLE_USE_SQLITE" value="true" />',
+			[
+				'<!-- <env name="MANTLE_USE_SQLITE" value="true" />  -->',
+				'<!-- <env name="WP_SKIP_DB_CREATE" value="true" /> -->',
+			],
+			[
+				'<env name="MANTLE_USE_SQLITE" value="true" />',
+				'<env name="WP_SKIP_DB_CREATE" value="true" />',
+			],
 			(string) file_get_contents( __DIR__ . '/phpunit.xml' ),
 		),
 	);
@@ -369,7 +375,7 @@ function enable_sqlite_testing(): void {
 			__DIR__ . '/.github/workflows/unit-test.yml',
 			str_replace(
 				'with:',
-				"with:\n      database: 'false'",
+				"with:\n      database: ''",
 				(string) file_get_contents( __DIR__ . '/.github/workflows/unit-test.yml' ),
 			),
 		);
@@ -747,7 +753,7 @@ if (
 	}
 }
 
-if ( $standalone && confirm( 'Do you want to use SQLite for unit testing?', true ) ) {
+if ( $standalone && confirm( 'Do you want to use SQLite for unit testing? (This is a great way to speed up your tests!)', true ) ) {
 	enable_sqlite_testing();
 }
 
