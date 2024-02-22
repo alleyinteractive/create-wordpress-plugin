@@ -1,4 +1,12 @@
-<phpunit bootstrap="tests/bootstrap.php" backupGlobals="false" colors="true" convertDeprecationsToExceptions="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true">
+<?xml version="1.0"?>
+<phpunit
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+  bootstrap="tests/bootstrap.php"
+  backupGlobals="false"
+  colors="true"
+  cacheDirectory=".phpunit.cache"
+>
   <testsuites>
     <testsuite name="Feature">
       <directory suffix=".php">tests/Feature</directory>
@@ -7,4 +15,7 @@
       <directory suffix=".php">tests/Unit</directory>
     </testsuite>
   </testsuites>
+  <php>
+    <!-- <env name="MANTLE_USE_SQLITE" value="true" />  -->
+  </php>
 </phpunit>

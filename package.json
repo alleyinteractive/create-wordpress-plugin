@@ -40,8 +40,8 @@
     "test": "jest --passWithNoTests"
   },
   "dependencies": {
-    "@alleyinteractive/block-editor-tools": "^0.6.1",
-    "@types/jest": "^29.5.11",
+    "@alleyinteractive/block-editor-tools": "^0.6.2",
+    "@types/jest": "^29.5.12",
     "@types/wordpress__block-editor": "^11.5.0",
     "@wordpress/a11y": "^3.35.1",
     "@wordpress/annotations": "^2.35.8",
