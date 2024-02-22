@@ -5,7 +5,7 @@
   bootstrap="tests/bootstrap.php"
   backupGlobals="false"
   colors="true"
-  cacheDirectory=".phpunit.cache"
+  cacheDirectory=".phpunit.result.cache"
 >
   <testsuites>
     <testsuite name="Feature">
