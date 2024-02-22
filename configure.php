@@ -350,7 +350,7 @@ function contributing_message( string $message ): void {
 	echo "\t\e]8;;https://github.com/alleyinteractive/.github/blob/main/CONTRIBUTING.md#best-practices\e\\CONTRIBUTING.md\e]8;;\e\\\n\n";
 }
 
-function nable_sqlite_testing(): void {
+function enable_sqlite_testing(): void {
 	if ( ! file_exists( __DIR__ . '/phpunit.xml' ) ) {
 		return;
 	}
