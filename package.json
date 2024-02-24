@@ -100,7 +100,7 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@alleyinteractive/build-tool": "^0.1.3",
+    "@alleyinteractive/build-tool": "^0.1.4",
     "@alleyinteractive/create-entry": "^0.0.4",
     "@alleyinteractive/eslint-config": "^0.1.5",
     "@alleyinteractive/stylelint-config": "^0.0.2",
