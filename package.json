@@ -102,7 +102,7 @@
   "devDependencies": {
     "@alleyinteractive/build-tool": "^0.1.4",
     "@alleyinteractive/create-entry": "^0.0.4",
-    "@alleyinteractive/eslint-config": "^0.1.5",
+    "@alleyinteractive/eslint-config": "^0.1.6",
     "@alleyinteractive/stylelint-config": "^0.0.2",
     "@babel/preset-env": "^7.23.9",
     "@wordpress/babel-preset-default": "^7.19.1",
