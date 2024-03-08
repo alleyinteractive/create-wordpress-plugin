@@ -85,7 +85,7 @@
       type: "BUILD"
       working_directory: "/buddy/create-wordpress-plugin"
       docker_image_name: "library/node"
-      docker_image_tag: "16"
+      docker_image_tag: "20"
       execute_commands:
         - "npm audit --audit-level=high --production --cache /buddy/create-wordpress-plugin/.npm"
       volume_mappings:
@@ -96,7 +96,7 @@
       type: "BUILD"
       working_directory: "/buddy/create-wordpress-plugin"
       docker_image_name: "library/node"
-      docker_image_tag: "16"
+      docker_image_tag: "20"
       execute_commands:
         - "npm ci --cache /buddy/create-wordpress-plugin/.npm"
       volume_mappings:
@@ -107,7 +107,7 @@
       type: "BUILD"
       working_directory: "/buddy/create-wordpress-plugin"
       docker_image_name: "library/node"
-      docker_image_tag: "16"
+      docker_image_tag: "20"
       execute_commands:
         - "npm run lint"
       volume_mappings:
@@ -119,7 +119,7 @@
       type: "BUILD"
       working_directory: "/buddy/create-wordpress-plugin"
       docker_image_name: "library/node"
-      docker_image_tag: "16"
+      docker_image_tag: "20"
       execute_commands:
         - "npm run stylelint"
       volume_mappings:
@@ -130,7 +130,7 @@
       type: "BUILD"
       working_directory: "/buddy/create-wordpress-plugin"
       docker_image_name: "library/node"
-      docker_image_tag: "16"
+      docker_image_tag: "20"
       execute_commands:
         - "npm run test"
       volume_mappings:
@@ -141,7 +141,7 @@
       type: "BUILD"
       working_directory: "/buddy/create-wordpress-plugin"
       docker_image_name: "library/node"
-      docker_image_tag: "16"
+      docker_image_tag: "20"
       execute_commands:
         - "npm run build"
       volume_mappings:
