@@ -41,7 +41,7 @@
     "test": "jest --passWithNoTests"
   },
   "dependencies": {
-    "@alleyinteractive/block-editor-tools": "^0.6.4",
+    "@alleyinteractive/block-editor-tools": "^0.7.0",
     "@wordpress/block-editor": "^12.10.14",
     "@wordpress/blocks": "^12.19.13",
     "@wordpress/components": "^25.8.14",
