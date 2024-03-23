@@ -58,7 +58,7 @@
     "@alleyinteractive/create-entry": "^0.0.4",
     "@alleyinteractive/eslint-config": "^0.1.6",
     "@alleyinteractive/stylelint-config": "^0.0.2",
-    "@babel/preset-env": "^7.24.0",
+    "@babel/preset-env": "^7.24.3",
     "@types/jest": "^29.5.12",
     "@types/wordpress__block-editor": "^11.5.11",
     "@types/wordpress__blocks": "^12.5.13",
