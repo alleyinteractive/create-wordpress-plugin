@@ -48,7 +48,7 @@
     "@wordpress/edit-post": "^7.19.16",
     "@wordpress/i18n": "^4.42.13",
     "@wordpress/plugins": "^6.10.14",
-    "dompurify": "^3.0.9",
+    "dompurify": "^3.0.11",
     "prop-types": "^15.8.1",
     "react": "18.2.0",
     "react-dom": "18.2.0"
