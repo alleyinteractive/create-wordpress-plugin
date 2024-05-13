@@ -17,6 +17,8 @@
 
 namespace Create_WordPress_Plugin;
 
+use Alley\WP\Features\Group;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -63,11 +65,8 @@ require_once __DIR__ . '/src/meta.php';
  * Instantiate the plugin.
  */
 function main(): void {
-	// This should be an array with keys set to feature classnames and arguments.
-	$features = [
-		// Add initial features here.
-	];
-	$features = apply_filters( 'create_wordpress_plugin_features', $features );
-	Feature_Manager::add_features( $features );
+	// Add features here.
+	$plugin = new Group();
+	$plugin->boot();
 }
 main();
