@@ -18,4 +18,3 @@ function main(): void {
 
 	$plugin->boot();
 }
-
