@@ -17,8 +17,6 @@
 
 namespace Create_WordPress_Plugin;
 
-use Alley\WP\Features\Group;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -61,13 +59,8 @@ if ( ! file_exists( __DIR__ . '/vendor/wordpress-autoload.php' ) ) {
 require_once __DIR__ . '/functions.php';
 require_once __DIR__ . '/src/assets.php';
 require_once __DIR__ . '/src/meta.php';
+require_once __DIR__ . '/src/main.php';
 
-/**
- * Instantiate the plugin.
- */
-function main(): void {
-	// Add features here.
-	$plugin = new Group();
-	$plugin->boot();
-}
+load_scripts();
+register_post_meta_from_defs();
 main();

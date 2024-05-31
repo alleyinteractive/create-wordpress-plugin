@@ -125,5 +125,3 @@ function load_scripts(): void {
 		}
 	}
 }
-
-load_scripts();
