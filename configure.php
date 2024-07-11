@@ -303,7 +303,39 @@ function determine_separator( string $path ): string {
  * @return array<int, string>
  */
 function list_all_files_for_replacement(): array {
-	return explode( PHP_EOL, run( 'grep -R -l .  --exclude LICENSE --exclude configure.php --exclude .phpunit.result.cache --exclude-dir .phpcs --exclude composer.lock --exclude-dir .git --exclude-dir .github --exclude-dir vendor --exclude-dir node_modules --exclude-dir modules --exclude-dir .phpcs' ) );
+	$exclude = [
+		'LICENSE',
+		'configure.php',
+		'.phpunit.result.cache',
+		'.phpcs',
+		'composer.lock',
+	];
+
+	$exclude_dirs = [
+		'.git',
+		'pantheon-mu-plugin',
+		'vendor',
+		'node_modules',
+		'.phpcs',
+		'.scaffolder',
+	];
+
+	$exclude = array_map(
+		fn ( string $file ) => "--exclude {$file}",
+		$exclude,
+	);
+
+	$exclude_dirs = array_map(
+		fn ( string $dir ) => "--exclude-dir {$dir}",
+		$exclude_dirs,
+	);
+
+	return explode(
+		PHP_EOL,
+		run(
+			"grep -R -l . " . implode( ' ', $exclude_dirs ) . ' ' . implode( ' ', $exclude ),
+		),
+	);
 }
 
 /**
@@ -349,6 +381,42 @@ function contributing_message( string $message ): void {
 	write( "\n{$message}\n" );
 	echo "\t\e]8;;https://github.com/alleyinteractive/.github/blob/main/CONTRIBUTING.md#best-practices\e\\CONTRIBUTING.md\e]8;;\e\\\n\n";
 }
+
+function enable_sqlite_testing(): void {
+	if ( ! file_exists( __DIR__ . '/phpunit.xml' ) ) {
+		return;
+	}
+
+	file_put_contents(
+		__DIR__ . '/phpunit.xml',
+		str_replace(
+			[
+				'<!-- <env name="MANTLE_USE_SQLITE" value="true" /> -->',
+				'<!-- <env name="WP_SKIP_DB_CREATE" value="true" /> -->',
+			],
+			[
+				'<env name="MANTLE_USE_SQLITE" value="true" />',
+				'<env name="WP_SKIP_DB_CREATE" value="true" />',
+			],
+			(string) file_get_contents( __DIR__ . '/phpunit.xml' ),
+		),
+	);
+
+	if ( file_exists( __DIR__ . '/.github/workflows/unit-test.yml' ) ) {
+		file_put_contents(
+			__DIR__ . '/.github/workflows/unit-test.yml',
+			str_replace(
+				'with:',
+				"with:\n      database: ''",
+				(string) file_get_contents( __DIR__ . '/.github/workflows/unit-test.yml' ),
+			),
+		);
+	}
+}
+
+// ---------------------------------------------------------
+// Start of the script. Above this line are the functions.
+// ---------------------------------------------------------
 
 echo "\nWelcome friend to alleyinteractive/create-wordpress-plugin! 😀\nLet's setup your WordPress Plugin 🚀\n\n";
 
@@ -715,6 +783,10 @@ if (
 	if ( confirm( 'Do you want to remove the git repository for the plugin?', true ) ) {
 		delete_files( '.git' );
 	}
+}
+
+if ( $standalone && confirm( 'Do you want to use SQLite for unit testing? (This is a great way to speed up your tests!)', true ) ) {
+	enable_sqlite_testing();
 }
 
 // Offer to delete the built asset workflows if built assets aren't needed.

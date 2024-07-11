@@ -7,9 +7,6 @@
 
 namespace Create_WordPress_Plugin;
 
-// Register custom meta fields.
-register_post_meta_from_defs();
-
 /**
  * Register meta for posts or terms with sensible defaults and sanitization.
  *
