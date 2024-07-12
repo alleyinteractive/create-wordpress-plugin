@@ -105,7 +105,12 @@ return [
 	// List of excluded namespaces.
 	// For more see: https://github.com/humbug/php-scoper/blob/HEAD/docs/configuration.md#excluded-symbols
 	'exclude-namespaces' => [
+		// Exclude the namespace of the plugin.
 		'Create_WordPress_Plugin',
+		'Alley\\WP\\Create_WordPress_Plugin',
+
+		// Exclude some common namespaces that don't need to be scoped.
+		'Composer',
 		'PHPStan',
 		'WordPressCS',
 	],
