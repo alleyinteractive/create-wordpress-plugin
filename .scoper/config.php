@@ -63,37 +63,48 @@ return [
     //
     // For more see: https://github.com/humbug/php-scoper/blob/master/docs/configuration.md#finders-and-paths
     'finders' => [
+		// Include all plugin files including any possible PHP file (build directory included).
+		Finder::create()->files()
+			->in($baseDir)
+			->ignoreVCS(true)
+			->ignoreDotFiles(true)
+			->exclude([
+				'entries',
+				'vendor',
+				'node_modules',
+			]),
 		// Include vendor files.
         Finder::create()
             ->files()
             ->ignoreVCS(true)
+			->ignoreDotFiles(true)
             ->notName('/LICENSE|.*\\.md|.*\\.dist|Makefile|composer\\.json|composer\\.lock/')
             ->exclude([
                 'tests',
+				'node_modules',
 				'.scoper',
             ])
             ->in($baseDir.'/vendor'),
-		// Include all plugin files.
-		Finder::create()->files()
-			->in($baseDir)
-			->exclude([
-				'build',
-				'vendor',
-				'tests',
-				'node_modules',
-			]),
+		// Main composer.json file so that we can build a classmap.
+		Finder::create()->append( [ 'composer.json' ] ),
     ],
 
     // List of excluded files, i.e. files for which the content will be left untouched.
     // Paths are relative to the configuration file unless if they are already absolute
     //
-    // For more see: https://github.com/humbug/php-scoper/blob/master/docs/configuration.md#patchers
+    // For more see: https://github.com/humbug/php-scoper/blob/HEAD/docs/configuration.md#patchers
     'exclude-files' => [
         // 'src/an-excluded-file.php',
-        ...$excludedFiles,
+        // ...$excludedFiles,
     ],
 
 	'exclude-classes' => $wp_classes,
 	'exclude-constants' => $wp_functions,
 	'exclude-functions' => $wp_constants,
+
+	// List of excluded namespaces.
+	// For more see: https://github.com/humbug/php-scoper/blob/HEAD/docs/configuration.md#excluded-symbols
+	'exclude-namespaces' => [
+		'Create_WordPress_Plugin',
+	],
 ];

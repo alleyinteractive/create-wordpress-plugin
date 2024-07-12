@@ -9,6 +9,11 @@
 
 namespace Create_WordPress_Plugin;
 
+use function Mantle\Support\Helpers\collect;
+
+// Test using the collect() method from Mantle.
+$vars = collect( [ 'a', 'b', 'c' ] );
+
 /**
  * Validate file paths to prevent a PHP error if a file doesn't exist.
  *

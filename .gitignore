@@ -4,6 +4,7 @@ vendor
 .scoper/build
 composer.lock
 node_modules
+.scoper/build
 
 # Log files
 *.log
