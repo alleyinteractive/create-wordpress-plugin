@@ -106,5 +106,7 @@ return [
 	// For more see: https://github.com/humbug/php-scoper/blob/HEAD/docs/configuration.md#excluded-symbols
 	'exclude-namespaces' => [
 		'Create_WordPress_Plugin',
+		'PHPStan',
+		'WordPressCS',
 	],
 ];
