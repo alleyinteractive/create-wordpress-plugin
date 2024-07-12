@@ -49,7 +49,7 @@ return [
     // will be generated instead.
     //
     // For more see: https://github.com/humbug/php-scoper/blob/master/docs/configuration.md#prefix
-    'prefix' => 'Alley\\WP\\Create_WordPress_Plugin_Vendor',
+    'prefix' => 'Create_WordPress_Plugin_Vendor',
 
     // The base output directory for the prefixed files.
     // This will be overridden by the 'output-dir' command line option if present.
@@ -73,6 +73,7 @@ return [
 				'vendor',
 				'node_modules',
 			]),
+
 		// Include vendor files.
         Finder::create()
             ->files()
@@ -85,6 +86,7 @@ return [
 				'.scoper',
             ])
             ->in($baseDir.'/vendor'),
+
 		// Main composer.json file so that we can build a classmap.
 		Finder::create()->append( [ 'composer.json' ] ),
     ],
@@ -106,19 +108,19 @@ return [
 	// For more see: https://github.com/humbug/php-scoper/blob/HEAD/docs/configuration.md#excluded-symbols
 	'exclude-namespaces' => [
 		// Exclude the namespace of the plugin.
-		'Create_WordPress_Plugin',
+		'Create_WordPress_Plugin\\',
 		// 'Alley\\WP\\Create_WordPress_Plugin',
 
 		// Exclude some common namespaces that don't need to be scoped.
-		'Composer',
-		'PHPStan',
-		'WordPressCS',
+		'Composer\\',
+		'PHPStan\\',
+		'WordPressCS\\',
 	],
 
-	'expose-global-constants' => true,
-	'expose-global-classes'   => true,
-	'expose-global-functions' => true,
-	'expose-namespaces'       => [
-		'Create_WordPress_Plugin',
-	],
+	// 'expose-global-constants' => true,
+	// 'expose-global-classes'   => true,
+	// 'expose-global-functions' => true,
+	// 'expose-namespaces'       => [
+	// 	'Create_WordPress_Plugin',
+	// ],
 ];

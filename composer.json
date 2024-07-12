@@ -57,9 +57,9 @@
         "phpunit": "phpunit",
         "phpstan": "phpstan --memory-limit=512M",
         "scoper": [
-          "php-scoper add-prefix -c .scoper/config.php -f",
-          "rsync -av ./.scoper/build/ ./ && rm -rf ./build"
+          "php-scoper add-prefix -c .scoper/config.php -f"
         ],
+        "bak": "rsync -av ./.scoper/build/ ./ && rm -rf ./build",
         "test": [
             "@phpcs",
             "@phpstan",
