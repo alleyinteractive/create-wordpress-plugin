@@ -107,11 +107,18 @@ return [
 	'exclude-namespaces' => [
 		// Exclude the namespace of the plugin.
 		'Create_WordPress_Plugin',
-		'Alley\\WP\\Create_WordPress_Plugin',
+		// 'Alley\\WP\\Create_WordPress_Plugin',
 
 		// Exclude some common namespaces that don't need to be scoped.
 		'Composer',
 		'PHPStan',
 		'WordPressCS',
+	],
+
+	'expose-global-constants' => true,
+	'expose-global-classes'   => true,
+	'expose-global-functions' => true,
+	'expose-namespaces'       => [
+		'Create_WordPress_Plugin',
 	],
 ];
