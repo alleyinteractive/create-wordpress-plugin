@@ -115,7 +115,7 @@ return [
 
 	// 'expose-global-constants' => true,
 	// 'expose-global-classes'   => true,
-	// 'expose-global-functions' => true,
+	'expose-global-functions' => false,
 	// 'expose-namespaces'       => [
 	// 	'Create_WordPress_Plugin',
 	// ],
