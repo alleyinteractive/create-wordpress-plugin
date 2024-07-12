@@ -58,7 +58,7 @@
         "phpstan": "phpstan --memory-limit=512M",
         "scoper": [
           "php-scoper add-prefix -c .scoper/config.php -f",
-          "@composer dump-autoload --working-dir ./.scoper/build --no-dev --classmap-authoritative",
+          "@composer dump-autoload --working-dir ./.scoper/build --no-dev --classmap-authoritative"
         ],
         "bak": "rsync -av ./.scoper/build/ ./ && rm -rf ./build",
         "test": [
