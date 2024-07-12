@@ -40,10 +40,6 @@ function getWpExcludedSymbols(string $fileName): array
     );
 }
 
-$wp_classes   = getWpExcludedSymbols('exclude-wordpress-classes.json');
-$wp_functions = getWpExcludedSymbols('exclude-wordpress-functions.json');
-$wp_constants = getWpExcludedSymbols('exclude-wordpress-constants.json');
-
 return [
     // The prefix configuration. If a non-null value is used, a random prefix
     // will be generated instead.
@@ -100,9 +96,9 @@ return [
         // ...$excludedFiles,
     ],
 
-	'exclude-classes' => $wp_classes,
-	'exclude-constants' => $wp_constants,
-	'exclude-functions' => $wp_functions,
+	'exclude-classes' => getWpExcludedSymbols('exclude-wordpress-classes.json'),
+	'exclude-constants' => getWpExcludedSymbols('exclude-wordpress-constants.json'),
+	'exclude-functions' => getWpExcludedSymbols('exclude-wordpress-functions.json'),
 
 	// List of excluded namespaces.
 	// For more see: https://github.com/humbug/php-scoper/blob/HEAD/docs/configuration.md#excluded-symbols
