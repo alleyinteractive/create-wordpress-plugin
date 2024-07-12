@@ -99,8 +99,8 @@ return [
     ],
 
 	'exclude-classes' => $wp_classes,
-	'exclude-constants' => $wp_functions,
-	'exclude-functions' => $wp_constants,
+	'exclude-constants' => $wp_constants,
+	'exclude-functions' => $wp_functions,
 
 	// List of excluded namespaces.
 	// For more see: https://github.com/humbug/php-scoper/blob/HEAD/docs/configuration.md#excluded-symbols
