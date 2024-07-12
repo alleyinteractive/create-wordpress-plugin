@@ -49,7 +49,7 @@ return [
     // will be generated instead.
     //
     // For more see: https://github.com/humbug/php-scoper/blob/master/docs/configuration.md#prefix
-    'prefix' => 'Alley\\WP\\Create_WordPress_Plugin',
+    'prefix' => 'Alley\\WP\\Create_WordPress_Plugin_Vendor',
 
     // The base output directory for the prefixed files.
     // This will be overridden by the 'output-dir' command line option if present.
