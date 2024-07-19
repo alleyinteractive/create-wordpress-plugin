@@ -198,7 +198,6 @@ function remove_composer_files(): void {
 function remove_project_files(): void {
 	$file_list = [
 		'.buddy',
-		'buddy.yml',
 		'CHANGELOG.md',
 		'.deployignore',
 		'.editorconfig',
@@ -280,19 +279,6 @@ function remove_assets_require(): void {
 		$plugin_file,
 		trim( (string) preg_replace( '/require_once __DIR__ \. \'\/src\/assets.php\';\\n/s', '', $contents ) ?: $contents ) . PHP_EOL,
 	);
-}
-
-function remove_assets_buddy( string $file = 'buddy.yml' ): void {
-	$contents = file_get_contents( $file );
-
-	if ( empty( $contents ) ) {
-		return;
-	}
-
-	$contents = trim( preg_replace( '/(- action: "npm audit".*)variables:/s', 'variables:', $contents ) ?: $contents );
-	$contents = str_replace( '    variables:', '  variables:', $contents );
-
-	file_put_contents( $file, $contents );
 }
 
 function determine_separator( string $path ): string {
@@ -658,7 +644,6 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 
 	remove_assets_readme( false );
 	remove_assets_require();
-	remove_assets_buddy();
 }
 
 if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloader already included! phpcs and phpunit also rely on Composer being installed for testing.)', true ) ) {
@@ -797,12 +782,6 @@ if ( ! $needs_built_assets && file_exists( '.github/workflows/built-release.yml'
 			'.github/workflows/built-release.yml',
 		]
 	);
-}
-
-if (
-	$standalone && file_exists( __DIR__ . '/buddy.yml' ) && ! confirm( 'Do you need the Buddy CI configuration? (Alley devs only -- if the plugin is open-source it will not be needed)', false )
-) {
-	delete_files( [ '.buddy', 'buddy.yml' ] );
 }
 
 if ( confirm( 'Let this script delete itself?', true ) ) {
