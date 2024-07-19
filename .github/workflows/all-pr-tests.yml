@@ -30,7 +30,8 @@ jobs:
         uses: alleyinteractive/action-test-general@develop
 
       - name: Run Node Tests
-        # See https://github.com/alleyinteractive/action-test-node for more options
+        # See https://github.com/alleyinteractive/action-test-node for more options.
+        # Defaults to the latest LTS version.
         uses: alleyinteractive/action-test-node@develop
 
       - name: Run PHP Tests
