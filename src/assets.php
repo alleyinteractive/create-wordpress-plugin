@@ -9,7 +9,7 @@
 
 namespace Create_WordPress_Plugin;
 
-use function Mantle\Support\Helpers\collect;
+use function Create_WordPress_Plugin_Vendor\Mantle\Support\Helpers\collect;
 
 // Test using the collect() method from Mantle.
 $vars = collect( [ 'a', 'b', 'c' ] );

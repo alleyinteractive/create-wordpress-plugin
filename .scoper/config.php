@@ -60,15 +60,15 @@ return [
     // For more see: https://github.com/humbug/php-scoper/blob/master/docs/configuration.md#finders-and-paths
     'finders' => [
 		// Include all plugin files including any possible PHP file (build directory included).
-		Finder::create()->files()
-			->in($baseDir)
-			->ignoreVCS(true)
-			->ignoreDotFiles(true)
-			->exclude([
-				'entries',
-				'vendor',
-				'node_modules',
-			]),
+		// Finder::create()->files()
+		// 	->in($baseDir)
+		// 	->ignoreVCS(true)
+		// 	->ignoreDotFiles(true)
+		// 	->exclude([
+		// 		'entries',
+		// 		'vendor',
+		// 		'node_modules',
+		// 	]),
 
 		// Include vendor files.
         Finder::create()
@@ -102,20 +102,25 @@ return [
 
 	// List of excluded namespaces.
 	// For more see: https://github.com/humbug/php-scoper/blob/HEAD/docs/configuration.md#excluded-symbols
-	'exclude-namespaces' => [
-		// Exclude the namespace of the plugin.
-		'Create_WordPress_Plugin\\',
-		// 'Alley\\WP\\Create_WordPress_Plugin',
+	// 'exclude-namespaces' => [
+	// 	// Exclude the namespace of the plugin.
+	// 	'Create_WordPress_Plugin\\',
+	// 	// 'Alley\\WP\\Create_WordPress_Plugin',
 
-		// Exclude some common namespaces that don't need to be scoped.
-		'Composer\\',
-		'PHPStan\\',
-		'WordPressCS\\',
-	],
+	// 	// Exclude some common namespaces that don't need to be scoped.
+	// 	'Composer\\',
+	// 	'PHPStan\\',
+	// 	'WordPressCS\\',
+	// ],
 
-	// 'expose-global-constants' => true,
-	// 'expose-global-classes'   => true,
-	'expose-global-functions' => false,
+	// 'expose-namespaces' => [],
+    // 'expose-classes' => [],
+    // 'expose-functions' => [],
+    // 'expose-constants' => [],
+
+	// // 'expose-global-constants' => true,
+	// 'expose-global-classes'   => false,
+	// 'expose-global-functions' => false,
 	// 'expose-namespaces'       => [
 	// 	'Create_WordPress_Plugin',
 	// ],

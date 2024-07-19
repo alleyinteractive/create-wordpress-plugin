@@ -1,12 +1,12 @@
 {
-    "name": "alleyinteractive/create-wordpress-plugin",
+    "name": "alleyinteractive\/create-wordpress-plugin",
     "description": "A skeleton WordPress plugin",
     "type": "wordpress-plugin",
     "keywords": [
         "alleyinteractive",
         "create-wordpress-plugin"
     ],
-    "homepage": "https://github.com/alleyinteractive/create-wordpress-plugin",
+    "homepage": "https:\/\/github.com\/alleyinteractive\/create-wordpress-plugin",
     "license": "GPL-2.0-or-later",
     "authors": [
         {
@@ -16,21 +16,21 @@
     ],
     "require": {
         "php": "^8.1",
-        "alleyinteractive/composer-wordpress-autoloader": "^1.0",
-        "alleyinteractive/wp-type-extensions": "^2.1"
+        "alleyinteractive\/composer-wordpress-autoloader": "^1.0",
+        "alleyinteractive\/wp-type-extensions": "^2.1"
     },
     "require-dev": {
-        "alleyinteractive/alley-coding-standards": "^2.0",
-        "humbug/php-scoper": "^0.18",
-        "mantle-framework/testkit": "^1.0",
-        "sniccowp/php-scoper-wordpress-excludes": "^6.4",
-        "szepeviktor/phpstan-wordpress": "^1.1"
+        "alleyinteractive\/alley-coding-standards": "^2.0",
+        "humbug\/php-scoper": "^0.18",
+        "mantle-framework\/testkit": "^1.0",
+        "sniccowp\/php-scoper-wordpress-excludes": "^6.4",
+        "szepeviktor\/phpstan-wordpress": "^1.1"
     },
     "config": {
         "allow-plugins": {
-            "alleyinteractive/composer-wordpress-autoloader": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true,
-            "pestphp/pest-plugin": true
+            "alleyinteractive\/composer-wordpress-autoloader": true,
+            "dealerdirect\/phpcodesniffer-composer-installer": true,
+            "pestphp\/pest-plugin": true
         },
         "sort-packages": true
     },
@@ -57,10 +57,11 @@
         "phpunit": "phpunit",
         "phpstan": "phpstan --memory-limit=512M",
         "scoper": [
-          "php-scoper add-prefix -c .scoper/config.php -f",
-          "@composer dump-autoload --working-dir ./.scoper/build --no-dev --classmap-authoritative"
+            "rm -rf .\/.scoper\/build",
+            "php-scoper add-prefix -c .scoper\/config.php -f",
+            "@composer dump-autoload --working-dir .\/.scoper\/build --no-dev --classmap-authoritative"
         ],
-        "bak": "rsync -av ./.scoper/build/ ./ && rm -rf ./build",
+        "bak": "rsync -av .\/.scoper\/build\/ .\/ && rm -rf .\/build",
         "test": [
             "@phpcs",
             "@phpstan",
