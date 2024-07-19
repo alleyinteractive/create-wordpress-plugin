@@ -41,4 +41,4 @@ jobs:
         uses: alleyinteractive/action-test-php@hotfix/create-wordpress-plugin
         with:
           php-version: '${{ matrix.php }}'
-          wordpress-version: 'false'
+          wordpress-version: 'false' # We don't want the action to install WordPress for us. The version is managed by the WP_VERSION environment variable.
