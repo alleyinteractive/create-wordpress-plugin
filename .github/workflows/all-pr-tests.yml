@@ -22,9 +22,6 @@ jobs:
     runs-on: ubuntu-latest
     # Name the job in the matrix
     name: "PR Tests PHP ${{ matrix.php }} WordPress ${{ matrix.wordpress }}"
-    env:
-      # Set the WordPress version for the job
-      WP_VERSION: ${{ matrix.wordpress }}
     steps:
       - uses: actions/checkout@v4
 
@@ -41,4 +38,5 @@ jobs:
         uses: alleyinteractive/action-test-php@hotfix/create-wordpress-plugin
         with:
           php-version: '${{ matrix.php }}'
-          wordpress-version: 'false' # We don't want the action to install WordPress for us. The version is managed by the WP_VERSION environment variable.
+          wordpress-version: '${{ matrix.wordpress }}'
+          skip-wordpress-install: 'true'
