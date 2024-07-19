@@ -11,7 +11,7 @@ jobs:
   # run in the same environment and reduce the number of minutes used.
   pr-tests:
     # Don't run on draft PRs
-    # if: github.event.pull_request.draft == false
+    if: github.event.pull_request.draft == false
     # Timeout after 10 minutes
     timeout-minutes: 10
     # Define a matrix of PHP/WordPress versions to test against
