@@ -387,6 +387,7 @@ function contributing_message( string $message ): void {
 	echo "\t\e]8;;https://github.com/alleyinteractive/.github/blob/main/CONTRIBUTING.md#best-practices\e\\CONTRIBUTING.md\e]8;;\e\\\n\n";
 }
 
+/* Enable SQLite testing for the plugin with Mantle Testkit. */
 function enable_sqlite_testing(): void {
 	if ( ! file_exists( __DIR__ . '/phpunit.xml' ) ) {
 		return;
@@ -407,14 +408,13 @@ function enable_sqlite_testing(): void {
 		),
 	);
 
-	// TODO: update all-pr-tests.yml to use SQLite.
-	if ( file_exists( __DIR__ . '/.github/workflows/unit-test.yml' ) ) {
+	if ( file_exists( __DIR__ . '/.github/workflows/all-pr-tests.yml' ) ) {
 		file_put_contents(
-			__DIR__ . '/.github/workflows/unit-test.yml',
+			__DIR__ . '/.github/workflows/all-pr-tests.yml',
 			str_replace(
-				'with:',
-				"with:\n      database: ''",
-				(string) file_get_contents( __DIR__ . '/.github/workflows/unit-test.yml' ),
+				'skip-wordpress-install:',
+				"skip-services: 'true'\n          skip-wordpress-install:",
+				(string) file_get_contents( __DIR__ . '/.github/workflows/all-pr-tests.yml' ),
 			),
 		);
 	}
