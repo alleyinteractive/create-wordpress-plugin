@@ -23,10 +23,8 @@ jobs:
     # Name the job in the matrix
     name: "PR Tests PHP ${{ matrix.php }} WordPress ${{ matrix.wordpress }}"
     env:
-      # Set the PHP version for the job
-      PHP_VERSION: ${{ matrix.php }}
       # Set the WordPress version for the job
-      WORDPRESS_VERSION: ${{ matrix.wordpress }}
+      WP_VERSION: ${{ matrix.wordpress }}
     steps:
       - uses: actions/checkout@v4
 
