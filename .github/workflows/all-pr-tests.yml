@@ -17,11 +17,16 @@ jobs:
     # Define a matrix of PHP/WordPress versions to test against
     strategy:
       matrix:
-        php: [8.1, 8.2]
+        php: [8.1, 8.2, 8.3]
         wordpress: ["latest"]
     runs-on: ubuntu-latest
     # Name the job in the matrix
     name: "PR Tests PHP ${{ matrix.php }} WordPress ${{ matrix.wordpress }}"
+    env:
+      # Set the PHP version for the job
+      PHP_VERSION: ${{ matrix.php }}
+      # Set the WordPress version for the job
+      WORDPRESS_VERSION: ${{ matrix.wordpress }}
     steps:
       - uses: actions/checkout@v4
 
@@ -38,4 +43,4 @@ jobs:
         uses: alleyinteractive/action-test-php@develop
         with:
           php-version: '${{ matrix.php }}'
-          wordpress-version: '${{ matrix.wordpress }}'
+          wordpress-version: 'false'
