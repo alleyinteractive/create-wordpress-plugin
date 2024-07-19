@@ -7,8 +7,8 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:
-  # We use a single job to ensure that all steps
-  # run in the same environment and reduce the number of minutes used.
+  # We use a single job to ensure that all steps run in the same environment and
+  # reduce the number of minutes used.
   pr-tests:
     # Don't run on draft PRs
     if: github.event.pull_request.draft == false
