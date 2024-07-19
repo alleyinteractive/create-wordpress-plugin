@@ -418,7 +418,7 @@ function enable_sqlite_testing(): void {
 			),
 		);
 	}
-}
+}-
 
 // ---------------------------------------------------------
 // Start of the script. Above this line are the functions.
@@ -666,7 +666,7 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 	remove_assets_test();
 }
 
-if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloader already included! phpcs and phpunit also rely on Composer being installed for testing.)', true ) ) {
+if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloader is already included! phpcs and phpunit also rely on Composer being installed for testing.)', true ) ) {
 	$uses_composer = true;
 	$needs_built_assets = true;
 
@@ -703,6 +703,7 @@ $standalone = true;
 // /wp-content/plugins/:plugin/.
 if (
 	file_exists( '../../.git/index' )
+	&& is_dir( '../../../wp-admin' )
 	&& ! confirm(
 		'Will this be a standalone plugin, not located within a larger project? For example, a standalone plugin will have a separate repository and will be distributed independently.',
 		false,
