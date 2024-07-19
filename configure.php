@@ -197,7 +197,6 @@ function remove_composer_files(): void {
 
 function remove_project_files(): void {
 	$file_list = [
-		'.buddy',
 		'CHANGELOG.md',
 		'.deployignore',
 		'.editorconfig',
@@ -246,6 +245,7 @@ function rollup_phpcs_to_parent( string $parent_file, string $local_file, string
 	}
 }
 
+/* Remove the README's assets section. */
 function remove_assets_readme( bool $keep_contents, string $file = 'README.md' ): void {
 	$contents = file_get_contents( $file );
 
@@ -266,6 +266,7 @@ function remove_assets_readme( bool $keep_contents, string $file = 'README.md' )
 	}
 }
 
+/* Remove the assets.php require from the main plugin file. */
 function remove_assets_require(): void {
 	global $plugin_file;
 
@@ -279,6 +280,24 @@ function remove_assets_require(): void {
 		$plugin_file,
 		trim( (string) preg_replace( '/require_once __DIR__ \. \'\/src\/assets.php\';\\n/s', '', $contents ) ?: $contents ) . PHP_EOL,
 	);
+}
+
+/* Remove the node tests from within the all-pr-tests.yml file. */
+function remove_assets_test(): void {
+	$file = __DIR__ . '/.github/workflows/all-pr-tests.yml';
+
+	if ( ! file_exists( $file ) ) {
+		return;
+	}
+
+
+	$contents = preg_replace(
+		'/(- name: Run Node Tests.*)(- name:)/s',
+		'$2',
+		file_get_contents( $file ),
+	);
+
+	file_put_contents( $file, $contents );
 }
 
 function determine_separator( string $path ): string {
@@ -388,6 +407,7 @@ function enable_sqlite_testing(): void {
 		),
 	);
 
+	// TODO: update all-pr-tests.yml to use SQLite.
 	if ( file_exists( __DIR__ . '/.github/workflows/unit-test.yml' ) ) {
 		file_put_contents(
 			__DIR__ . '/.github/workflows/unit-test.yml',
@@ -615,13 +635,12 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 		echo "\n\n\n";
 	}
 
-	remove_assets_readme( true );
+	remove_assets_readme( keep_contents: true );
 } elseif ( confirm( 'Do you want to delete the front-end files? (Such as package.json, etc.)', true ) ) {
 	echo "Deleting...\n";
 
 	delete_files(
 		[
-			'.github/workflows/node-tests.yml',
 			'.eslintignore',
 			'.eslintrc.json',
 			'.nvmrc',
@@ -642,8 +661,9 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 		]
 	);
 
-	remove_assets_readme( false );
+	remove_assets_readme( keep_contents: false );
 	remove_assets_require();
+	remove_assets_test();
 }
 
 if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloader already included! phpcs and phpunit also rely on Composer being installed for testing.)', true ) ) {
