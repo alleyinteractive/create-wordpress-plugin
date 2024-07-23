@@ -197,8 +197,6 @@ function remove_composer_files(): void {
 
 function remove_project_files(): void {
 	$file_list = [
-		'.buddy',
-		'buddy.yml',
 		'CHANGELOG.md',
 		'.deployignore',
 		'.editorconfig',
@@ -247,6 +245,7 @@ function rollup_phpcs_to_parent( string $parent_file, string $local_file, string
 	}
 }
 
+/* Remove the README's assets section. */
 function remove_assets_readme( bool $keep_contents, string $file = 'README.md' ): void {
 	$contents = file_get_contents( $file );
 
@@ -267,6 +266,7 @@ function remove_assets_readme( bool $keep_contents, string $file = 'README.md' )
 	}
 }
 
+/* Remove the assets.php require from the main plugin file. */
 function remove_assets_require(): void {
 	global $plugin_file;
 
@@ -282,15 +282,20 @@ function remove_assets_require(): void {
 	);
 }
 
-function remove_assets_buddy( string $file = 'buddy.yml' ): void {
-	$contents = file_get_contents( $file );
+/* Remove the node tests from within the all-pr-tests.yml file. */
+function remove_assets_test(): void {
+	$file = __DIR__ . '/.github/workflows/all-pr-tests.yml';
 
-	if ( empty( $contents ) ) {
+	if ( ! file_exists( $file ) ) {
 		return;
 	}
 
-	$contents = trim( preg_replace( '/(- action: "npm audit".*)variables:/s', 'variables:', $contents ) ?: $contents );
-	$contents = str_replace( '    variables:', '  variables:', $contents );
+
+	$contents = preg_replace(
+		'/(- name: Run Node Tests.*)(- name:)/s',
+		'$2',
+		file_get_contents( $file ),
+	);
 
 	file_put_contents( $file, $contents );
 }
@@ -382,6 +387,7 @@ function contributing_message( string $message ): void {
 	echo "\t\e]8;;https://github.com/alleyinteractive/.github/blob/main/CONTRIBUTING.md#best-practices\e\\CONTRIBUTING.md\e]8;;\e\\\n\n";
 }
 
+/* Enable SQLite testing for the plugin with Mantle Testkit. */
 function enable_sqlite_testing(): void {
 	if ( ! file_exists( __DIR__ . '/phpunit.xml' ) ) {
 		return;
@@ -402,17 +408,17 @@ function enable_sqlite_testing(): void {
 		),
 	);
 
-	if ( file_exists( __DIR__ . '/.github/workflows/unit-test.yml' ) ) {
+	if ( file_exists( __DIR__ . '/.github/workflows/all-pr-tests.yml' ) ) {
 		file_put_contents(
-			__DIR__ . '/.github/workflows/unit-test.yml',
+			__DIR__ . '/.github/workflows/all-pr-tests.yml',
 			str_replace(
-				'with:',
-				"with:\n      database: ''",
-				(string) file_get_contents( __DIR__ . '/.github/workflows/unit-test.yml' ),
+				'skip-wordpress-install:',
+				"skip-services: 'true'\n          skip-wordpress-install:",
+				(string) file_get_contents( __DIR__ . '/.github/workflows/all-pr-tests.yml' ),
 			),
 		);
 	}
-}
+}-
 
 // ---------------------------------------------------------
 // Start of the script. Above this line are the functions.
@@ -629,13 +635,12 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 		echo "\n\n\n";
 	}
 
-	remove_assets_readme( true );
+	remove_assets_readme( keep_contents: true );
 } elseif ( confirm( 'Do you want to delete the front-end files? (Such as package.json, etc.)', true ) ) {
 	echo "Deleting...\n";
 
 	delete_files(
 		[
-			'.github/workflows/node-tests.yml',
 			'.eslintignore',
 			'.eslintrc.json',
 			'.nvmrc',
@@ -656,12 +661,12 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 		]
 	);
 
-	remove_assets_readme( false );
+	remove_assets_readme( keep_contents: false );
 	remove_assets_require();
-	remove_assets_buddy();
+	remove_assets_test();
 }
 
-if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloader already included! phpcs and phpunit also rely on Composer being installed for testing.)', true ) ) {
+if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloader is already included! phpcs and phpunit also rely on Composer being installed for testing.)', true ) ) {
 	$uses_composer = true;
 	$needs_built_assets = true;
 
@@ -698,6 +703,7 @@ $standalone = true;
 // /wp-content/plugins/:plugin/.
 if (
 	file_exists( '../../.git/index' )
+	&& is_dir( '../../../wp-admin' )
 	&& ! confirm(
 		'Will this be a standalone plugin, not located within a larger project? For example, a standalone plugin will have a separate repository and will be distributed independently.',
 		false,
@@ -797,12 +803,6 @@ if ( ! $needs_built_assets && file_exists( '.github/workflows/built-release.yml'
 			'.github/workflows/built-release.yml',
 		]
 	);
-}
-
-if (
-	$standalone && file_exists( __DIR__ . '/buddy.yml' ) && ! confirm( 'Do you need the Buddy CI configuration? (Alley devs only -- if the plugin is open-source it will not be needed)', false )
-) {
-	delete_files( [ '.buddy', 'buddy.yml' ] );
 }
 
 if ( confirm( 'Let this script delete itself?', true ) ) {
