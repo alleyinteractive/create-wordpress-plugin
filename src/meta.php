@@ -130,9 +130,10 @@ function register_meta_helper(
  * Reads the post meta definitions from config and registers them.
  */
 function register_post_meta_from_defs(): void {
-	// Ensure the config file exists.
 	$filepath = dirname( __DIR__ ) . '/config/post-meta.json';
-	if ( ! validate_path( $filepath ) ) {
+
+	// Ensure the config file exists and is valid.
+	if ( ! file_exists( $filepath ) || ! in_array( validate_file( $filepath ), [ 0, 2 ], true ) ) {
 		return;
 	}
 
