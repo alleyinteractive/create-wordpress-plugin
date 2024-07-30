@@ -418,7 +418,7 @@ function enable_sqlite_testing(): void {
 			),
 		);
 	}
-}-
+}
 
 // ---------------------------------------------------------
 // Start of the script. Above this line are the functions.
