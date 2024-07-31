@@ -5,9 +5,9 @@
  * @package create-wordpress-plugin
  */
 
-namespace Create_WordPress_Plugin\Tests\Feature;
+namespace Alley\WP\Create_WordPress_Plugin\Tests\Feature;
 
-use Create_WordPress_Plugin\Tests\TestCase;
+use Alley\WP\Create_WordPress_Plugin\Tests\TestCase;
 
 /**
  * A test suite for an example feature.

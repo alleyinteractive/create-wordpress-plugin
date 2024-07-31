@@ -1,3 +1,5 @@
+MAKEFLAGS += --no-builtin-rules
+
 setup:
 	php ./configure.php
 
