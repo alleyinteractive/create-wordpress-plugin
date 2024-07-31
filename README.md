@@ -74,6 +74,8 @@ Run `npm run lint` to run ESLint against all JavaScript files. Linting will also
 happen when running development or production builds.
 
 Run `composer test` to run tests against PHPUnit and the PHP code in the plugin.
+Unit testing code is written in PSR-4 format and can be found in the `tests`
+directory.
 
 ### The `entries` directory and entry points
 
