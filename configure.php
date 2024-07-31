@@ -478,7 +478,7 @@ $plugin_name = ask(
 while ( true ) {
 	$plugin_name_slug = slugify( ask(
 		question: 'Plugin slug?',
-		default: slugify( $plugin_name ),
+		default: 'wp-' . ltrim( slugify( $plugin_name ), 'wp-' ),
 		allow_empty: false,
 	) );
 
@@ -514,8 +514,8 @@ while ( true ) {
 		$example_namespace = 'Alley\\WP\\' . title_case( $plugin_name );
 		contributing_message( "Alley WordPress plugins should be prefixed with \"Alley\\WP\\\". A namespace such as \"{$example_namespace}\" would work well. If this plugin isn't meant to be published anywhere, this is fine to ignore. See our CONTRIBUTING.md for more details." );
 
-		if ( confirm( 'Do you wish to continue anyway?', false ) ) {
-			break;
+		if ( ! confirm( 'Do you wish to continue anyway?', false ) ) {
+			continue;
 		}
 	}
 
