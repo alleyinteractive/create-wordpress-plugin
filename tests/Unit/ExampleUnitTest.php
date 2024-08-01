@@ -5,7 +5,7 @@
  * @package create-wordpress-plugin
  */
 
-namespace Create_WordPress_Plugin\Tests\Unit;
+namespace Alley\WP\Create_WordPress_Plugin\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 

@@ -74,6 +74,8 @@ Run `npm run lint` to run ESLint against all JavaScript files. Linting will also
 happen when running development or production builds.
 
 Run `composer test` to run tests against PHPUnit and the PHP code in the plugin.
+Unit testing code is written in PSR-4 format and can be found in the `tests`
+directory.
 
 ### The `entries` directory and entry points
 All directories created in the `entries` directory can serve as entry points and will be compiled with [@wordpress/scripts](https://github.com/WordPress/gutenberg/blob/trunk/packages/scripts/README.md#scripts) into the `build` directory with an accompanied `index.asset.php` asset map.

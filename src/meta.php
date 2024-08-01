@@ -5,7 +5,7 @@
  * @package create-wordpress-plugin
  */
 
-namespace Create_WordPress_Plugin;
+namespace Alley\WP\Create_WordPress_Plugin;
 
 /**
  * Register meta for posts or terms with sensible defaults and sanitization.

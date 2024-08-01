@@ -14,7 +14,7 @@
  * phpcs:disable
  */
 
-namespace Create_WordPress_Plugin\Configure;
+namespace Alley\WP\Create_WordPress_Plugin\Configure;
 
 if ( ! defined( 'STDIN' ) ) {
 	die( 'Not in CLI mode.' );
@@ -478,7 +478,7 @@ $plugin_name = ask(
 while ( true ) {
 	$plugin_name_slug = slugify( ask(
 		question: 'Plugin slug?',
-		default: slugify( $plugin_name ),
+		default: 'wp-' . ltrim( slugify( $plugin_name ), 'wp-' ),
 		allow_empty: false,
 	) );
 
@@ -514,8 +514,8 @@ while ( true ) {
 		$example_namespace = 'Alley\\WP\\' . title_case( $plugin_name );
 		contributing_message( "Alley WordPress plugins should be prefixed with \"Alley\\WP\\\". A namespace such as \"{$example_namespace}\" would work well. If this plugin isn't meant to be published anywhere, this is fine to ignore. See our CONTRIBUTING.md for more details." );
 
-		if ( confirm( 'Do you wish to continue anyway?', false ) ) {
-			break;
+		if ( ! confirm( 'Do you wish to continue anyway?', false ) ) {
+			continue;
 		}
 	}
 
@@ -566,13 +566,11 @@ $search_and_replace = [
 
 	'A skeleton WordPress plugin' => $description,
 
-	// Escape the namespace used in composer.json.
-	'"Create_WordPress_Plugin\\"'        => (string) json_encode( $namespace ),
-	'"Create_WordPress_Plugin\\Tests\\"' => (string) json_encode( $namespace . '\\Tests' ),
+	// Extra slashes are here for composer.json.
+	'Alley\\\WP\\\Create_WordPress_Plugin\\\\' => str_replace( '\\', '\\\\', $namespace ) . '\\\\',
+	'Alley\WP\Create_WordPress_Plugin'         => $namespace,
 
-	'Create_WordPress_Plugin'     => $namespace,
 	'Example_Plugin'              => $class_name,
-
 	'create_wordpress_plugin'     => str_replace( '-', '_', $plugin_name_slug ),
 	'plugin_name'                 => $plugin_name,
 
@@ -585,19 +583,6 @@ $search_and_replace = [
 	'alleyinteractive'            => $vendor_slug,
 	'plugin.php'                  => $plugin_file,
 ];
-
-// Patch the Composer.json namespace first before search and replace.
-run(
-	'composer config extra.wordpress-autoloader.autoload --json \'' . json_encode( [
-		$namespace => 'src',
-	] ) . '\'',
-);
-
-run(
-	'composer config extra.wordpress-autoloader.autoload-dev --json \'' . json_encode( [
-		$namespace . '\\Tests' => 'tests',
-	] ) . '\'',
-);
 
 foreach ( list_all_files_for_replacement() as $path ) {
 	echo "Updating $path...\n";

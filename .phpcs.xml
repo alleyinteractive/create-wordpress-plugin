@@ -37,6 +37,7 @@
     <properties>
       <property name="prefixes" type="array">
         <element value="vendor_name" />
+        <element value="alley" />
         <element value="create_wordpress_plugin" />
       </property>
     </properties>

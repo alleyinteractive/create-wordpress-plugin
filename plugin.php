@@ -15,7 +15,7 @@
  * @package create-wordpress-plugin
  */
 
-namespace Create_WordPress_Plugin;
+namespace Alley\WP\Create_WordPress_Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

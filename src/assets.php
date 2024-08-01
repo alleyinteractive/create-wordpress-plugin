@@ -7,7 +7,7 @@
  * @package create-wordpress-plugin
  */
 
-namespace Create_WordPress_Plugin;
+namespace Alley\WP\Create_WordPress_Plugin;
 
 /**
  * Validate file paths to prevent a PHP error if a file doesn't exist.
