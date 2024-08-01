@@ -34,16 +34,13 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Create_WordPress_Plugin\\Tests\\": "tests"
+            "Alley\\WP\\Create_WordPress_Plugin\\Tests\\": "tests"
         }
     },
     "extra": {
         "wordpress-autoloader": {
             "autoload": {
-                "Create_WordPress_Plugin\\": "src"
-            },
-            "autoload-dev": {
-                "Create_WordPress_Plugin\\Tests\\": "tests"
+                "Alley\\WP\\Create_WordPress_Plugin\\": "src"
             }
         }
     },
