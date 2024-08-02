@@ -43,14 +43,13 @@ Requires PHP: 8.1
 
 License: GPL v2 or later
 
-[![Coding Standards](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/coding-standards.yml/badge.svg)](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/coding-standards.yml)
-[![Testing Suite](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/unit-test.yml/badge.svg)](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/unit-test.yml)
+[![Testing Suite](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/all-pr-tests.yml/badge.svg)](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/all-pr-tests.yml)
 
 A skeleton WordPress plugin.
 
 ## Installation
 
-You can install the package via composer:
+You can install the package via Composer:
 
 ```bash
 composer require alleyinteractive/create-wordpress-plugin
