@@ -8,7 +8,7 @@ on:
 
 jobs:
   # Get the last 3 major versions of WordPress
- find- wordpress-versions:
+  find-wordpress-versions:
     runs-on: ubuntu-latest
     outputs:
       versions: ${{ steps.get-versions.outputs.versions }}
