@@ -8,19 +8,19 @@ on:
 
 jobs:
   # Get the last 3 major versions of WordPress
-  wordpress-versions:
+ find- wordpress-versions:
     runs-on: ubuntu-latest
     outputs:
       versions: ${{ steps.get-versions.outputs.versions }}
     steps:
       - name: Get WordPress Versions
         id: get-versions
-        run: echo "versions=$(curl -s https://api.wordpress.org/core/version-check/1.7/ | jq -r '.offers[] | select(.response == \"autoupdate\").version' | head -n 3 | sort -u | sed 's/\.[^.]*$//')" >> $GITHUB_ENV
+        run: echo "versions=$(curl -s https://api.wordpress.org/core/version-check/1.7/ | jq -r '.offers[] | select(.response == \"autoupdate\").version' | head -n 3 | sort -u | sed 's/\.[^.]*$//' | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_ENV
 
   # We use a single job to ensure that all steps run in the same environment and
   # reduce the number of minutes used.
   run-pr-tests:
-    needs: wordpress-versions
+    needs: find-wordpress-versions
     # Don't run on draft PRs
     if: github.event.pull_request.draft == false
     # Timeout after 10 minutes
