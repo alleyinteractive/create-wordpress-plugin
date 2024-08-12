@@ -7,9 +7,20 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:
+  # Get the last 3 major versions of WordPress
+  wordpress-versions:
+    runs-on: ubuntu-latest
+    outputs:
+      versions: ${{ steps.get-versions.outputs.versions }}
+    steps:
+      - name: Get WordPress Versions
+        id: get-versions
+        run: echo "versions=$(curl -s https://api.wordpress.org/core/version-check/1.7/ | jq -r '.offers[] | select(.response == \"autoupdate\").version' | head -n 3 | sort -u | sed 's/\.[^.]*$//')" >> $GITHUB_ENV
+
   # We use a single job to ensure that all steps run in the same environment and
   # reduce the number of minutes used.
-  pr-tests:
+  run-pr-tests:
+    needs: wordpress-versions
     # Don't run on draft PRs
     if: github.event.pull_request.draft == false
     # Timeout after 10 minutes
@@ -18,7 +29,7 @@ jobs:
     strategy:
       matrix:
         php: [8.1, 8.2, 8.3]
-        wordpress: ["latest"]
+        wordpress: ${{fromJson(needs.wordpress-versions.outputs.versions)}}
     runs-on: ubuntu-latest
     # Cancel any existing runs of this workflow
     concurrency:
@@ -45,3 +56,18 @@ jobs:
           php-version: '${{ matrix.php }}'
           wordpress-version: '${{ matrix.wordpress }}'
           skip-wordpress-install: 'true'
+
+  # Check if any of the pr-tests failed and fail the job if so.
+  pr-tests:
+    needs: run-pr-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check job results
+        run: |
+          echo "Checking matrix job results..."
+          if [ "${{ needs.run-pr-tests.result }}" == "failure" ]; then
+            echo "One or more matrix jobs failed."
+            exit 1
+          else
+            echo "All matrix jobs passed."
+          fi
