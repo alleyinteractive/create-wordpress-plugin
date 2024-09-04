@@ -1,4 +1,4 @@
-name: Built Release
+name: Built Branch and Release
 
 on:
   push:
@@ -7,8 +7,12 @@ on:
       - main
       - production
 
+permissions:
+  contents: write
+
 jobs:
-  built-release:
-    uses: alleyinteractive/.github/.github/workflows/built-release.yml@main
-    with:
-      node: 20
+  release:
+    name: "Built Branch and Release"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: alleyinteractive/action-release@feature
