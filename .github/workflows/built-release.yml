@@ -14,5 +14,6 @@ jobs:
   release:
     name: "Built Branch and Release"
     runs-on: ubuntu-latest
+    if: github.repository != 'alleyinteractive/create-wordpress-plugin'
     steps:
-      - uses: alleyinteractive/action-release@feature
+      - uses: alleyinteractive/action-release@develop
