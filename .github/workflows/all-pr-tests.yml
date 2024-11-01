@@ -52,10 +52,6 @@ jobs:
       - pr-tests
     runs-on: ubuntu-latest
     if: always()
-    permissions:
-      pull-requests: read
-      statuses: write
-      contents: read
     steps:
       - name: Check job statuses
         run: |
