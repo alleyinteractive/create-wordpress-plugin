@@ -11,8 +11,5 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
   },
-  modulePathIgnorePatterns: [
-    '.buddy-tests',
-  ],
   testEnvironment: 'node',
 };
