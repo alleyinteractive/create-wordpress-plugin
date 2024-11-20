@@ -129,7 +129,7 @@ npx wp-scripts packages-update --dist-tag=wp-WPVERSION`
 ```
 
 Where `WPVERSION` is the version of WordPress you are targeting. The version
-must include both the major and minor version (e.g., `6.1`). For example:
+must include both the major and minor version (e.g., `6.7`). For example:
 
 ```sh
 npx wp-scripts packages-update --dist-tag=wp-6.7`
