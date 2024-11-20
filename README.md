@@ -35,9 +35,9 @@ Tags: vendor_name, create-wordpress-plugin
 
 Stable tag: 0.0.0
 
-Requires at least: 5.9
+Requires at least: 6.3
 
-Tested up to: 6.1
+Tested up to: 6.7
 
 Requires PHP: 8.1
 
@@ -129,10 +129,10 @@ npx wp-scripts packages-update --dist-tag=wp-WPVERSION`
 ```
 
 Where `WPVERSION` is the version of WordPress you are targeting. The version
-must include both the major and minor version (e.g., `6.1`). For example:
+must include both the major and minor version (e.g., `6.7`). For example:
 
 ```sh
-npx wp-scripts packages-update --dist-tag=wp-6.1`
+npx wp-scripts packages-update --dist-tag=wp-6.7`
 ```
 
 ## Releasing the Plugin
