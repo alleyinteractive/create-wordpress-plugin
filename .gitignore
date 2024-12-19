@@ -1,6 +1,7 @@
 # Build files
 build
 vendor
+vendor-prefixed
 composer.lock
 node_modules
 

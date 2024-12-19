@@ -39,12 +39,15 @@ return [
 			->ignoreDotFiles( true )
 			->notName( '/LICENSE|.*\\.md|.*\\.json|.*\\.lock|.*\\.dist/' )
 			->exclude( [ 'docs', 'tests', 'node_modules', '.scoper' ] )
-			->path( $wp_oop_plugin_lib_folders_regex )
+			// ->path( $wp_oop_plugin_lib_folders_regex )
 			->in( __DIR__ . '/vendor' ),
 
 		// Main composer.json file so that we can build a classmap.
 		Finder::create()
 			->append( [ 'composer.json' ] ),
+	],
+	'exclude-namespaces' => [
+		'Create_WordPress_Plugin\\',
 	],
 	'exclude-classes'   => $wp_classes,
 	'exclude-functions' => $wp_functions,
