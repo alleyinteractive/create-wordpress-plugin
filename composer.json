@@ -61,7 +61,7 @@
     "prefix-dependencies": [
       "rm -rf vendor-prefixed || true",
       "php-scoper add-prefix --output-dir=./vendor-prefixed --force --quiet",
-      "@composer dump-autoload --working-dir ./vendor-prefixed --no-dev --classmap-authoritative",
+      "@composer dump-autoload --working-dir ./vendor-prefixed --no-dev --classmap-authoritative"
     ]
   }
 }
