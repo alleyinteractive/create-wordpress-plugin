@@ -21,7 +21,9 @@
     },
     "require-dev": {
         "alleyinteractive/alley-coding-standards": "^2.0",
+        "humbug/php-scoper": "^0.18.13",
         "mantle-framework/testkit": "^1.0",
+        "sniccowp/php-scoper-wordpress-excludes": "^6.7",
         "szepeviktor/phpstan-wordpress": "^1.1"
     },
     "config": {
