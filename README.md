@@ -157,7 +157,7 @@ release. If you want to do this manually you can follow these steps:
 	+ * Version: 0.0.1
 	```
 
-	__✨ `npm run release` will do this for you automatically.__
+	**✨ `npm run release` will do this for you automatically.**
 
 2. Commit your changes and push to the repository.
 3. Check the actions tab in the repository to see the progress of the release.
