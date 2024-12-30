@@ -253,6 +253,14 @@ function remove_assets_readme( bool $keep_contents, string $file = 'README.md' )
 		return;
 	}
 
+	if ( ! str_contains( $contents, '<!--front-end-->' ) ) {
+		echo "Unable to find the front-end assets section in {$file}.\n";
+	}
+
+	if ( ! str_contains( $contents, '<!--/front-end-->' ) ) {
+		echo "Unable to find the closing front-end assets section in {$file}.\n";
+	}
+
 	if ( $keep_contents ) {
 		$contents = str_replace( '<!--front-end-->', '', $contents );
 		$contents = str_replace( '<!--/front-end-->', '', $contents );
@@ -265,6 +273,8 @@ function remove_assets_readme( bool $keep_contents, string $file = 'README.md' )
 		);
 	}
 }
+remove_assets_readme(false);
+die('done');
 
 /* Remove the assets.php require from the main plugin file. */
 function remove_assets_require(): void {
