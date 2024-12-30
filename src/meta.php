@@ -95,7 +95,7 @@ function register_meta_helper(
 			'all' === $object_slugs
 		)
 	) {
-		return register_meta( $object_type, $meta_key, $args );
+		return register_meta( $object_type, $meta_key, $args ); // @phpstan-ignore-line array given
 	}
 
 	// Fix potential errors since we're allowing `$object_slugs` to be a string or array.
@@ -107,14 +107,14 @@ function register_meta_helper(
 	switch ( $object_type ) {
 		case 'post':
 			foreach ( $object_slugs as $object_slug ) {
-				if ( ! register_post_meta( $object_slug, $meta_key, $args ) ) {
+				if ( ! register_post_meta( $object_slug, $meta_key, $args ) ) { // @phpstan-ignore-line array given
 					return false;
 				}
 			}
 			break;
 		case 'term':
 			foreach ( $object_slugs as $object_slug ) {
-				if ( ! register_term_meta( $object_slug, $meta_key, $args ) ) {
+				if ( ! register_term_meta( $object_slug, $meta_key, $args ) ) { // @phpstan-ignore-line array given
 					return false;
 				}
 			}
@@ -146,13 +146,24 @@ function register_post_meta_from_defs(): void {
 
 	// Loop through definitions and register each.
 	foreach ( $definitions as $meta_key => $definition ) {
+		if ( ! is_array( $definition ) ) {
+			_doing_it_wrong( __FUNCTION__, 'Post meta definition items must be an array.', '1.0.0' );
+
+			continue;
+		}
+
 		// Extract post types.
 		$post_types = $definition['post_types'] ?? [];
+
 		// Unset since $definition is passed as register_meta args.
 		unset( $definition['post_types'] );
 
 		// Relocate schema, if specified at the top level.
 		if ( ! empty( $definition['schema'] ) ) {
+			if ( ! isset( $definition['show_in_rest'] ) || ! is_array( $definition['show_in_rest'] ) ) {
+				$definition['show_in_rest'] = [];
+			}
+
 			$definition['show_in_rest']['schema'] = $definition['schema'];
 			// Unset since $definition is passed as register_meta args.
 			unset( $definition['schema'] );
@@ -161,9 +172,9 @@ function register_post_meta_from_defs(): void {
 		// Register the meta.
 		register_meta_helper(
 			'post',
-			$post_types,
+			$post_types, // @phpstan-ignore-line array given
 			$meta_key,
-			$definition
+			$definition,  // @phpstan-ignore-line array given
 		);
 	}
 }
