@@ -147,9 +147,8 @@ contain all the required front-end assets the plugin may require. This works
 well for publishing to WordPress.org or for submodule-ing.
 
 When you are ready to release a new version of the plugin, you can run
-`npm run release` (or `composer release` if the plugin does not have front-end assets)
-to start the process of setting up a new release. If you want to do this manually you
-can follow these steps:
+`npm run release`/`composer release` to start the process of setting up a new
+release. If you want to do this manually you can follow these steps:
 
 1. Change the `Version` in the `plugin.php` file to a new higher-level version.
 
@@ -157,6 +156,8 @@ can follow these steps:
 	- * Version: 0.0.0
 	+ * Version: 0.0.1
 	```
+
+	__✨ `npm run release` will do this for you automatically.__
 
 2. Commit your changes and push to the repository.
 3. Check the actions tab in the repository to see the progress of the release.
