@@ -137,15 +137,31 @@ npx wp-scripts packages-update --dist-tag=wp-6.7`
 
 ## Releasing the Plugin
 
-The plugin uses a [built release workflow](./.github/workflows/built-release.yml)
-to compile and tag releases. Whenever a new version is detected in the root
-`composer.json` file or in the plugin's headers, the workflow will automatically
-build the plugin and tag it with a new version. The built tag will contain all
-the required front-end assets the plugin may require. This works well for
-publishing to WordPress.org or for submodule-ing.
+The plugin uses
+[action-release](https://github.com/alleyinteractive/action-release) via a
+[built release workflow](./.github/workflows/built-release.yml) to compile and
+tag releases. Whenever a new version is detected in the root plugin's headers in
+the `plugin.php` file or in the `composer.json` file, the workflow will
+automatically build the plugin and tag it with a new version. The built tag will
+contain all the required front-end assets the plugin may require. This works
+well for publishing to WordPress.org or for submodule-ing.
 
 When you are ready to release a new version of the plugin, you can run
-`npm run release` to start the process of setting up a new release.
+`npm run release` (or `composer release` if the plugin does not have front-end assets)
+to start the process of setting up a new release. If you want to do this manually you
+can follow these steps:
+
+1. Change the `Version` in the `plugin.php` file to a new higher-level version.
+
+	```diff
+	- * Version: 0.0.0
+	+ * Version: 0.0.1
+	```
+
+2. Commit your changes and push to the repository.
+3. Check the actions tab in the repository to see the progress of the release.
+   The action will automatically create a new tag and release for the plugin.
+   You are done!
 
 ## Changelog
 
