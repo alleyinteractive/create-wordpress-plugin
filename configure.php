@@ -273,8 +273,6 @@ function remove_assets_readme( bool $keep_contents, string $file = 'README.md' )
 		);
 	}
 }
-remove_assets_readme(false);
-die('done');
 
 /* Remove the assets.php require from the main plugin file. */
 function remove_assets_require(): void {
