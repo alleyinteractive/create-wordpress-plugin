@@ -17,11 +17,11 @@
   "require": {
     "php": "^8.1",
     "alleyinteractive/composer-wordpress-autoloader": "^1.0",
-    "alleyinteractive/wp-type-extensions": "^2.1"
+    "alleyinteractive/wp-type-extensions": "^3.0"
   },
   "require-dev": {
     "alleyinteractive/alley-coding-standards": "^2.0",
-    "humbug/php-scoper": "^0.18.13",
+    "humbug/php-scoper": "^0.17.5",
     "mantle-framework/testkit": "^1.0",
     "sniccowp/php-scoper-wordpress-excludes": "^6.7",
     "szepeviktor/phpstan-wordpress": "^1.1"
@@ -49,6 +49,12 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "scripts": {
+    "post-install-cmd": [
+      "@prefix-dependencies"
+    ],
+    "post-update-cmd": [
+      "@prefix-dependencies"
+    ],
     "phpcbf": "phpcbf .",
     "phpcs": "phpcs .",
     "phpunit": "phpunit",

@@ -22,15 +22,15 @@ return [
 	'prefix'             => 'Create_WordPress_Plugin_Vendor',
 	'finders'            => [
 		// Plugin files.
-		Finder::create()
-			->files()
-			->name( '*.php' )
-			->ignoreVCS( true )
-			->ignoreDotFiles( true )
-			->notName( '/LICENSE|.*\\.md|.*\\.json|.*\\.lock|.*\\.dist/' )
-			->in( [ __DIR__ . '/src', __DIR__ . '/blocks' ] ),
-		// Main plugin file.
-		Finder::create()->append( [ 'plugin.php' ] ),
+		// Finder::create()
+		// 	->files()
+		// 	->name( '*.php' )
+		// 	->ignoreVCS( true )
+		// 	->ignoreDotFiles( true )
+		// 	->notName( '/LICENSE|.*\\.md|.*\\.json|.*\\.lock|.*\\.dist/' )
+		// 	->in( [ __DIR__ . '/src', __DIR__ . '/blocks' ] ),
+		// // Main plugin file.
+		// Finder::create()->append( [ 'plugin.php' ] ),
 		// Vendor dependencies.
 		Finder::create()
 			->files()
@@ -43,10 +43,16 @@ return [
 			->in( __DIR__ . '/vendor' ),
 
 		// Main composer.json file so that we can build a classmap.
-		Finder::create()
-			->append( [ 'composer.json' ] ),
+		Finder::create()->append( [ 'composer.json' ] ),
 	],
 	'exclude-namespaces' => [
+		// Composer/internal namespaces.
+		'Composer\\',
+		'Alley\\Autoloader\\',
+		'Alley_Interactive\\Autoloader\\',
+		'ComposerWordPressAutoloader\\',
+
+		// Plugin namespace.
 		'Create_WordPress_Plugin\\',
 	],
 	'exclude-classes'   => $wp_classes,
@@ -57,4 +63,5 @@ return [
 			'CREATE_WORDPRESS_PLUGIN_DIR',
 		],
 	),
+	'expose-global-functions' => false,
 ];

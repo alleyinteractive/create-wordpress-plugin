@@ -28,29 +28,29 @@ define( 'CREATE_WORDPRESS_PLUGIN_DIR', __DIR__ );
 
 /* Start Composer Loader */
 
-// Check if Composer is installed (remove if Composer is not required for your plugin).
-if ( ! file_exists( __DIR__ . '/vendor/wordpress-autoload.php' ) ) {
+if ( file_exists( __DIR__ . '/vendor-prefixed/vendor/scoper-autoload.php' ) ) {
+	require_once __DIR__ . '/vendor-prefixed/vendor/scoper-autoload.php';
+	require_once __DIR__ . '/vendor-prefixed/vendor/wordpress-autoload.php';
+	// require_once __DIR__ . '/vendor-prefixed/vendor/wordpress-autoload.php';
+} elseif ( file_exists( __DIR__ . '/vendor/wordpress-autoload.php' ) ) {
+	require_once __DIR__ . '/vendor/wordpress-autoload.php';
+} elseif ( ! class_exists( \Composer\InstalledVersions::class ) ) {
 	// Will also check for the presence of an already loaded Composer autoloader
 	// to see if the Composer dependencies have been installed in a parent
 	// folder. This is useful for when the plugin is loaded as a Composer
 	// dependency in a larger project.
-	if ( ! class_exists( \Composer\InstalledVersions::class ) ) {
-		\add_action(
-			'admin_notices',
-			function () {
-				?>
-				<div class="notice notice-error">
-					<p><?php esc_html_e( 'Composer is not installed and create-wordpress-plugin cannot load. Try using a `*-built` branch if the plugin is being loaded as a submodule.', 'create-wordpress-plugin' ); ?></p>
-				</div>
-				<?php
-			}
-		);
+	\add_action(
+		'admin_notices',
+		function () {
+			?>
+			<div class="notice notice-error">
+				<p><?php esc_html_e( 'Composer is not installed and create-wordpress-plugin cannot load. Try using a `*-built` branch if the plugin is being loaded as a submodule.', 'create-wordpress-plugin' ); ?></p>
+			</div>
+			<?php
+		}
+	);
 
-		return;
-	}
-} else {
-	// Load Composer dependencies.
-	require_once __DIR__ . '/vendor/wordpress-autoload.php';
+	return;
 }
 
 /* End Composer Loader */
