@@ -134,6 +134,7 @@ must include both the major and minor version (e.g., `6.7`). For example:
 ```sh
 npx wp-scripts packages-update --dist-tag=wp-6.7`
 ```
+<!--/front-end-->
 
 ## Releasing the Plugin
 

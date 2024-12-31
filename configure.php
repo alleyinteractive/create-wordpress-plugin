@@ -253,6 +253,14 @@ function remove_assets_readme( bool $keep_contents, string $file = 'README.md' )
 		return;
 	}
 
+	if ( ! str_contains( $contents, '<!--front-end-->' ) ) {
+		echo "Unable to find the front-end assets section in {$file}.\n";
+	}
+
+	if ( ! str_contains( $contents, '<!--/front-end-->' ) ) {
+		echo "Unable to find the closing front-end assets section in {$file}.\n";
+	}
+
 	if ( $keep_contents ) {
 		$contents = str_replace( '<!--front-end-->', '', $contents );
 		$contents = str_replace( '<!--/front-end-->', '', $contents );
@@ -629,6 +637,7 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 			'.eslintignore',
 			'.eslintrc.json',
 			'.nvmrc',
+			'.npmrc',
 			'.stylelintrc.json',
 			'babel.config.js',
 			'jest.config.js',
@@ -636,6 +645,7 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 			'package.json',
 			'package-lock.json',
 			'tsconfig.json',
+			'tsconfig.eslint.json',
 			'entries/',
 			'blocks/',
 			'build/',
