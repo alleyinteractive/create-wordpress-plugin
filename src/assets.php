@@ -57,7 +57,9 @@ function get_entry_asset_map( string $dir_entry_name ): array {
 		$asset_file_path = trailingslashit( $base_path ) . 'index.asset.php';
 
 		if ( validate_path( $asset_file_path ) ) {
-			return include $asset_file_path; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.IncludingFile, WordPressVIPMinimum.Files.IncludingFile.UsingVariable
+			$asset_map = include $asset_file_path; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.IncludingFile, WordPressVIPMinimum.Files.IncludingFile.UsingVariable
+
+			return is_array( $asset_map ) ? $asset_map : []; // @phpstan-ignore-line returns array
 		}
 	}
 
@@ -69,7 +71,7 @@ function get_entry_asset_map( string $dir_entry_name ): array {
  *
  * @param string $dir_entry_name The entry point directory name.
  *
- * @return array<int, string> The asset's dependency array.
+ * @return array<string> The asset's dependency array.
  */
 function get_asset_dependency_array( string $dir_entry_name ): array {
 	$asset_arr = get_entry_asset_map( $dir_entry_name );
