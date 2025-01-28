@@ -87,7 +87,7 @@ function confirm( string $question, bool $default = false ): bool {
 	return in_array( strtolower( trim( $answer ) ), [ 'y', 'yes', 'true', '1' ], true );
 }
 
-function run( string $command, string $dir = null ): string {
+function run( string $command, ?string $dir = null ): string {
 	$command = $dir ? "cd {$dir} && {$command}" : $command;
 
 	return trim( (string) shell_exec( $command ) );
