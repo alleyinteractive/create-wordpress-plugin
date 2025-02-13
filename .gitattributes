@@ -9,6 +9,7 @@
 /.phpcs.xml export-ignore
 /.phpcs export-ignore
 /phpunit.xml export-ignore
+/rector.php export-ignore
 /tests export-ignore
 /configure.php export-ignore
 /Makefile export-ignore
