@@ -24,8 +24,6 @@ function validate_path( string $path ): bool {
  *
  * @param string  $dir_entry_name The directory name where the entry point was defined.
  * @param boolean $dir            Optional. Whether to return the directory path or the plugin URL path. Defaults to false (returns URL).
- *
- * @return string
  */
 function get_entry_dir_path( string $dir_entry_name, bool $dir = false ): string {
 	// The relative path from the plugin root.
@@ -35,7 +33,7 @@ function get_entry_dir_path( string $dir_entry_name, bool $dir = false ): string
 
 	if ( validate_path( $asset_dir_path ) ) {
 		// Negotiate the base path.
-		return true === $dir
+		return $dir
 			? $asset_dir_path
 			: plugins_url( $asset_build_dir, __DIR__ );
 	}
@@ -97,7 +95,7 @@ function get_asset_version( string $dir_entry_name ): string {
  * @param string $filename       The asset file name including the file type extension to get the public path for.
  * @return string                The public URL to the asset, empty string otherwise.
  */
-function get_entry_asset_url( string $dir_entry_name, $filename = 'index.js' ) {
+function get_entry_asset_url( string $dir_entry_name, ?string $filename = 'index.js' ): string {
 	if ( empty( $filename ) ) {
 		return '';
 	}
