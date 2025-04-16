@@ -1,12 +1,12 @@
 # Features
 
-Features should be PHP classes that implement the [Alley\WP\Types\Feature interface](https://github.com/alleyinteractive/wp-type-extensions/blob/main/src/alley/wp/types/interface-feature.php).
+Features should be PHP classes that implement the [Alley\WP\Types\Feature interface](https://github.com/alleyinteractive/wp-type-extensions/blob/main/src/types/interface-feature.php).
 
 Features should be located in the `src/features` directory of the plugin and have namespace `Create_WordPress_Plugin\Features;`
 
 The following variable is passed to the `Class_Hello` feature in each of the following examples. This shows how we can remove any business logic from the feature and pass it in when the feature is added.
 
-```
+```php
 $lyrics = "Hello, Dolly
     Well, hello, Dolly
     It's so nice to have you back where you belong
@@ -25,7 +25,7 @@ $lyrics = "Hello, Dolly
 
 Files in the features directory will be autoloaded, but features will not be automatically instantiated. Features are typically instantiated in the plugin's `main()` function.
 
-```
+```php
 function main(): void {
     // Add features here.
     $plugin = new Group(
@@ -43,7 +43,7 @@ function main(): void {
 
 This is a port of the infamous WordPress `hello.php` plugin to a feature. The lyrics would be passed in when the feature was called, as shown above.
 
-```
+```php
 <?php
 /**
  * Feature implementation of hello.php
