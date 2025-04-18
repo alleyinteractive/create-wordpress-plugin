@@ -64,4 +64,5 @@ require_once __DIR__ . '/src/main.php';
 
 load_scripts();
 register_post_meta_from_defs();
+register_term_meta_from_defs();
 main();

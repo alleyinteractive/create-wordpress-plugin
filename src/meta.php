@@ -127,10 +127,12 @@ function register_meta_helper(
 }
 
 /**
- * Reads the post meta definitions from config and registers them.
+ * Reads the meta definitions from config and registers them.
+ *
+ * @param 'post'|'term' $meta_context The context in which to register the definitions.
  */
-function register_post_meta_from_defs(): void {
-	$filepath = dirname( __DIR__ ) . '/config/post-meta.json';
+function register_meta_from_defs( string $meta_context = 'post' ): void {
+	$filepath = dirname( __DIR__ ) . '/config/' . $meta_context . '-meta.json';
 
 	// Ensure the config file exists and is valid.
 	if ( ! file_exists( $filepath ) || ! in_array( validate_file( $filepath ), [ 0, 2 ], true ) ) {
@@ -152,11 +154,12 @@ function register_post_meta_from_defs(): void {
 			continue;
 		}
 
-		// Extract post types.
-		$post_types = $definition['post_types'] ?? [];
+		// Extract post types or terms.
+		$definition_key = ( 'post' === $meta_context ) ? 'post_types' : 'terms';
+		$object_types   = $definition[ $definition_key ] ?? [];
 
 		// Unset since $definition is passed as register_meta args.
-		unset( $definition['post_types'] );
+		unset( $definition[ $definition_key ] );
 
 		// Relocate schema, if specified at the top level.
 		if ( ! empty( $definition['schema'] ) ) {
@@ -171,10 +174,24 @@ function register_post_meta_from_defs(): void {
 
 		// Register the meta.
 		register_meta_helper(
-			'post',
-			$post_types, // @phpstan-ignore-line array given
+			$meta_context,
+			$object_types, // @phpstan-ignore-line array given
 			$meta_key,
-			$definition,  // @phpstan-ignore-line array given
+			$definition, // @phpstan-ignore-line array given
 		);
 	}
+}
+
+/**
+ * Reads the post meta definitions from config and registers them.
+ */
+function register_post_meta_from_defs(): void {
+	register_meta_from_defs( 'post' );
+}
+
+/**
+ * Reads the term meta definitions from config and registers them.
+ */
+function register_term_meta_from_defs(): void {
+	register_meta_from_defs( 'term' );
 }
