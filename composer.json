@@ -65,8 +65,7 @@
         "rector": "rector process --dry-run",
         "release": "npx @alleyinteractive/create-release@latest",
         "test": [
-            "@phpcs",
-            "@phpstan",
+            "@lint",
             "@phpunit"
         ]
     }

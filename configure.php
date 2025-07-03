@@ -284,28 +284,40 @@ function remove_assets_require(): void {
 		return;
 	}
 
-	file_put_contents(
-		$plugin_file,
-		trim( (string) preg_replace( '/require_once __DIR__ \. \'\/src\/assets.php\';\\n/s', '', $contents ) ?: $contents ) . PHP_EOL,
-	);
+	// Remove the assets.php require.
+	$contents = (string) ( preg_replace( '/require_once __DIR__ \. \'\/src\/assets.php\';\\n/s', '', $contents ) ?: $contents );
+
+	// Remove the load_scripts() call.
+	$contents = str_replace( "load_scripts();\n", '', $contents );
+
+	file_put_contents( $plugin_file, trim( $contents ) . PHP_EOL );
 }
 
-/* Remove the node tests from within the all-pr-tests.yml file. */
+/* Remove the tests that support front-end assets. */
 function remove_assets_test(): void {
 	$file = __DIR__ . '/.github/workflows/all-pr-tests.yml';
 
-	if ( ! file_exists( $file ) ) {
-		return;
+	if ( file_exists( $file ) ) {
+		$contents = preg_replace(
+			'/(- name: Run Node Tests.*)(- name: Run)/s',
+			'$2',
+			file_get_contents( $file ),
+		);
+
+		file_put_contents( $file, $contents );
 	}
 
+	// Replace the phpstan paths.
+	if ( file_exists( 'phpstan.neon' ) ) {
+		$phpstan_contents = file_get_contents( 'phpstan.neon' );
 
-	$contents = preg_replace(
-		'/(- name: Run Node Tests.*)(- name:)/s',
-		'$2',
-		file_get_contents( $file ),
-	);
+		if ( ! empty( $phpstan_contents ) ) {
+			$phpstan_contents = str_replace( '- blocks/', '# - blocks/', $phpstan_contents );
+			$phpstan_contents = str_replace( '- entries/', '# - entries/', $phpstan_contents );
 
-	file_put_contents( $file, $contents );
+			file_put_contents( 'phpstan.neon', $phpstan_contents );
+		}
+	}
 }
 
 function determine_separator( string $path ): string {
@@ -814,7 +826,7 @@ echo "\n\nWe're done! 🎉\n\n";
 // Offer some information about built releases if the workflow still exists.
 if ( file_exists( '.github/workflows/built-release.yml' ) ) {
 	echo <<<INFO
-When you are ready to release the plugin, you can run `npm run release`
+When you are ready to release the plugin, you can run `composer release`
 to generate a new release.
 
 The Built Release workflow will take care of the rest by building the plugin's
