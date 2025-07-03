@@ -284,10 +284,13 @@ function remove_assets_require(): void {
 		return;
 	}
 
-	file_put_contents(
-		$plugin_file,
-		trim( (string) preg_replace( '/require_once __DIR__ \. \'\/src\/assets.php\';\\n/s', '', $contents ) ?: $contents ) . PHP_EOL,
-	);
+	// Remove the assets.php require.
+	$contents = (string) ( preg_replace( '/require_once __DIR__ \. \'\/src\/assets.php\';\\n/s', '', $contents ) ?: $contents );
+
+	// Remove the load_scripts() call.
+	$contents = str_replace( "load_scripts();\n", '', $contents );
+
+	file_put_contents( $plugin_file, trim( $contents ) . PHP_EOL );
 }
 
 /* Remove the node tests from within the all-pr-tests.yml file. */
