@@ -299,7 +299,7 @@ function remove_assets_test(): void {
 
 	if ( file_exists( $file ) ) {
 		$contents = preg_replace(
-			'/(- name: Run Node Tests.*)(- name:)/s',
+			'/(- name: Run Node Tests.*)(- name: Run)/s',
 			'$2',
 			file_get_contents( $file ),
 		);
@@ -319,7 +319,6 @@ function remove_assets_test(): void {
 		}
 	}
 }
-remove_assets_test();
 
 function determine_separator( string $path ): string {
 	return str_replace( '/', DIRECTORY_SEPARATOR, $path );
