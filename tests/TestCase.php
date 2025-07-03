@@ -15,5 +15,4 @@ use Mantle\Testkit\Test_Case as TestkitTest_Case;
  */
 abstract class TestCase extends TestkitTest_Case {
 	use Prevent_Remote_Requests;
-
 }
