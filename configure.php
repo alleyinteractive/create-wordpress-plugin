@@ -814,7 +814,7 @@ echo "\n\nWe're done! 🎉\n\n";
 // Offer some information about built releases if the workflow still exists.
 if ( file_exists( '.github/workflows/built-release.yml' ) ) {
 	echo <<<INFO
-When you are ready to release the plugin, you can run `npm run release`
+When you are ready to release the plugin, you can run `composer release`
 to generate a new release.
 
 The Built Release workflow will take care of the rest by building the plugin's
