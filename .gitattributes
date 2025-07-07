@@ -13,6 +13,7 @@
 /tests export-ignore
 /configure.php export-ignore
 /Makefile export-ignore
+/.wp-env.json export-ignore
 
 #
 # Auto detect text files and perform LF normalization.
