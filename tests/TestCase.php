@@ -7,11 +7,12 @@
 
 namespace Alley\WP\Create_WordPress_Plugin\Tests;
 
+use Mantle\Testing\Concerns\Prevent_Remote_Requests;
 use Mantle\Testkit\Test_Case as TestkitTest_Case;
 
 /**
  * Create WordPress Plugin Base Test Case
  */
 abstract class TestCase extends TestkitTest_Case {
-
+	use Prevent_Remote_Requests;
 }

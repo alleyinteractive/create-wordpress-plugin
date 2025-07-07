@@ -42,11 +42,11 @@
     "@alleyinteractive/eslint-config": "^0.1.6",
     "@alleyinteractive/stylelint-config": "^0.0.2",
     "@alleyinteractive/tsconfig": "^0.2.0",
-    "@babel/preset-env": "^7.27.2",
+    "@babel/preset-env": "^7.28.0",
     "@wordpress/babel-preset-default": "^8.8.2",
     "ajv": "^8.17.1",
     "babel-jest": "^30.0.0",
-    "jest": "^30.0.3",
+    "jest": "^30.0.4",
     "ts-jest": "^29.4.0",
     "typescript": "^5.8.3",
     "webpack-cli": "^6.0.1"
