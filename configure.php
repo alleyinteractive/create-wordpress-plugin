@@ -671,6 +671,16 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 		]
 	);
 
+	if ( file_exists( 'composer.json' ) ) {
+		$plugin_composer = (array) json_decode( (string) file_get_contents( 'composer.json' ), true );
+
+		if ( isset( $plugin_composer['scripts']['dev'] ) ) {
+			unset( $plugin_composer['scripts']['dev'] );
+
+			file_put_contents( 'composer.json', json_encode( $plugin_composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) );
+		}
+	}
+
 	remove_assets_readme( keep_contents: false );
 	remove_assets_require();
 	remove_assets_test();

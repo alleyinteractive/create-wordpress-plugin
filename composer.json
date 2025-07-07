@@ -48,6 +48,10 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "scripts": {
+    "dev": [
+      "Composer\\Config::disableProcessTimeout",
+      "npx concurrently -c \"#93c5fd,#fdba74\" \"composer serve\" \"npm run start\" --names=server,webpack"
+    ],
     "phpcbf": "phpcbf .",
     "phpcs": "phpcs .",
     "phpstan": "phpstan --memory-limit=512M",
@@ -64,6 +68,7 @@
     "rector:fix": "rector process",
     "rector": "rector process --dry-run",
     "release": "npx @alleyinteractive/create-release@latest",
+    "serve": "command -v wp-env >/dev/null 2>&1 || npm install -g @wordpress/env && wp-env start",
     "test": [
       "@lint",
       "@phpunit"
