@@ -203,6 +203,7 @@ function remove_project_files(): void {
 		'.gitignore',
 		'.gitattributes',
 		'.github',
+		'.wp-env.json',
 		'LICENSE',
 	];
 
@@ -389,13 +390,15 @@ function remove_phpstan(): void {
 	if ( file_exists( 'composer.json' ) ) {
 		$composer_json = (array) json_decode( (string) file_get_contents( 'composer.json' ), true );
 
+		unset( $composer_json['require-dev']['szepeviktor/phpstan-wordpress'] ); // @phpstan-ignore-line
+
 		if ( isset( $composer_json['scripts']['phpstan'] ) ) { // @phpstan-ignore-line
 			unset( $composer_json['scripts']['phpstan'] ); // @phpstan-ignore-line
 
-			$composer_json['scripts']['test'] = [ // @phpstan-ignore-line
-				'@phpcs',
-				'@phpunit',
-			];
+			$composer_json['scripts']['lint'] = array_filter(
+				$composer_json['scripts']['lint'] ?? [],
+				fn ( string $script ) => ! str_contains( $script, 'phpstan' ),
+			);
 
 			file_put_contents( 'composer.json', json_encode( $composer_json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) );
 		}
@@ -667,6 +670,16 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 			'src/assets.php',
 		]
 	);
+
+	if ( file_exists( 'composer.json' ) ) {
+		$plugin_composer = (array) json_decode( (string) file_get_contents( 'composer.json' ), true );
+
+		if ( isset( $plugin_composer['scripts']['dev'] ) ) {
+			unset( $plugin_composer['scripts']['dev'] );
+
+			file_put_contents( 'composer.json', json_encode( $plugin_composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) );
+		}
+	}
 
 	remove_assets_readme( keep_contents: false );
 	remove_assets_require();
