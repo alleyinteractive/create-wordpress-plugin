@@ -1,72 +1,77 @@
 {
-    "name": "alleyinteractive/create-wordpress-plugin",
-    "description": "A skeleton WordPress plugin",
-    "type": "wordpress-plugin",
-    "keywords": [
-        "alleyinteractive",
-        "create-wordpress-plugin"
-    ],
-    "homepage": "https://github.com/alleyinteractive/create-wordpress-plugin",
-    "license": "GPL-2.0-or-later",
-    "authors": [
-        {
-            "name": "author_name",
-            "email": "email@domain.com"
-        }
-    ],
-    "require": {
-        "php": "^8.2",
-        "alleyinteractive/composer-wordpress-autoloader": "^1.0",
-        "alleyinteractive/wp-type-extensions": "^4.0"
-    },
-    "require-dev": {
-        "alleyinteractive/alley-coding-standards": "^2.0",
-        "mantle-framework/testkit": "^1.4",
-        "rector/rector": "^2.0",
-        "szepeviktor/phpstan-wordpress": "^2.0"
-    },
-    "config": {
-        "allow-plugins": {
-            "alleyinteractive/composer-wordpress-autoloader": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true,
-            "pestphp/pest-plugin": true
-        },
-        "sort-packages": true
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Alley\\WP\\Create_WordPress_Plugin\\Tests\\": "tests"
-        }
-    },
-    "extra": {
-        "wordpress-autoloader": {
-            "autoload": {
-                "Alley\\WP\\Create_WordPress_Plugin\\": "src"
-            }
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "scripts": {
-        "phpcbf": "phpcbf .",
-        "phpcs": "phpcs .",
-        "phpstan": "phpstan --memory-limit=512M",
-        "lint": [
-            "@phpcs",
-            "@phpstan",
-            "@rector"
-        ],
-        "lint:fix": [
-          "@rector:fix",
-          "@phpcbf"
-        ],
-        "phpunit": "phpunit",
-        "rector:fix": "rector process",
-        "rector": "rector process --dry-run",
-        "release": "npx @alleyinteractive/create-release@latest",
-        "test": [
-            "@lint",
-            "@phpunit"
-        ]
+  "name": "alleyinteractive/create-wordpress-plugin",
+  "description": "A skeleton WordPress plugin",
+  "type": "wordpress-plugin",
+  "keywords": [
+    "alleyinteractive",
+    "create-wordpress-plugin"
+  ],
+  "homepage": "https://github.com/alleyinteractive/create-wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "author_name",
+      "email": "email@domain.com"
     }
+  ],
+  "require": {
+    "php": "^8.2",
+    "alleyinteractive/composer-wordpress-autoloader": "^1.0",
+    "alleyinteractive/wp-type-extensions": "^4.0"
+  },
+  "require-dev": {
+    "alleyinteractive/alley-coding-standards": "^2.0",
+    "mantle-framework/testkit": "^1.4",
+    "rector/rector": "^2.0",
+    "szepeviktor/phpstan-wordpress": "^2.0"
+  },
+  "config": {
+    "allow-plugins": {
+      "alleyinteractive/composer-wordpress-autoloader": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "pestphp/pest-plugin": true
+    },
+    "sort-packages": true
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Alley\\WP\\Create_WordPress_Plugin\\Tests\\": "tests"
+    }
+  },
+  "extra": {
+    "wordpress-autoloader": {
+      "autoload": {
+        "Alley\\WP\\Create_WordPress_Plugin\\": "src"
+      }
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "scripts": {
+    "dev": [
+      "Composer\\Config::disableProcessTimeout",
+      "npx concurrently -c \"#93c5fd,#fdba74\" \"composer serve\" \"npm run start\" --names=server,webpack"
+    ],
+    "phpcbf": "phpcbf .",
+    "phpcs": "phpcs .",
+    "phpstan": "phpstan --memory-limit=512M",
+    "lint": [
+      "@phpcs",
+      "@phpstan",
+      "@rector"
+    ],
+    "lint:fix": [
+      "@rector:fix",
+      "@phpcbf"
+    ],
+    "phpunit": "phpunit",
+    "rector:fix": "rector process",
+    "rector": "rector process --dry-run",
+    "release": "npx @alleyinteractive/create-release@latest",
+    "serve": "command -v wp-env >/dev/null 2>&1 || npm install -g @wordpress/env && wp-env start",
+    "test": [
+      "@lint",
+      "@phpunit"
+    ]
+  }
 }

@@ -64,6 +64,22 @@ $plugin = Create_WordPress_Plugin\Skeleton\Example_Plugin();
 $plugin->perform_magic();
 ```
 <!--front-end-->
+## Development
+
+To setup a WordPress installation and run the plugin in a local environment, you
+can use `wp-env` via the `composer dev` command:
+
+```sh
+npm install
+composer dev
+```
+
+The command will start a local WordPress environment with the plugin activated
+while also running the front-end assets build process. You can also run `npm run
+start` to start the front-end assets build process separately. The front-end
+assets will be compiled into the `build` directory and will be enqueued
+automatically by the plugin.
+
 ## Testing
 
 Run `npm run test` to run Jest tests against JavaScript files. Run
