@@ -21,7 +21,6 @@
   },
   "require-dev": {
     "alleyinteractive/alley-coding-standards": "^2.0",
-    "brianium/paratest": "^7.10",
     "mantle-framework/testkit": "^1.4",
     "rector/rector": "^2.0",
     "szepeviktor/phpstan-wordpress": "^2.0"
