@@ -43,7 +43,7 @@ Requires PHP: 8.2
 
 License: GPL v2 or later
 
-[![Testing Suite](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/all-pr-tests.yml/badge.svg)](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/all-pr-tests.yml)
+[![Testing Suite](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/all-pr-tests.yml/badge.svg?branch=develop)](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/all-pr-tests.yml)
 
 A skeleton WordPress plugin.
 
