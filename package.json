@@ -27,7 +27,7 @@
     "test": "npm run check-types && npm run eslint && npm run stylelint && npm run jest"
   },
   "dependencies": {
-    "@alleyinteractive/block-editor-tools": "^0.12.2",
+    "@alleyinteractive/block-editor-tools": "^0.13.0",
     "@wordpress/block-editor": "^14.3.15",
     "@wordpress/blocks": "^13.8.5",
     "@wordpress/components": "^28.8.11",
@@ -38,17 +38,17 @@
     "react": "^18.3.1"
   },
   "devDependencies": {
-    "@alleyinteractive/build-tool": "^0.1.6",
-    "@alleyinteractive/eslint-config": "^0.1.6",
+    "@alleyinteractive/build-tool": "^0.2.0",
+    "@alleyinteractive/eslint-config": "^0.2.0",
     "@alleyinteractive/stylelint-config": "^0.0.2",
-    "@alleyinteractive/tsconfig": "^0.2.0",
-    "@babel/preset-env": "^7.28.0",
+    "@alleyinteractive/tsconfig": "^0.3.0",
+    "@babel/preset-env": "^7.28.3",
     "@wordpress/babel-preset-default": "^8.8.2",
     "ajv": "^8.17.1",
-    "babel-jest": "^30.0.0",
-    "jest": "^30.0.4",
-    "ts-jest": "^29.4.0",
-    "typescript": "^5.8.3",
+    "babel-jest": "^30.0.5",
+    "jest": "^30.0.5",
+    "ts-jest": "^29.4.1",
+    "typescript": "^5.9.2",
     "webpack-cli": "^6.0.1"
   }
 }
