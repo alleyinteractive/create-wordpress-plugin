@@ -2,8 +2,6 @@
 /**
  * Create WordPress Plugin Tests: Bootstrap
  *
- * phpcs:disable Squiz.Commenting.InlineComment.InvalidEndChar
- *
  * @package create-wordpress-plugin
  */
 
