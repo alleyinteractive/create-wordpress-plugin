@@ -723,7 +723,7 @@ $standalone = true;
 // /wp-content/plugins/:plugin/.
 if (
 	file_exists( '../../.git/index' )
-	&& is_dir( '../../../wp-admin' )
+	&& is_dir( '../../../wp-content' )
 	&& ! confirm(
 		'Will this be a standalone plugin, not located within a larger project? For example, a standalone plugin will have a separate repository and will be distributed independently.',
 		false,
