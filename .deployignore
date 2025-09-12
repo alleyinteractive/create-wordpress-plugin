@@ -21,6 +21,7 @@ node_modules/
 output.log
 phpstan.neon
 phpunit.xml
+.phpunit-watcher.yml
 rector.php
 tests
 tests
