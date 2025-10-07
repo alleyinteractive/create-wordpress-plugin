@@ -80,6 +80,31 @@ start` to start the front-end assets build process separately. The front-end
 assets will be compiled into the `build` directory and will be enqueued
 automatically by the plugin.
 
+## Registering Meta
+
+The plugin supports registering post and term meta via JSON files located in the
+`config` directory. Out of the box, the plugin will look for
+`config/post-meta.json` for post meta and `config/term-meta.json` for term meta.
+
+```json
+{
+  "$schema": "https://raw.githubusercontent.com/alleyinteractive/mantle-framework/HEAD/src/mantle/support/schema/meta.json",
+  "example_meta_key": {
+    "post_types": "article",
+    "type": "string"
+  },
+	"another_meta_key": {
+		"post_types": [ "article", "page" ],
+		"type": "number",
+		"single": false,
+		"default": 0
+	}
+}
+```
+
+For more information on how to register meta via JSON files,
+[see the documentation](https://mantle.alley.com/docs/features/support/helpers#register_meta_from_file).
+
 ## Testing
 
 Run `npm run test` to run Jest tests against JavaScript files. Run
@@ -126,7 +151,7 @@ You can also include an `index.php` file in the entry point directory for enqueu
 Use the `create-block` command to create custom blocks with [@alleyinteractive/create-block](https://github.com/alleyinteractive/alley-scripts/tree/main/packages/create-block) script and follow the prompts to generate all the block assets in the `blocks/` directory.
 Block registration, script creation, etc will be scaffolded from the `create-block` script. Run `npm run build` to compile and build the custom block. Blocks are enqueued using the `load_scripts()` function in `src/assets.php`.
 
-### Updating WP Dependencies
+### Updating WordPress Dependencies
 
 Update the [WordPress dependency packages](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-scripts/#packages-update) used in the project to their latest version.
 
