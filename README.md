@@ -5,10 +5,8 @@ This is a skeleton WordPress plugin that can scaffold a WordPress plugin. This
 template includes a base plugin file, autoloaded PHP files, unit tests powered
 by [Mantle](https://mantle.alley.com/), front-end assets compiled via Webpack,
 and Continuous Integration [via GitHub Actions](.github/workflows). Actions are
-configured to test the plugin and also build it for releases. A built tag
-workflow will create `*-built` branches as well as a built release workflow that
-will build and tag/release the plugin automatically. The built branches and
-releases will include any compiled front-end assets (if using them).
+configured to test the plugin and also [build it for releases](https://github.com/alleyinteractive/action-release).
+The workflows will also create a `*-built` branch, too.
 
 The plugin supports front-end assets which can be enqueued inside
 `src/assets.php` or from within an entry points `index.php` file. For plugins
@@ -166,13 +164,13 @@ npx wp-scripts packages-update --dist-tag=wp-6.7`
 <!--/front-end-->
 
 ## Testing
-
+<!--front-end-->
 Run `npm run test` to run Jest tests against JavaScript files. Run
 `npm run test:watch` to keep the test runner open and watching for changes.
 
 Run `npm run lint` to run ESLint against all JavaScript files. Linting will also
 happen when running development or production builds.
-
+<!--/front-end-->
 Run `composer test` to run tests against PHPUnit and the PHP code in the plugin.
 Unit testing code is written in PSR-4 format and can be found in the `tests`
 directory.
