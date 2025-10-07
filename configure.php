@@ -270,7 +270,7 @@ function remove_assets_readme( bool $keep_contents, string $file = 'README.md' )
 	} else {
 		file_put_contents(
 			$file,
-			trim( (string) preg_replace( '/<!--front-end-->.*<!--\/front-end-->/s', '', $contents ) ?: $contents ),
+			trim( (string) preg_replace( '/<!--front-end-->.*?<!--\/front-end-->/s', '', $contents ) ?: $contents ),
 		);
 	}
 }
