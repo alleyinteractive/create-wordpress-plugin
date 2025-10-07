@@ -162,7 +162,6 @@ must include both the major and minor version (e.g., `6.7`). For example:
 npx wp-scripts packages-update --dist-tag=wp-6.7`
 ```
 <!--/front-end-->
-
 ## Testing
 <!--front-end-->
 Run `npm run test` to run Jest tests against JavaScript files. Run
