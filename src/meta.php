@@ -13,16 +13,12 @@ use function Mantle\Support\Helpers\register_meta_from_file;
  * Reads the post meta definitions from config and registers them.
  */
 function register_post_meta_from_defs(): void {
-	if ( file_exists( dirname( __DIR__ ) . '/config/post-meta.json' ) ) {
-		register_meta_from_file( dirname( __DIR__ ) . '/config/post-meta.json', 'post' );
-	}
+	register_meta_from_file( dirname( __DIR__ ) . '/config/post-meta.json', 'post', false );
 }
 
 /**
  * Reads the term meta definitions from config and registers them.
  */
 function register_term_meta_from_defs(): void {
-	if ( file_exists( dirname( __DIR__ ) . '/config/term-meta.json' ) ) {
-		register_meta_from_file( dirname( __DIR__ ) . '/config/term-meta.json', 'term' );
-	}
+	register_meta_from_file( dirname( __DIR__ ) . '/config/term-meta.json', 'term', false );
 }
