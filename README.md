@@ -63,7 +63,7 @@ Activate the plugin in WordPress and use it like so:
 $plugin = Create_WordPress_Plugin\Skeleton\Example_Plugin();
 $plugin->perform_magic();
 ```
-<!--front-end-->
+
 ## Development
 
 To setup a WordPress installation and run the plugin in a local environment, you
@@ -104,24 +104,12 @@ The plugin supports registering post and term meta via JSON files located in the
 
 For more information on how to register meta via JSON files,
 [see the documentation](https://mantle.alley.com/docs/features/support/helpers#register_meta_from_file).
-
-## Testing
-
-Run `npm run test` to run Jest tests against JavaScript files. Run
-`npm run test:watch` to keep the test runner open and watching for changes.
-
-Run `npm run lint` to run ESLint against all JavaScript files. Linting will also
-happen when running development or production builds.
-
-Run `composer test` to run tests against PHPUnit and the PHP code in the plugin.
-Unit testing code is written in PSR-4 format and can be found in the `tests`
-directory.
-
-### The `entries` directory and entry points
+<!--front-end-->
+## The `entries` directory and entry points
 
 All directories created in the `entries` directory can serve as entry points and will be compiled with [@wordpress/scripts](https://github.com/WordPress/gutenberg/blob/trunk/packages/scripts/README.md#scripts) into the `build` directory with an accompanied `index.asset.php` asset map.
 
-#### Scaffolding an entry point
+### Scaffolding an entry point
 
 To generate a new entry point, run the following command:
 
@@ -142,7 +130,7 @@ npx @alleyinteractive/create-entry --help
 ```
 [Visit the package README](https://www.npmjs.com/package/@alleyinteractive/create-entry) for more information.
 
-#### Enqueuing Entry Points
+### Enqueuing Entry Points
 
 You can also include an `index.php` file in the entry point directory for enqueueing or registering a script. This file will then be moved to the build directory and will be auto-loaded with the `load_scripts()` function in the `functions.php` file. Alternatively, if a script is to be enqueued elsewhere there are helper functions in the `src/assets.php` file for getting the assets.
 
@@ -176,6 +164,18 @@ must include both the major and minor version (e.g., `6.7`). For example:
 npx wp-scripts packages-update --dist-tag=wp-6.7`
 ```
 <!--/front-end-->
+
+## Testing
+
+Run `npm run test` to run Jest tests against JavaScript files. Run
+`npm run test:watch` to keep the test runner open and watching for changes.
+
+Run `npm run lint` to run ESLint against all JavaScript files. Linting will also
+happen when running development or production builds.
+
+Run `composer test` to run tests against PHPUnit and the PHP code in the plugin.
+Unit testing code is written in PSR-4 format and can be found in the `tests`
+directory.
 
 ## Releasing the Plugin
 
