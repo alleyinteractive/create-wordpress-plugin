@@ -93,12 +93,12 @@ The plugin supports registering post and term meta via JSON files located in the
     "post_types": "article",
     "type": "string"
   },
-	"another_meta_key": {
-		"post_types": [ "article", "page" ],
-		"type": "number",
-		"single": false,
-		"default": 0
-	}
+  "another_meta_key": {
+    "post_types": [ "article", "page" ],
+    "type": "number",
+    "single": false,
+    "default": 0
+  }
 }
 ```
 
