@@ -211,9 +211,9 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 This project is actively maintained by [Alley
 Interactive](https://github.com/alleyinteractive). Like what you see? [Come work
-with us](https://alley.co/careers/).
+with us](https://alley.comm/careers/).
 
-- [author_name](https://github.com/author_name)
+- [author_name](https://github.com/author_username)
 - [All Contributors](../../contributors)
 
 ## License
