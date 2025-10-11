@@ -19,6 +19,7 @@
     "packages-update": "alley-build packages-update --dist-tag=wp-6.7",
     "postinstall": "rm -rf node_modules/.cache/babel-loader && rm -rf node_modules/.cache/webpack",
     "release": "npx @alleyinteractive/create-release@latest",
+    "scaffold": "npx @alleyinteractive/scaffolder@latest",
     "start": "alley-build start",
     "start:hot": "alley-build start --hot",
     "stylelint": "stylelint \"**/*.scss\" --allow-empty-input",
