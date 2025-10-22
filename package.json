@@ -7,8 +7,8 @@
     "npm": "10"
   },
   "scripts": {
-    "build": "alley-build build",
-    "create-block": "npx @alleyinteractive/create-block@latest -n create-wordpress-plugin",
+    "build": "alley-build build --blocks-manifest",
+    "create-block": "npx @alleyinteractive/create-block@latest -n create-wordpress-plugin --skipRegistration",
     "create-entry": "npx @alleyinteractive/create-entry@latest -n create-wordpress-plugin -t create-wordpress-plugin",
     "create-slotfill": "npx @alleyinteractive/create-entry -s -n create-wordpress-plugin -t create-wordpress-plugin",
     "check-types": "tsc --noEmit",
@@ -19,8 +19,8 @@
     "packages-update": "alley-build packages-update --dist-tag=wp-6.7",
     "postinstall": "rm -rf node_modules/.cache/babel-loader && rm -rf node_modules/.cache/webpack",
     "release": "npx @alleyinteractive/create-release@latest",
-    "start": "alley-build start",
-    "start:hot": "alley-build start --hot",
+    "start": "alley-build start --blocks-manifest",
+    "start:hot": "alley-build start --hot --blocks-manifest",
     "stylelint": "stylelint \"**/*.scss\" --allow-empty-input",
     "stylelint:fix": "stylelint --fix \"**/*.scss\"",
     "test": "npm run check-types && npm run eslint && npm run stylelint && npm run jest"
