@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "alley-build build --blocks-manifest",
-    "create-block": "npx @alleyinteractive/create-block@latest -n create-wordpress-plugin --skipRegistration",
+    "create-block": "npx @alleyinteractive/create-block@latest -n create-wordpress-plugin --skip-registration",
     "create-entry": "npx @alleyinteractive/create-entry@latest -n create-wordpress-plugin -t create-wordpress-plugin",
     "create-slotfill": "npx @alleyinteractive/create-entry -s -n create-wordpress-plugin -t create-wordpress-plugin",
     "check-types": "tsc --noEmit",
