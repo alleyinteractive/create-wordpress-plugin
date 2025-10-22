@@ -1,10 +1,16 @@
 # Features
 
-Features should be PHP classes that implement the [Alley\WP\Types\Feature interface](https://github.com/alleyinteractive/wp-type-extensions/blob/main/src/types/interface-feature.php).
+Features should be PHP classes that implement the [`Alley\WP\Types\Feature`
+interface](https://github.com/alleyinteractive/wp-type-extensions/blob/main/src/types/interface-feature.php).
 
-Features should be located in the `src/features` directory of the plugin and have namespace `Create_WordPress_Plugin\Features;`
+Features should be located in the `src/features` directory of the plugin and
+have namespace `Alley\WP\Create_WordPress_Plugin\Features`.
 
-The following variable is passed to the `Class_Hello` feature in each of the following examples. This shows how we can remove any business logic from the feature and pass it in when the feature is added.
+You can generate new features using the scaffolder: `npm run scaffold feature`.
+
+The following variable is passed to the `Class_Hello` feature in each of the
+following examples. This shows how we can remove any business logic from the
+feature and pass it in when the feature is added.
 
 ```php
 $lyrics = "Hello, Dolly
@@ -23,7 +29,9 @@ $lyrics = "Hello, Dolly
 
 ## Adding a feature
 
-Files in the features directory will be autoloaded, but features will not be automatically instantiated. Features are typically instantiated in the plugin's `main()` function.
+Files in the features directory will be autoloaded, but features will not be
+automatically instantiated. Features are typically instantiated in the plugin's
+`main()` function in `src/main.php`:
 
 ```php
 function main(): void {
@@ -41,7 +49,8 @@ function main(): void {
 
 ## Example feature class
 
-This is a port of the infamous WordPress `hello.php` plugin to a feature. The lyrics would be passed in when the feature was called, as shown above.
+This is a port of the infamous WordPress `hello.php` plugin to a feature. The
+lyrics would be passed in when the feature was called, as shown above.
 
 ```php
 <?php

@@ -14,7 +14,10 @@ use Alley\WP\Features\Group;
  */
 function main(): void {
 	// Add features here.
-	$plugin = new Group();
+	$plugin = new Group(
+		new Features\Register_Block_Manifest(),
+		new Features\Load_Entries(),
+	);
 
 	$plugin->boot();
 }
