@@ -110,18 +110,3 @@ function get_entry_asset_url( string $dir_entry_name, ?string $filename = 'index
 
 	return '';
 }
-
-/**
- * Load the php index files from the build directory for blocks, slotfills, and any other scripts with an index.php file.
- */
-function load_scripts(): void {
-	$files = glob( CREATE_WORDPRESS_PLUGIN_DIR . '/build/**/index.php' );
-
-	if ( ! empty( $files ) ) {
-		foreach ( $files as $path ) {
-			if ( validate_path( $path ) ) {
-				require_once $path;  // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.IncludingFile, WordPressVIPMinimum.Files.IncludingFile.UsingVariable
-			}
-		}
-	}
-}
