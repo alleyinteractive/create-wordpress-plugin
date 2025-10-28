@@ -19,7 +19,7 @@ class Register_Block_Manifest implements Feature {
 	 * Boot the feature.
 	 */
 	public function boot(): void {
-		add_action( 'init', [ $this, 'register_blocks_from_manifest' ] );
+		add_action( 'init', $this->register_blocks_from_manifest( ... ) );
 	}
 
 	/**
