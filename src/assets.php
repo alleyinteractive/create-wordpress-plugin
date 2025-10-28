@@ -57,7 +57,7 @@ function get_entry_asset_map( string $dir_entry_name ): array {
 		if ( validate_path( $asset_file_path ) ) {
 			$asset_map = include $asset_file_path; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.IncludingFile, WordPressVIPMinimum.Files.IncludingFile.UsingVariable
 
-			return is_array( $asset_map ) ? $asset_map : []; // @phpstan-ignore-line returns array
+			return is_array( $asset_map ) ? $asset_map : [];
 		}
 	}
 
