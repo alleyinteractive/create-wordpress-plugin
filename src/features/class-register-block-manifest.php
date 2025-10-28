@@ -19,7 +19,13 @@ class Register_Block_Manifest implements Feature {
 	 * Boot the feature.
 	 */
 	public function boot(): void {
-		// Check if the blocks manifest file exists.
+		add_action( 'init', [ $this, 'register_blocks_from_manifest' ] );
+	}
+
+	/**
+	 * Register blocks from the `blocks-manifest.php` file.
+	 */
+	public function register_blocks_from_manifest(): void {
 		if ( ! file_exists( CREATE_WORDPRESS_PLUGIN_DIR . '/build/blocks-manifest.php' ) ) {
 			return;
 		}
