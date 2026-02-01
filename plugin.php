@@ -8,7 +8,7 @@
  * Author URI: https://github.com/alleyinteractive/create-wordpress-plugin
  * Requires at least: 6.5
  * Requires PHP: 8.2
- * Tested up to: 6.8
+ * Tested up to: 6.9
  *
  * Text Domain: create-wordpress-plugin
  * Domain Path: /languages/
