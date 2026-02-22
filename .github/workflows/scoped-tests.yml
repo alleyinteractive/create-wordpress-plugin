@@ -1,0 +1,50 @@
+name: "Scoped Dependency Tests"
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  pull_request:
+    branches:
+      - develop
+      - main
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  scoped-tests:
+    # Don't run on draft PRs
+    if: github.event.pull_request.draft == false
+    # Timeout after 10 minutes
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    # Restrict permissions to the minimum required.
+    permissions:
+      contents: read
+    # Cancel any existing runs of this workflow
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
+      cancel-in-progress: true
+    name: "Scoped Dependency Tests"
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer
+
+      - name: Install Composer Dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Scope Dependencies with PHP-Scoper
+        run: composer scope
+
+      - name: Run PHP Tests (Scoped)
+        # See https://github.com/alleyinteractive/action-test-php for more options
+        uses: alleyinteractive/action-test-php@develop
+        with:
+          php-version: '8.2'
+          wordpress-version: 'latest'
+          skip-wordpress-install: 'true'

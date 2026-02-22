@@ -405,6 +405,39 @@ function remove_phpstan(): void {
 	}
 }
 
+function remove_scoper_files(): void {
+	delete_files(
+		[
+			'scoper.inc.php',
+			'vendor-prefixed/',
+			'.github/workflows/scoped-tests.yml',
+		]
+	);
+
+	// Remove php-scoper from composer.json.
+	if ( file_exists( 'composer.json' ) ) {
+		$composer_json = (array) json_decode( (string) file_get_contents( 'composer.json' ), true );
+
+		$modified = false;
+
+		if ( isset( $composer_json['require-dev']['humbug/php-scoper'] ) ) { // @phpstan-ignore-line
+			unset( $composer_json['require-dev']['humbug/php-scoper'] ); // @phpstan-ignore-line
+			$modified = true;
+		}
+
+		if ( isset( $composer_json['scripts']['scope'] ) ) { // @phpstan-ignore-line
+			unset( $composer_json['scripts']['scope'] ); // @phpstan-ignore-line
+			$modified = true;
+		}
+
+		if ( $modified ) {
+			file_put_contents( 'composer.json', json_encode( $composer_json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) );
+		}
+	}
+
+	write( 'Removed php-scoper files.' );
+}
+
 function contributing_message( string $message ): void {
 	write( "\n{$message}\n" );
 	echo "\t\e]8;;https://github.com/alleyinteractive/.github/blob/main/CONTRIBUTING.md#best-practices\e\\CONTRIBUTING.md\e]8;;\e\\\n\n";
@@ -713,6 +746,16 @@ if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloade
 
 if ( file_exists( 'composer.json') && ! confirm(' Using PHPStan? (PHPStan is a great static analyzer to help find bugs in your code.)', true) ) {
 	remove_phpstan();
+}
+
+if ( $uses_composer && file_exists( 'scoper.inc.php' ) ) {
+	write( 'PHP-Scoper prefixes all vendor namespaces to prevent conflicts with other plugins. Run `composer scope` to generate a scoped vendor-prefixed/ directory for distribution.' );
+
+	if ( ! confirm( 'Do you want to scope your vendor dependencies with php-scoper?', false ) ) {
+		remove_scoper_files();
+	}
+} elseif ( file_exists( 'scoper.inc.php' ) ) {
+	remove_scoper_files();
 }
 
 $standalone = true;
