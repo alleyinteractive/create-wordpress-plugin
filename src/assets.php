@@ -51,7 +51,7 @@ function get_entry_dir_path( string $dir_entry_name, bool $dir = false ): string
 function get_entry_asset_map( string $dir_entry_name ): array {
 	$base_path = get_entry_dir_path( $dir_entry_name, true );
 
-	if ( ! empty( $base_path ) ) {
+	if ( $base_path !== '' && $base_path !== '0' ) {
 		$asset_file_path = trailingslashit( $base_path ) . 'index.asset.php';
 
 		if ( validate_path( $asset_file_path ) ) {
@@ -96,14 +96,14 @@ function get_asset_version( string $dir_entry_name ): string {
  * @return string                The public URL to the asset, empty string otherwise.
  */
 function get_entry_asset_url( string $dir_entry_name, ?string $filename = 'index.js' ): string {
-	if ( empty( $filename ) ) {
+	if ( in_array( $filename, [ null, '', '0' ], true ) ) {
 		return '';
 	}
 
 	if ( validate_path( trailingslashit( get_entry_dir_path( $dir_entry_name, true ) ) . $filename ) ) {
 		$entry_base_url = get_entry_dir_path( $dir_entry_name );
 
-		if ( ! empty( $entry_base_url ) ) {
+		if ( $entry_base_url !== '' && $entry_base_url !== '0' ) {
 			return trailingslashit( $entry_base_url ) . $filename;
 		}
 	}
