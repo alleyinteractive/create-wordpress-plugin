@@ -17,7 +17,8 @@ A **skeleton/template WordPress plugin** maintained by Alley Interactive. Consum
 - Prefer Mantle APIs over custom implementations.
 - Ensure all PHP passes PHPStan level max.
 - Ensure all linting checks pass (phpcs/phpstan/rector for PHP; eslint/tsc for JS).
-
+- Post/term meta should be registered through `config/post-meta.json` and `config/term-meta.json` using `register_meta_from_file()`, not hard-coded in PHP.
+- 
 ## Common commands
 
 **Local dev environment** (wp-env + webpack in parallel):
