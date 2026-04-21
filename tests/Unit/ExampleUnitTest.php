@@ -1,10 +1,12 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Create WordPress Plugin Tests: Example Unit Test
  *
  * @package create-wordpress-plugin
  */
-
 namespace Alley\WP\Create_WordPress_Plugin\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;

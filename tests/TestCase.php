@@ -1,10 +1,12 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Create WordPress Plugin Tests: Base Test Class
  *
  * @package create-wordpress-plugin
  */
-
 namespace Alley\WP\Create_WordPress_Plugin\Tests;
 
 use Mantle\Testing\Concerns\Prevent_Remote_Requests;
