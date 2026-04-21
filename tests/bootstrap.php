@@ -1,12 +1,12 @@
 <?php
-
-declare(strict_types=1);
-
 /**
  * Create WordPress Plugin Tests: Bootstrap
  *
  * @package create-wordpress-plugin
  */
+
+declare(strict_types=1);
+
 /**
  * Visit {@see https://mantle.alley.com/testing/test-framework.html} to learn more.
  */

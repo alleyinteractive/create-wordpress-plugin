@@ -1,12 +1,12 @@
 <?php
-
-declare(strict_types=1);
-
 /**
  * Contains functions for working with meta.
  *
  * @package create-wordpress-plugin
  */
+
+declare(strict_types=1);
+
 namespace Alley\WP\Create_WordPress_Plugin;
 
 use function Mantle\Support\Helpers\register_meta_from_file;
