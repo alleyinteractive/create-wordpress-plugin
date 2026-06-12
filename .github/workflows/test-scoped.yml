@@ -1,0 +1,33 @@
+name: Scoped Build Tests
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+  scoped-tests:
+    name: "Scoped dependency tests"
+    runs-on: ubuntu-latest
+    # configure.php flips this to `true` when dependency scoping is enabled.
+    if: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer
+
+      - name: Install dependencies (with dev, so php-scoper is available)
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Scope dependencies
+        run: composer scope
+
+      - name: Assert the scoped autoloader was generated
+        run: test -f vendor-prefixed/vendor/autoload.php
+
+      - name: Run tests against the scoped dependencies
+        run: composer phpunit

@@ -195,6 +195,97 @@ function remove_composer_files(): void {
 	write( sprintf( 'Removed %s files.', implode( ', ', $file_list ) ) );
 }
 
+/**
+ * Remove the dependency-scoping machinery for plugins that do not opt in.
+ */
+function remove_scoping_files(): void {
+	delete_files(
+		[
+			'.scoper',
+			'.github/workflows/test-scoped.yml',
+		]
+	);
+}
+
+/**
+ * Enable Composer dependency scoping: prefix runtime dependencies into
+ * vendor-prefixed/ so the plugin does not conflict with other plugins or the
+ * host project when loaded as a Composer dependency.
+ *
+ * @param string $namespace The plugin's root namespace (e.g. Alley\WP\My_Plugin).
+ */
+function scope_dependencies( string $namespace ): void {
+	global $plugin_file;
+
+	$prefix = $namespace . '\\Dependencies';
+
+	// 1. Add the scoping tooling and wire up the `scope` script + hooks so
+	// vendor-prefixed/ is regenerated on every install/update.
+	$composer = (array) json_decode( (string) file_get_contents( 'composer.json' ), true );
+
+	$composer['require-dev']['humbug/php-scoper']                      = '^0.18';
+	$composer['require-dev']['sniccowp/php-scoper-wordpress-excludes'] = '^6.0';
+
+	$composer['scripts']['scope']              = '@php .scoper/scope.php';
+	$composer['scripts']['post-install-cmd'][] = '@scope';
+	$composer['scripts']['post-update-cmd'][]  = '@scope';
+
+	ksort( $composer['require-dev'] );
+
+	file_put_contents(
+		'composer.json',
+		json_encode( $composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) . "\n"
+	);
+
+	// 2. Point the plugin loader at the scoped autoloader.
+	if ( ! empty( $plugin_file ) && file_exists( $plugin_file ) ) {
+		replace_in_file(
+			$plugin_file,
+			[
+				'/vendor/wordpress-autoload.php' => '/vendor-prefixed/vendor/autoload.php',
+			]
+		);
+	}
+
+	// 3. Prefix the finite set of vendor imports in src (Model B: php-scoper
+	// only ever touches vendor/, so these references are authored, not rewritten
+	// by the scoper).
+	$rewrites = [
+		'src/main.php'                                   => [ 'use Alley\\WP\\Features\\Group;' => "use {$prefix}\\Alley\\WP\\Features\\Group;" ],
+		'src/features/class-register-block-manifest.php' => [ 'use Alley\\WP\\Types\\Feature;' => "use {$prefix}\\Alley\\WP\\Types\\Feature;" ],
+		'src/features/class-load-entries.php'            => [ 'use Alley\\WP\\Types\\Feature;' => "use {$prefix}\\Alley\\WP\\Types\\Feature;" ],
+		'src/meta.php'                                   => [ 'use function Mantle\\Support\\Helpers\\register_meta_from_file;' => "use function {$prefix}\\Mantle\\Support\\Helpers\\register_meta_from_file;" ],
+	];
+
+	foreach ( $rewrites as $file => $replacements ) {
+		if ( file_exists( $file ) ) {
+			replace_in_file( $file, $replacements );
+		}
+	}
+
+	// 4. Ignore vendor-prefixed/ in source; ship it (not vendor/) on the built branch.
+	if ( file_exists( '.gitignore' ) ) {
+		$gitignore = (string) file_get_contents( '.gitignore' );
+
+		if ( ! str_contains( $gitignore, 'vendor-prefixed' ) ) {
+			file_put_contents( '.gitignore', rtrim( $gitignore ) . "\nvendor-prefixed\n" );
+		}
+	}
+
+	if ( file_exists( '.deployignore' ) ) {
+		$deployignore = (string) file_get_contents( '.deployignore' );
+
+		if ( ! preg_match( '/^vendor$/m', $deployignore ) ) {
+			file_put_contents( '.deployignore', rtrim( $deployignore ) . "\nvendor\n" );
+		}
+	}
+
+	// 5. Enable the scoped-build CI workflow.
+	if ( file_exists( '.github/workflows/test-scoped.yml' ) ) {
+		replace_in_file( '.github/workflows/test-scoped.yml', [ 'if: false' => 'if: true' ] );
+	}
+}
+
 function remove_project_files(): void {
 	$file_list = [
 		'CHANGELOG.md',
@@ -634,6 +725,7 @@ echo "Done!\n\n";
 
 $needs_built_assets = false;
 $uses_composer      = false;
+$scoping_enabled    = false;
 
 if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) ) {
 	$needs_built_assets = true;
@@ -701,6 +793,19 @@ if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloade
 
 		echo "\n\n";
 	}
+
+	// Offer to scope (prefix) the plugin's Composer dependencies. This isolates
+	// runtime dependencies under the plugin's namespace so they don't conflict
+	// with other plugins or the host project when loaded as a Composer
+	// dependency. Recommended for standalone / distributed plugins.
+	if ( confirm( 'Do you want to scope (prefix) your Composer dependencies to avoid conflicts when this plugin is loaded alongside other plugins or within a larger project?', false ) ) {
+		scope_dependencies( $namespace );
+
+		echo run( 'composer update' );
+		echo "\n\n";
+
+		$scoping_enabled = true;
+	}
 } elseif ( confirm( 'Do you want to remove the vendor/autoload.php dependency from your main plugin file and the composer.json file?' ) ) {
 	remove_composer_require();
 
@@ -709,6 +814,11 @@ if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloade
 	if ( confirm( 'Do you want to delete the composer.json and composer.lock files? (This will prevent you from using PHPCS/PHPStan/Composer entirely).', false ) ) {
 		remove_composer_files();
 	}
+}
+
+// Remove the dependency-scoping machinery unless the plugin opted in.
+if ( ! $scoping_enabled ) {
+	remove_scoping_files();
 }
 
 if ( file_exists( 'composer.json') && ! confirm(' Using PHPStan? (PHPStan is a great static analyzer to help find bugs in your code.)', true) ) {
