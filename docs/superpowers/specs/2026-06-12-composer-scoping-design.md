@@ -145,6 +145,32 @@ Release (action-release, scope: true):
 | 3. Developer can opt out of scoping | configure.php opt-in, default off |
 | 4. PRs test against scoped code | New CI job: install → scope → phpunit on `vendor-prefixed/` |
 
+## Validated implementation note (as built)
+
+Prototyping revealed that php-scoper's *file* scoping is reliable, but its
+handling of the **autoloader** is not usable here: it leaves some
+`registerFromRules()` namespace strings unprefixed (the Alley packages use the
+WordPress autoloader with no PSR-4), and its scoped Composer bootstrap fails to
+load `ClassLoader`. The robust fix, validated end-to-end, is to **ignore
+php-scoper's generated autoloader and regenerate a classmap autoloader** over
+the scoped files:
+
+1. `.scoper/scope.php` runs php-scoper (runtime packages only, derived from
+   `composer.lock`'s `packages`), producing prefixed files in `vendor-prefixed/`.
+2. It writes a synthetic `vendor-prefixed/composer.json` declaring a
+   `classmap` over `.` (scoped deps) **and** `../src` (the plugin's own
+   classes), plus a `files` list rebuilt from each runtime package's
+   `autoload.files` so scoped helper *functions* (e.g.
+   `register_meta_from_file`) keep loading.
+3. `composer dump-autoload --classmap-authoritative` over that produces
+   `vendor-prefixed/vendor/autoload.php`, which the plugin loads.
+
+Classmaps parse actual class declarations, so PSR-4 and WordPress-autoloader
+packages are handled uniformly — this is why php-scoper alone was sufficient
+and **Strauss was not needed**. The DX trade-off: adding a new class to a
+scoped plugin's `src/` requires re-running `composer scope` (or
+`composer dump-autoload`) to refresh the authoritative classmap.
+
 ## Open items for the plan
 
 - Exact `scoper.inc.php` contents (patchers for any package that needs them).

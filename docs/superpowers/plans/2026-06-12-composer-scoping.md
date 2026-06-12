@@ -314,6 +314,40 @@ git commit -m "Add scoped-build CI workflow (#309)"
 
 ---
 
+## Validated Implementation (as built)
+
+Tasks 1–4 and 6 are implemented and verified locally. Key deltas from the
+initial task drafts, discovered during prototyping:
+
+- **wp-excludes are JSON, not PHP** — `scoper.inc.php` `json_decode`s
+  `exclude-wordpress-{classes,interfaces,functions,constants}.json` (interfaces
+  merged into `exclude-classes`).
+- **Runtime-only finder** — the finder is built from `composer.lock` `packages`
+  (via `->path()`), so dev tools (php-scoper, PHPUnit, Rector) are never scoped.
+- **Autoloader regeneration, not php-scoper's** — php-scoper's scoped autoloader
+  is unusable (unprefixed `registerFromRules` strings + broken Composer
+  bootstrap). `.scoper/scope.php` instead regenerates a `classmap-authoritative`
+  autoloader over the scoped files + `../src`, and rebuilds the `files`
+  autoloads from each runtime package so helper functions still load.
+- **Loader path** — `plugin.php` loads `vendor-prefixed/vendor/autoload.php`.
+- **Guarded orchestrator** — `.scoper/scope.php` no-ops when php-scoper is
+  absent, so it is safe in `post-install-cmd`/`post-update-cmd`.
+
+**Verification:** scaffolded `wp-scoped-test-plugin` (Alley vendor), opted into
+scoping + SQLite, ran `composer require symfony/string` (auto re-scoped to 1606
+classes), confirmed all scoped classes + the scoped `register_meta_from_file`
+resolve while the unscoped `Alley\WP\Features\Group` does not, and
+`composer phpunit` passed (2 tests, 3 assertions) — the Feature test boots the
+whole plugin through the scoped autoloader.
+
+**Pre-existing quirk noted (out of scope):** `configure.php`'s
+`'alleyinteractive' => $vendor_slug` replacement rewrites the Alley *dependency*
+package names when a non-Alley vendor is chosen, breaking `composer update`.
+Unrelated to #309; flagged for separate follow-up.
+
+**Task 5 (action-release) remains** — a backward-compatible cross-repo PR, not
+yet opened (outward-facing; awaiting go-ahead).
+
 ## Self-Review Notes
 
 - **Spec coverage:** AC1 → Tasks 2,5. AC2 → Task 1 (`exclude-namespaces`) + Task 2 finite rewrite. AC3 → Task 2 opt-in default off. AC4 → Task 4. All mapped.
