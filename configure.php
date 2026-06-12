@@ -284,6 +284,16 @@ function scope_dependencies( string $namespace ): void {
 	if ( file_exists( '.github/workflows/test-scoped.yml' ) ) {
 		replace_in_file( '.github/workflows/test-scoped.yml', [ 'if: false' => 'if: true' ] );
 	}
+
+	// 6. Tell the release action to scope dependencies for the built branch.
+	if ( file_exists( '.github/workflows/built-release.yml' ) ) {
+		replace_in_file(
+			'.github/workflows/built-release.yml',
+			[
+				"/action-release@develop\n" => "/action-release@develop\n        with:\n          scope: true\n",
+			]
+		);
+	}
 }
 
 function remove_project_files(): void {
