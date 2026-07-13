@@ -108,9 +108,9 @@ Dynamic blocks live in `blocks/<name>/` (scaffolded by `npm run create-block`).
 
 This plugin uses [Mantle](https://mantle.alley.com/) — Alley's WordPress framework — for its helpers, testing utilities, and support libraries. Prefer Mantle's APIs over hand-rolled equivalents when adding functionality:
 
-- **Testing:** Use Mantle Testkit (`Mantle\Testkit\Test_Case`) as the base, factories for fixture data (`static::factory()->post->create(...)`), HTTP testing helpers (`$this->get(...)`, `assertOk()`, etc.), and traits like `Prevent_Remote_Requests`, `Refresh_Database`, `Installs_Plugin`.
+- **Testing:** Use Mantle Testkit (`Mantle\Testkit\Test_Case`) as the base, factories for fixture data (`static::factory()->post->create(...)`), HTTP testing helpers (`$this->get(...)`, `assertOk()`, etc.), request faking, and traits like `Prevent_Remote_Requests`, `Refresh_Database`, `Installs_Plugin`.
 - **Helpers:** Use `mantle-framework/support` for collections (`collect()`), strings (`Str::*`), arrays (`Arr::*`), and meta registration (`register_meta_from_file()`).
 - **Database / Models:** Mantle's Eloquent-style models and query builders are preferred over raw `WP_Query` when data access gets complex.
 - **HTTP client, queues, events, scheduling:** Use Mantle's facades/services instead of re-implementing.
 
-**Reference:** Always consult `https://mantle.alley.com/llms.txt` (the LLM-optimized docs index) to discover the correct Mantle API, class, or trait before writing custom code. Fetch it with WebFetch when you need to verify a helper exists or find the right namespace.
+**Reference:** Always consult [`https://mantle.alley.com/llms.txt`](https://mantle.alley.com/llms.txt) (the LLM-optimized docs index) to discover the correct Mantle API, class, or trait before writing custom code. Fetch it with WebFetch when you need to verify a helper exists or find the right namespace.
