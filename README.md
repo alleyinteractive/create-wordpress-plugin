@@ -86,7 +86,7 @@ The plugin supports registering post and term meta via JSON files located in the
 
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/alleyinteractive/mantle-framework/HEAD/src/Mantle/Support/schema/meta.json",
+  "$schema": "https://mantle.alley.com/schema/meta.json",
   "example_meta_key": {
     "post_types": "article",
     "type": "string"

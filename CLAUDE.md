@@ -87,7 +87,7 @@ Every directory under `entries/` is a webpack entry point compiled to `build/<na
 Dynamic blocks live in `blocks/<name>/` (scaffolded by `npm run create-block`).
 
 ### Meta
-`config/post-meta.json` and `config/term-meta.json` drive `register_meta_from_file()` from `mantle-framework/support`. Add meta by editing these JSON files — no PHP changes needed. Schema: `https://raw.githubusercontent.com/alleyinteractive/mantle-framework/HEAD/src/mantle/support/schema/meta.json`.
+`config/post-meta.json` and `config/term-meta.json` drive `register_meta_from_file()` from `mantle-framework/support`. Add meta by editing these JSON files — no PHP changes needed. Schema: `https://mantle.alley.com/schema/meta.json`.
 
 
 ### Tests
