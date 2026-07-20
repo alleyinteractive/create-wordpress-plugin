@@ -11,6 +11,7 @@
 *.zip
 babel.config.js
 bin
+CLAUDE.md
 composer.lock
 configure.php
 DOCKER_ENV
