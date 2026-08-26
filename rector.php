@@ -9,7 +9,6 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
-use Rector\PHPUnit\Set\PHPUnitSetList;
 
 return RectorConfig::configure()
 	->withParallel()
@@ -41,11 +40,13 @@ return RectorConfig::configure()
 	 * --------------------------------------------------------------------------
 	 */
 	->withPhpSets()
-	->withSets( [
-		PHPUnitSetList::PHPUNIT_100,
-		PHPUnitSetList::PHPUNIT_110,
-		PHPUnitSetList::ANNOTATIONS_TO_ATTRIBUTES,
-	] )
+	/**
+	 * --------------------------------------------------------------------------
+	 * PHPUnit rules, matched to the PHPUnit version in composer.json.
+	 * --------------------------------------------------------------------------
+	 */
+	->withComposerBased( phpunit: true )
+	->withAttributesSets( phpunit: true )
 	/**
 	 * --------------------------------------------------------------------------
 	 * Rector rules to skip.
@@ -53,6 +54,4 @@ return RectorConfig::configure()
 	 *
 	 * @link https://getrector.com/documentation/ignoring-rules-or-paths
 	 */
-	->withSkip( [
-		Rector\Strict\Rector\Empty_\DisallowedEmptyRuleFixerRector::class,
-	] );
+	->withSkip( [] );
