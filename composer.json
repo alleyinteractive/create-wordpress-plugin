@@ -3,7 +3,7 @@
   "description": "A skeleton WordPress plugin",
   "type": "wordpress-plugin",
   "keywords": [
-    "alleyinteractive",
+    "vendor_slug",
     "create-wordpress-plugin"
   ],
   "homepage": "https://github.com/alleyinteractive/create-wordpress-plugin",

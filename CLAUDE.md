@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-A **skeleton/template WordPress plugin** maintained by Alley Interactive. Consumers click "Use template" on GitHub, then run `make` (or `php ./configure.php`) to replace placeholders (plugin name, author, namespace, etc.) throughout the files. Most changes in this repo are to the template itself — keep placeholder tokens like `create-wordpress-plugin`, `Create_WordPress_Plugin`, `author_name`, `author_username` intact unless the task is to change them.
+A **skeleton/template WordPress plugin** maintained by Alley Interactive. Consumers click "Use template" on GitHub, then run `make` (or `php ./configure.php`) to replace placeholders (plugin name, author, namespace, etc.) throughout the files. Most changes in this repo are to the template itself — keep the placeholder tokens that `configure.php` replaces (its `$search_and_replace` map) intact unless the task is to change them.
 
 ## Rules
 

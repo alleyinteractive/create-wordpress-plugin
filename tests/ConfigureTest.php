@@ -50,6 +50,7 @@ final class ConfigureTest extends PHPUnit_Test_Case {
 		'A skeleton WordPress plugin',
 		'CREATE_WORDPRESS_PLUGIN',
 		'Create WordPress Plugin',
+		'Create_WordPress_Plugin',
 		'Example_Plugin',
 		'Skeleton',
 		'author_name',
@@ -58,6 +59,8 @@ final class ConfigureTest extends PHPUnit_Test_Case {
 		'create_wordpress_plugin',
 		'email@domain.com',
 		'vendor_name',
+		'vendor_prefix',
+		'vendor_slug',
 	];
 
 	/**
@@ -66,7 +69,6 @@ final class ConfigureTest extends PHPUnit_Test_Case {
 	 * @var array<int, string>
 	 */
 	private const UNTOUCHED_PATHS = [
-		'.scaffolder/',
 		'LICENSE',
 		'composer.lock',
 		'tests/ConfigureTest.php',
@@ -167,6 +169,7 @@ final class ConfigureTest extends PHPUnit_Test_Case {
 
 		$this->assertStringContainsString( 'PHP_CodeSniffer standard for wp-my-cool-plugin.', $phpcs );
 		$this->assertStringContainsString( '<element value="wp_my_cool_plugin" />', $phpcs );
+		$this->assertStringContainsString( '<element value="test_vendor" />', $phpcs );
 
 		// The prefixed cache key and constant used by the features.
 		$entries = $this->read( $plugin . '/src/features/class-load-entries.php' );
@@ -289,11 +292,14 @@ final class ConfigureTest extends PHPUnit_Test_Case {
 		$this->assertFileDoesNotExist( $plugin . '/Makefile' );
 		$this->assertFileDoesNotExist( $plugin . '/tests/ConfigureTest.php' );
 
-		$scripts = $this->read_json( $plugin . '/composer.json' )['scripts'];
+		$composer = $this->read( $plugin . '/composer.json' );
+		$scripts  = $this->read_json( $plugin . '/composer.json' )['scripts'];
 
 		$this->assertArrayNotHasKey( 'test:configure', $scripts );
-		$this->assertNotContains( '@test:configure', $scripts['test'] );
-		$this->assertContains( '@phpunit', $scripts['test'] );
+		$this->assertSame( [ '@lint', '@phpunit' ], $scripts['test'] );
+
+		// Removing the script should not reformat the rest of the file.
+		$this->assertStringContainsString( "\n  \"name\": \"test-vendor/wp-my-cool-plugin\",", $composer );
 	}
 
 	/**
@@ -488,8 +494,9 @@ final class ConfigureTest extends PHPUnit_Test_Case {
 
 		$this->assertArrayNotHasKey( 'szepeviktor/phpstan-wordpress', $composer['require-dev'] );
 		$this->assertArrayNotHasKey( 'phpstan', $composer['scripts'] );
-		$this->assertNotContains( '@phpstan', $composer['scripts']['lint'] );
-		$this->assertContains( '@phpcs', $composer['scripts']['lint'] );
+
+		// A JSON list, not an object with the PHPStan key punched out of it.
+		$this->assertSame( [ '@phpcs', '@rector' ], $composer['scripts']['lint'] );
 	}
 
 	/**
@@ -592,16 +599,12 @@ final class ConfigureTest extends PHPUnit_Test_Case {
 		$this->assertTrue( $composer['config']['allow-plugins']['alleyinteractive/composer-wordpress-autoloader'] );
 		$this->assertSame( $this->sorted( array_keys( $composer['require'] ) ), array_keys( $composer['require'] ) );
 
-		/*
-		 * Known issue: the Composer loader is left in the plugin file, even
-		 * though the script reports removing it. Its wrapper comments were
-		 * already stripped when Composer was confirmed, so the block can no
-		 * longer be matched. Update this when the script is fixed.
-		 */
-		$this->assertStringContainsString(
-			"require_once __DIR__ . '/vendor/wordpress-autoload.php';",
-			$this->read( $plugin . '/wp-my-cool-plugin.php' ),
-		);
+		// The Composer loader is no longer needed in the plugin file.
+		$main = $this->read( $plugin . '/wp-my-cool-plugin.php' );
+
+		$this->assertStringNotContainsString( 'wordpress-autoload.php', $main );
+		$this->assertStringNotContainsString( 'Composer Loader', $main );
+		$this->assertStringContainsString( "require_once __DIR__ . '/src/main.php';", $main );
 
 		// The PHPCS configuration inherits from the parent project.
 		$phpcs = $this->read( $plugin . '/.phpcs.xml' );
@@ -714,40 +717,104 @@ final class ConfigureTest extends PHPUnit_Test_Case {
 	}
 
 	/**
-	 * The placeholders the script does not replace today.
-	 *
-	 * This documents the current behavior rather than endorsing it: the bare
-	 * `Create_WordPress_Plugin` token is only replaced as part of the full
-	 * `Alley\WP\Create_WordPress_Plugin` namespace, and the `.scaffolder`
-	 * directory is excluded from the search and replace entirely. Update this
-	 * test when the script is taught to replace them.
+	 * References to Alley's own packages, actions and repositories are not the
+	 * plugin's vendor and should survive being scaffolded by someone else.
 	 */
-	public function test_documents_the_placeholders_that_are_left_behind(): void {
+	public function test_keeps_references_to_third_party_packages(): void {
+		$plugin   = $this->configure( $this->default_answers() );
+		$composer = $this->read_json( $plugin . '/composer.json' );
+
+		$this->assertArrayHasKey( 'alleyinteractive/composer-wordpress-autoloader', $composer['require'] );
+		$this->assertArrayHasKey( 'alleyinteractive/wp-type-extensions', $composer['require'] );
+		$this->assertArrayHasKey( 'alleyinteractive/alley-coding-standards', $composer['require-dev'] );
+		$this->assertTrue( $composer['config']['allow-plugins']['alleyinteractive/composer-wordpress-autoloader'] );
+
+		$workflows = $this->read( $plugin . '/.github/workflows/all-pr-tests.yml' )
+			. $this->read( $plugin . '/.github/workflows/built-release.yml' )
+			. $this->read( $plugin . '/.github/workflows/upgrade-wordpress-plugin.yml' );
+
+		$this->assertStringContainsString( 'uses: alleyinteractive/action-test-general@develop', $workflows );
+		$this->assertStringContainsString( 'uses: alleyinteractive/action-test-node@develop', $workflows );
+		$this->assertStringContainsString( 'uses: alleyinteractive/action-test-php@develop', $workflows );
+		$this->assertStringContainsString( 'uses: alleyinteractive/action-release@develop', $workflows );
+		$this->assertStringContainsString( 'uses: alleyinteractive/action-update-wordpress-plugin@', $workflows );
+
+		$this->assertStringContainsString(
+			'"@alleyinteractive/build-tool"',
+			$this->read( $plugin . '/package.json' ),
+		);
+
+		// Alley's documentation links are not the plugin's repository either.
+		$this->assertStringContainsString(
+			'https://github.com/alleyinteractive/action-release',
+			$this->read( $plugin . '/README.md' ),
+		);
+	}
+
+	/**
+	 * The skeleton's own repository, on the other hand, becomes the plugin's.
+	 */
+	public function test_replaces_the_skeletons_own_repository(): void {
+		$plugin   = $this->configure( $this->default_answers() );
+		$composer = $this->read_json( $plugin . '/composer.json' );
+
+		$this->assertSame( 'test-vendor/wp-my-cool-plugin', $composer['name'] );
+		$this->assertSame( 'https://github.com/test-vendor/wp-my-cool-plugin', $composer['homepage'] );
+		$this->assertSame( [ 'test-vendor', 'wp-my-cool-plugin' ], $composer['keywords'] );
+
+		$this->assertStringContainsString(
+			'Plugin URI: https://github.com/test-vendor/wp-my-cool-plugin',
+			$this->read( $plugin . '/wp-my-cool-plugin.php' ),
+		);
+
+		$readme = $this->read( $plugin . '/README.md' );
+
+		$this->assertStringContainsString( 'composer require test-vendor/wp-my-cool-plugin', $readme );
+		$this->assertStringContainsString(
+			'https://github.com/test-vendor/wp-my-cool-plugin/actions/workflows/all-pr-tests.yml',
+			$readme,
+		);
+	}
+
+	/**
+	 * The scaffolder templates generate code for the configured plugin, so they
+	 * need the placeholders replaced as well.
+	 */
+	public function test_replaces_the_placeholders_in_the_scaffolder_templates(): void {
 		$plugin = $this->configure( $this->default_answers() );
-		$found  = $this->find_placeholders(
-			$plugin,
-			[ 'create-wordpress-plugin', 'Create_WordPress_Plugin' ],
-			[ 'LICENSE', 'composer.lock' ],
+
+		$this->assertStringContainsString(
+			'name: wp-my-cool-plugin@plugin-feature',
+			$this->read( $plugin . '/.scaffolder/plugin-feature/config.yml' ),
 		);
 
-		$this->assertSame(
-			[
-				'.scaffolder/plugin-feature/config.yml',
-				'.scaffolder/plugin-feature/test.php.hbs',
-			],
-			$found['create-wordpress-plugin'] ?? [],
+		$feature = $this->read( $plugin . '/.scaffolder/plugin-feature/feature.php.hbs' );
+
+		$this->assertStringContainsString( '@package wp-my-cool-plugin', $feature );
+		$this->assertStringContainsString(
+			'namespace Test_Vendor\My_Cool_Plugin\\\\{{ wpNamespace inputs.featureName prefix="Features" }};',
+			$feature,
 		);
 
+		$test = $this->read( $plugin . '/.scaffolder/plugin-feature/test.php.hbs' );
+
+		$this->assertStringContainsString( 'use Test_Vendor\My_Cool_Plugin\Tests\TestCase;', $test );
+		$this->assertStringContainsString(
+			'namespace Test_Vendor\My_Cool_Plugin\\\\{{ wpNamespace inputs.featureName prefix="Tests\Features" }};',
+			$test,
+		);
+
+		// The entry and block scaffolding config, which uses the last segment of
+		// the namespace on its own.
 		$this->assertSame(
 			[
-				'.scaffolder/plugin-feature/feature.php.hbs',
-				'.scaffolder/plugin-feature/test.php.hbs',
-				'CLAUDE.md',
-				'README.md',
-				'scaffold/config.json',
-				'src/features/README.md',
+				'core_term_meta' => true,
+				'domain'         => 'wp-my-cool-plugin',
+				'folder'         => 'src',
+				'namespace'      => 'My_Cool_Plugin',
+				'require_path'   => '__DIR__',
 			],
-			$found['Create_WordPress_Plugin'] ?? [],
+			$this->read_json( $plugin . '/scaffold/config.json' ),
 		);
 	}
 
