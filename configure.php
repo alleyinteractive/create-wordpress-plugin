@@ -212,6 +212,32 @@ function remove_project_files(): void {
 	write( sprintf( 'Removed %s files.', implode( ', ', $file_list ) ) );
 }
 
+/* Remove the tests for this script, which only apply to the skeleton. */
+function remove_configure_test(): void {
+	delete_files( 'tests/ConfigureTest.php' );
+
+	if ( ! file_exists( 'composer.json' ) ) {
+		return;
+	}
+
+	$composer_json = (array) json_decode( (string) file_get_contents( 'composer.json' ), true );
+
+	if ( ! isset( $composer_json['scripts']['test:configure'] ) ) {
+		return;
+	}
+
+	unset( $composer_json['scripts']['test:configure'] );
+
+	$composer_json['scripts']['test'] = array_values(
+		array_filter(
+			$composer_json['scripts']['test'] ?? [],
+			fn ( string $script ) => '@test:configure' !== $script,
+		)
+	);
+
+	file_put_contents( 'composer.json', json_encode( $composer_json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) );
+}
+
 function rollup_phpcs_to_parent( string $parent_file, string $local_file, string $plugin_name, string $plugin_domain ): void {
 	$config = '<?xml version="1.0"?>
 <ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="' . $plugin_name . ' Configuration" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
@@ -332,6 +358,7 @@ function list_all_files_for_replacement(): array {
 	$exclude = [
 		'LICENSE',
 		'configure.php',
+		'ConfigureTest.php',
 		'.phpunit.result.cache',
 		'.phpcs',
 		'composer.lock',
@@ -826,6 +853,8 @@ if ( ! $needs_built_assets && file_exists( '.github/workflows/built-release.yml'
 }
 
 if ( confirm( 'Let this script delete itself?', true ) ) {
+	remove_configure_test();
+
 	delete_files(
 		[
 			'Makefile',
