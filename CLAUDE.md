@@ -43,8 +43,9 @@ npm run check-types   # tsc --noEmit
 npm run eslint:fix    # auto-fix JS/TS lint issues
 npm run stylelint:fix # auto-fix SCSS lint issues
 npm run packages-update  # update @wordpress/* packages to latest (wp-6.7 dist-tag)
-composer test         # runs @lint then @phpunit
+composer test         # runs @lint, @test:configure, then @phpunit
 composer phpunit      # PHPUnit only
+composer test:configure  # end-to-end tests for configure.php (no WordPress needed)
 composer phpstan      # PHPStan at level `max` (paths: blocks/, entries/, src/, plugin.php)
 composer phpcs        # alley-coding-standards
 composer rector       # dry-run; `composer rector:fix` to apply
@@ -95,6 +96,7 @@ Dynamic blocks live in `blocks/<name>/` (scaffolded by `npm run create-block`).
 - Base class: `tests/TestCase.php` extends `Mantle\Testkit\Test_Case` and uses `Prevent_Remote_Requests`. New tests should extend this, not `Test_Case` directly.
 - `tests/bootstrap.php` uses `Mantle\Testing\manager()` with `maybe_rsync_plugin()` — the test runner rsyncs this plugin into a WordPress install before booting.
 - Feature tests live in `tests/Feature/`; unit tests in `tests/Unit/`. Scaffolder generates into `tests/Features/` (note casing difference — scaffolded tests go to a separate dir).
+- `tests/ConfigureTest.php` tests `configure.php` itself. It is deliberately outside the `Feature`/`Unit` suites (it needs no WordPress, and the Mantle rsync excludes `.github`, which the script edits), so it runs via `composer test:configure` — wired into `composer test`, and so into the PHP tests in CI. Each test copies the skeleton to a temp directory, pipes answers to `php configure.php`, and asserts on the result. It is excluded from the script's search and replace, and deleted — along with its composer script — when the script deletes itself, so template-only changes belong in it: new prompts must be added to the answer lists in `base_answers()`/`default_answers()` and the per-test tails, or the run will block on an unanswered question.
 
 ## Conventions to respect
 
