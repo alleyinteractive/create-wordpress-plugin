@@ -57,7 +57,7 @@ lyrics would be passed in when the feature was called, as shown above.
 /**
  * Feature implementation of hello.php
  *
- * @package Create_WordPress_Plugin
+ * @package create-wordpress-plugin
  */
 
 namespace Alley\WP\Create_WordPress_Plugin\Features;

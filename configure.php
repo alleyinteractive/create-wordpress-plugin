@@ -171,7 +171,8 @@ function remove_composer_wrapper_comments(): void {
 
 	$contents = file_get_contents( $plugin_file );
 
-	if ( empty( $contents ) ) {
+	// The comments are gone when the loader itself has already been removed.
+	if ( empty( $contents ) || ! str_contains( $contents, '/* Start Composer Loader */' ) ) {
 		return;
 	}
 
@@ -220,22 +221,33 @@ function remove_configure_test(): void {
 		return;
 	}
 
-	$composer_json = (array) json_decode( (string) file_get_contents( 'composer.json' ), true );
+	$contents = (string) file_get_contents( 'composer.json' );
 
-	if ( ! isset( $composer_json['scripts']['test:configure'] ) ) {
+	if ( ! str_contains( $contents, 'test:configure' ) ) {
 		return;
 	}
 
-	unset( $composer_json['scripts']['test:configure'] );
+	// Drop the script and the reference to it in `composer test` line by line,
+	// which leaves the rest of the file formatted as it was.
+	$updated = (string) preg_replace( '/^[^\S\n]*"@?test:configure".*\n/m', '', $contents );
 
-	$composer_json['scripts']['test'] = array_values(
-		array_filter(
-			$composer_json['scripts']['test'] ?? [],
-			fn ( string $script ) => '@test:configure' !== $script,
-		)
-	);
+	if ( ! is_array( json_decode( $updated, true ) ) ) {
+		// The lines couldn't be dropped cleanly, so rewrite the file instead.
+		$composer_json = (array) json_decode( $contents, true );
 
-	file_put_contents( 'composer.json', json_encode( $composer_json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) );
+		unset( $composer_json['scripts']['test:configure'] );
+
+		$composer_json['scripts']['test'] = array_values(
+			array_filter(
+				$composer_json['scripts']['test'] ?? [],
+				fn ( string $script ) => '@test:configure' !== $script,
+			)
+		);
+
+		$updated = (string) json_encode( $composer_json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
+	}
+
+	file_put_contents( 'composer.json', $updated );
 }
 
 function rollup_phpcs_to_parent( string $parent_file, string $local_file, string $plugin_name, string $plugin_domain ): void {
@@ -370,7 +382,6 @@ function list_all_files_for_replacement(): array {
 		'vendor',
 		'node_modules',
 		'.phpcs',
-		'.scaffolder',
 	];
 
 	$exclude = array_map(
@@ -422,9 +433,11 @@ function remove_phpstan(): void {
 		if ( isset( $composer_json['scripts']['phpstan'] ) ) { // @phpstan-ignore-line
 			unset( $composer_json['scripts']['phpstan'] ); // @phpstan-ignore-line
 
-			$composer_json['scripts']['lint'] = array_filter(
-				$composer_json['scripts']['lint'] ?? [],
-				fn ( string $script ) => ! str_contains( $script, 'phpstan' ),
+			$composer_json['scripts']['lint'] = array_values(
+				array_filter(
+					$composer_json['scripts']['lint'] ?? [],
+					fn ( string $script ) => ! str_contains( $script, 'phpstan' ),
+				)
 			);
 
 			file_put_contents( 'composer.json', json_encode( $composer_json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) );
@@ -616,9 +629,18 @@ $search_and_replace = [
 
 	'A skeleton WordPress plugin' => $description,
 
-	// Extra slashes are here for composer.json.
-	'Alley\\\WP\\\Create_WordPress_Plugin\\\\' => str_replace( '\\', '\\\\', $namespace ) . '\\\\',
-	'Alley\WP\Create_WordPress_Plugin'         => $namespace,
+	// This skeleton's own repository, which has to be replaced before the slug
+	// below so that references to Alley's other repositories and packages
+	// (composer requirements, GitHub actions, npm packages) are left alone.
+	'alleyinteractive/create-wordpress-plugin' => "{$vendor_slug}/{$plugin_name_slug}",
+
+	// Extra slashes are here for JSON files, such as composer.json.
+	'Alley\\\WP\\\Create_WordPress_Plugin' => str_replace( '\\', '\\\\', $namespace ),
+	'Alley\WP\Create_WordPress_Plugin'     => $namespace,
+
+	// The last segment of the namespace, which is used on its own by the
+	// scaffolder configuration.
+	'Create_WordPress_Plugin'     => str_after( $namespace, '\\' ),
 
 	'Example_Plugin'              => $class_name,
 	'create_wordpress_plugin'     => str_replace( '-', '_', $plugin_name_slug ),
@@ -630,7 +652,8 @@ $search_and_replace = [
 	'CREATE_WORDPRESS_PLUGIN'     => strtoupper( str_replace( '-', '_', $plugin_name_slug ) ),
 	'Skeleton'                    => $class_name,
 	'vendor_name'                 => $vendor_name,
-	'alleyinteractive'            => $vendor_slug,
+	'vendor_slug'                 => $vendor_slug,
+	'vendor_prefix'               => str_replace( '-', '_', $vendor_slug ),
 	'plugin.php'                  => $plugin_file,
 ];
 
@@ -716,8 +739,6 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 if ( confirm( 'Will this plugin be using Composer? (WordPress Composer Autoloader is already included! phpcs and phpunit also rely on Composer being installed for testing.)', true ) ) {
 	$uses_composer = true;
 	$needs_built_assets = true;
-
-	remove_composer_wrapper_comments();
 
 	if ( confirm( 'Do you want to run `composer install`?', true ) ) {
 		if ( file_exists( __DIR__ . '/composer.lock' ) ) {
@@ -836,6 +857,13 @@ if (
 	if ( confirm( 'Do you want to remove the git repository for the plugin?', true ) ) {
 		delete_files( '.git' );
 	}
+}
+
+// Tidy up the comments that wrap the Composer loader now that every prompt that
+// can remove the loader entirely has been answered. Removing the loader relies
+// on these comments to find it.
+if ( $uses_composer ) {
+	remove_composer_wrapper_comments();
 }
 
 if ( $standalone && confirm( 'Do you want to use SQLite for unit testing? (This is a great way to speed up your tests!)', true ) ) {

@@ -36,7 +36,7 @@
   <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
     <properties>
       <property name="prefixes" type="array">
-        <element value="vendor_name" />
+        <element value="vendor_prefix" />
         <element value="alley" />
         <element value="create_wordpress_plugin" />
       </property>
