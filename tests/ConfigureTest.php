@@ -10,9 +10,15 @@
  * it from the search and replace, so that its expectations stay readable, and
  * deletes it when it deletes itself.
  *
- * Run with `composer test:configure`. The tests are skipped when the skeleton
- * has already been configured, or when the plugin has been rsync'd into a
- * WordPress install for the Mantle test suite (which excludes .github).
+ * Run with `composer test:configure`, which `composer test` runs, and with it
+ * the PHP tests in all-pr-tests.yml. Everything these tests need has to be
+ * present when the skeleton is: a missing file fails rather than skips, so
+ * that a green pull request always means the tests really ran. They are only
+ * skipped once the plugin has been configured.
+ *
+ * Don't add this file to a suite in phpunit.xml. Those suites boot Mantle,
+ * which rsyncs the plugin into a WordPress install without .git or .github --
+ * files that the configure script edits.
  *
  * @package create-wordpress-plugin
  *
@@ -91,15 +97,25 @@ final class ConfigureTest extends PHPUnit_Test_Case {
 	protected function setUp(): void {
 		parent::setUp();
 
-		if ( ! file_exists( $this->skeleton_root() . '/configure.php' ) ) {
-			$this->markTestSkipped( 'configure.php is not present: this plugin has already been configured.' );
+		// Configuring the plugin renames the skeleton's main file and replaces
+		// its placeholders, and these tests no longer apply once it has.
+		if ( ! $this->is_unconfigured_skeleton() ) {
+			$this->markTestSkipped( 'This plugin has already been configured.' );
 		}
 
-		// The script deletes this workflow before it asks anything, so its
-		// presence means the skeleton is intact and the placeholders are, too.
-		if ( ! file_exists( $this->skeleton_root() . '/.github/workflows/merge-develop-to-scaffold.yml' ) ) {
-			$this->markTestSkipped( 'The skeleton is incomplete: run these tests from the repository root with `composer test:configure`.' );
-		}
+		// Anything else that is missing means a broken checkout rather than a
+		// configured plugin, which has to fail: skipping would let a pull
+		// request pass without these tests ever running.
+		$this->assertFileExists(
+			$this->skeleton_root() . '/configure.php',
+			'The configure script is missing. Run these tests from the repository root with `composer test:configure`.',
+		);
+
+		// Deleted on the first line of the script, so it is always here first.
+		$this->assertFileExists(
+			$this->skeleton_root() . '/.github/workflows/merge-develop-to-scaffold.yml',
+			'The skeleton is incomplete. These tests need the whole repository, including .github.',
+		);
 
 		$workspace = sys_get_temp_dir() . '/create-wordpress-plugin-configure-' . bin2hex( random_bytes( 6 ) );
 
@@ -366,7 +382,9 @@ final class ConfigureTest extends PHPUnit_Test_Case {
 		// The Node test step should be gone from the workflow.
 		$workflow = $this->read( $plugin . '/.github/workflows/all-pr-tests.yml' );
 
+		// Only the Node step: the steps around it have to survive.
 		$this->assertStringNotContainsString( 'Run Node Tests', $workflow );
+		$this->assertStringContainsString( 'Run General Tests', $workflow );
 		$this->assertStringContainsString( 'Run PHP Tests', $workflow );
 
 		$this->assertArrayNotHasKey( 'dev', $this->read_json( $plugin . '/composer.json' )['scripts'] );
@@ -684,6 +702,18 @@ final class ConfigureTest extends PHPUnit_Test_Case {
 	}
 
 	/**
+	 * These tests are only worth having if they run on every pull request, and
+	 * they do that through `composer test`, which the PHP tests in
+	 * all-pr-tests.yml run.
+	 */
+	public function test_composer_test_runs_these_tests(): void {
+		$this->assertContains(
+			'@test:configure',
+			$this->read_json( $this->skeleton_root() . '/composer.json' )['scripts']['test'],
+		);
+	}
+
+	/**
 	 * The placeholders the script does not replace today.
 	 *
 	 * This documents the current behavior rather than endorsing it: the bare
@@ -932,6 +962,21 @@ final class ConfigureTest extends PHPUnit_Test_Case {
 	 */
 	private function skeleton_root(): string {
 		return dirname( __DIR__ );
+	}
+
+	/**
+	 * Whether the plugin these tests live in is still the unconfigured
+	 * skeleton.
+	 *
+	 * The configure script always renames plugin.php -- it refuses to reuse a
+	 * file name that already exists -- and always replaces the placeholders in
+	 * it, so the two together are only true before the script has run.
+	 */
+	private function is_unconfigured_skeleton(): bool {
+		$main = $this->skeleton_root() . '/plugin.php';
+
+		return file_exists( $main )
+			&& str_contains( (string) file_get_contents( $main ), 'create-wordpress-plugin' ); // phpcs:ignore WordPressVIPMinimum.Performance.FetchingRemoteData.FileGetContentsUnknown
 	}
 
 	/**
