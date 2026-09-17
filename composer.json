@@ -66,12 +66,14 @@
       "@phpcbf"
     ],
     "phpunit": "phpunit",
+    "test:configure": "phpunit --no-configuration tests/ConfigureTest.php",
     "rector:fix": "rector process",
     "rector": "rector process --dry-run",
     "release": "npx @alleyinteractive/create-release@latest",
     "serve": "command -v wp-env >/dev/null 2>&1 || npm install -g @wordpress/env && wp-env start",
     "test": [
       "@lint",
+      "@test:configure",
       "@phpunit"
     ]
   }
