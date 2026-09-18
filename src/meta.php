@@ -15,12 +15,12 @@ use function Mantle\Support\Helpers\register_meta_from_file;
  * Reads the post meta definitions from config and registers them.
  */
 function register_post_meta_from_defs(): void {
-	register_meta_from_file( dirname( __DIR__ ) . '/config/post-meta.json', 'post', false );
+	register_meta_from_file( CREATE_WORDPRESS_PLUGIN_DIR . '/config/post-meta.json', 'post', false );
 }
 
 /**
  * Reads the term meta definitions from config and registers them.
  */
 function register_term_meta_from_defs(): void {
-	register_meta_from_file( dirname( __DIR__ ) . '/config/term-meta.json', 'term', false );
+	register_meta_from_file( CREATE_WORDPRESS_PLUGIN_DIR . '/config/term-meta.json', 'term', false );
 }
