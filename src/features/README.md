@@ -8,7 +8,7 @@ have namespace `Alley\WP\Create_WordPress_Plugin\Features`.
 
 You can generate new features using the scaffolder: `npm run scaffold feature`.
 
-The following variable is passed to the `Class_Hello` feature in each of the
+The following variable is passed to the `Hello` feature in each of the
 following examples. This shows how we can remove any business logic from the
 feature and pass it in when the feature is added.
 
