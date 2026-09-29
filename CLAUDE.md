@@ -62,7 +62,7 @@ npm run create-slotfill  # new slotfill entry
 npm run create-block     # new block under blocks/
 npm run scaffold         # run @alleyinteractive/scaffolder (reads .scaffolder/)
 ```
-`.scaffolder/plugin-feature/` generates a new `Feature` class in `src/features/` plus a matching test in `tests/Features/`.
+`.scaffolder/plugin-feature/` generates a new `Feature` class in `src/features/` plus a matching test in `tests/Feature/`.
 
 **Release:** `npm run release` bumps the version in `plugin.php` and pushes; GitHub Actions (`built-release.yml`) compiles and tags a `*-built` branch containing the front-end assets.
 
@@ -94,7 +94,7 @@ Dynamic blocks live in `blocks/<name>/` (scaffolded by `npm run create-block`).
 - PSR-4: `Alley\WP\Create_WordPress_Plugin\Tests\` → `tests/` (note: this is `autoload-dev`, not the runtime autoloader).
 - Base class: `tests/TestCase.php` extends `Mantle\Testkit\Test_Case` and uses `Prevent_Remote_Requests`. New tests should extend this, not `Test_Case` directly.
 - `tests/bootstrap.php` uses `Mantle\Testing\manager()` with `maybe_rsync_plugin()` — the test runner rsyncs this plugin into a WordPress install before booting.
-- Feature tests live in `tests/Feature/`; unit tests in `tests/Unit/`. Scaffolder generates into `tests/Features/` (note casing difference — scaffolded tests go to a separate dir).
+- Feature tests live in `tests/Feature/`; unit tests in `tests/Unit/`. The feature scaffolder generates tests into `tests/Feature/`.
 
 ## Conventions to respect
 
