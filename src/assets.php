@@ -24,8 +24,6 @@ function validate_path( string $path ): bool {
  *
  * @param string  $dir_entry_name The directory name where the entry point was defined.
  * @param boolean $dir            Optional. Whether to return the directory path or the plugin URL path. Defaults to false (returns URL).
- *
- * @return string
  */
 function get_entry_dir_path( string $dir_entry_name, bool $dir = false ): string {
 	// The relative path from the plugin root.
@@ -35,7 +33,7 @@ function get_entry_dir_path( string $dir_entry_name, bool $dir = false ): string
 
 	if ( validate_path( $asset_dir_path ) ) {
 		// Negotiate the base path.
-		return true === $dir
+		return $dir
 			? $asset_dir_path
 			: plugins_url( $asset_build_dir, __DIR__ );
 	}
@@ -53,11 +51,13 @@ function get_entry_dir_path( string $dir_entry_name, bool $dir = false ): string
 function get_entry_asset_map( string $dir_entry_name ): array {
 	$base_path = get_entry_dir_path( $dir_entry_name, true );
 
-	if ( ! empty( $base_path ) ) {
+	if ( $base_path !== '' && $base_path !== '0' ) {
 		$asset_file_path = trailingslashit( $base_path ) . 'index.asset.php';
 
 		if ( validate_path( $asset_file_path ) ) {
-			return include $asset_file_path; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.IncludingFile, WordPressVIPMinimum.Files.IncludingFile.UsingVariable
+			$asset_map = include $asset_file_path; // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.IncludingFile, WordPressVIPMinimum.Files.IncludingFile.UsingVariable
+
+			return is_array( $asset_map ) ? $asset_map : []; // @phpstan-ignore-line returns array
 		}
 	}
 
@@ -69,7 +69,7 @@ function get_entry_asset_map( string $dir_entry_name ): array {
  *
  * @param string $dir_entry_name The entry point directory name.
  *
- * @return array<int, string> The asset's dependency array.
+ * @return array<string> The asset's dependency array.
  */
 function get_asset_dependency_array( string $dir_entry_name ): array {
 	$asset_arr = get_entry_asset_map( $dir_entry_name );
@@ -95,33 +95,18 @@ function get_asset_version( string $dir_entry_name ): string {
  * @param string $filename       The asset file name including the file type extension to get the public path for.
  * @return string                The public URL to the asset, empty string otherwise.
  */
-function get_entry_asset_url( string $dir_entry_name, $filename = 'index.js' ) {
-	if ( empty( $filename ) ) {
+function get_entry_asset_url( string $dir_entry_name, ?string $filename = 'index.js' ): string {
+	if ( in_array( $filename, [ null, '', '0' ], true ) ) {
 		return '';
 	}
 
 	if ( validate_path( trailingslashit( get_entry_dir_path( $dir_entry_name, true ) ) . $filename ) ) {
 		$entry_base_url = get_entry_dir_path( $dir_entry_name );
 
-		if ( ! empty( $entry_base_url ) ) {
+		if ( $entry_base_url !== '' && $entry_base_url !== '0' ) {
 			return trailingslashit( $entry_base_url ) . $filename;
 		}
 	}
 
 	return '';
-}
-
-/**
- * Load the php index files from the build directory for blocks, slotfills, and any other scripts with an index.php file.
- */
-function load_scripts(): void {
-	$files = glob( CREATE_WORDPRESS_PLUGIN_DIR . '/build/**/index.php' );
-
-	if ( ! empty( $files ) ) {
-		foreach ( $files as $path ) {
-			if ( validate_path( $path ) ) {
-				require_once $path;  // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.IncludingFile, WordPressVIPMinimum.Files.IncludingFile.UsingVariable
-			}
-		}
-	}
 }

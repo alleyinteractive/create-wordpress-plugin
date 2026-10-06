@@ -24,8 +24,8 @@ if ( 0 === strpos( strtoupper( PHP_OS ), 'WIN' ) ) {
 	die( 'Not supported in Windows. 🪟' );
 }
 
-if ( version_compare( PHP_VERSION, '8.1.0', '<' ) ) {
-	die( 'PHP 8.1.0 or greater is required.' );
+if ( version_compare( PHP_VERSION, '8.2.0', '<' ) ) {
+	die( 'PHP 8.2.0 or greater is required.' );
 }
 
 // Parse the command line arguments from $argv.
@@ -87,7 +87,7 @@ function confirm( string $question, bool $default = false ): bool {
 	return in_array( strtolower( trim( $answer ) ), [ 'y', 'yes', 'true', '1' ], true );
 }
 
-function run( string $command, string $dir = null ): string {
+function run( string $command, ?string $dir = null ): string {
 	$command = $dir ? "cd {$dir} && {$command}" : $command;
 
 	return trim( (string) shell_exec( $command ) );
@@ -203,6 +203,7 @@ function remove_project_files(): void {
 		'.gitignore',
 		'.gitattributes',
 		'.github',
+		'.wp-env.json',
 		'LICENSE',
 	];
 
@@ -253,6 +254,14 @@ function remove_assets_readme( bool $keep_contents, string $file = 'README.md' )
 		return;
 	}
 
+	if ( ! str_contains( $contents, '<!--front-end-->' ) ) {
+		echo "Unable to find the front-end assets section in {$file}.\n";
+	}
+
+	if ( ! str_contains( $contents, '<!--/front-end-->' ) ) {
+		echo "Unable to find the closing front-end assets section in {$file}.\n";
+	}
+
 	if ( $keep_contents ) {
 		$contents = str_replace( '<!--front-end-->', '', $contents );
 		$contents = str_replace( '<!--/front-end-->', '', $contents );
@@ -261,7 +270,7 @@ function remove_assets_readme( bool $keep_contents, string $file = 'README.md' )
 	} else {
 		file_put_contents(
 			$file,
-			trim( (string) preg_replace( '/<!--front-end-->.*<!--\/front-end-->/s', '', $contents ) ?: $contents ),
+			trim( (string) preg_replace( '/<!--front-end-->.*?<!--\/front-end-->/s', '', $contents ) ?: $contents ),
 		);
 	}
 }
@@ -276,28 +285,40 @@ function remove_assets_require(): void {
 		return;
 	}
 
-	file_put_contents(
-		$plugin_file,
-		trim( (string) preg_replace( '/require_once __DIR__ \. \'\/src\/assets.php\';\\n/s', '', $contents ) ?: $contents ) . PHP_EOL,
-	);
+	// Remove the assets.php require.
+	$contents = (string) ( preg_replace( '/require_once __DIR__ \. \'\/src\/assets.php\';\\n/s', '', $contents ) ?: $contents );
+
+	// Remove the load_scripts() call.
+	$contents = str_replace( "load_scripts();\n", '', $contents );
+
+	file_put_contents( $plugin_file, trim( $contents ) . PHP_EOL );
 }
 
-/* Remove the node tests from within the all-pr-tests.yml file. */
+/* Remove the tests that support front-end assets. */
 function remove_assets_test(): void {
 	$file = __DIR__ . '/.github/workflows/all-pr-tests.yml';
 
-	if ( ! file_exists( $file ) ) {
-		return;
+	if ( file_exists( $file ) ) {
+		$contents = preg_replace(
+			'/(- name: Run Node Tests.*)(- name: Run)/s',
+			'$2',
+			file_get_contents( $file ),
+		);
+
+		file_put_contents( $file, $contents );
 	}
 
+	// Replace the phpstan paths.
+	if ( file_exists( 'phpstan.neon' ) ) {
+		$phpstan_contents = file_get_contents( 'phpstan.neon' );
 
-	$contents = preg_replace(
-		'/(- name: Run Node Tests.*)(- name:)/s',
-		'$2',
-		file_get_contents( $file ),
-	);
+		if ( ! empty( $phpstan_contents ) ) {
+			$phpstan_contents = str_replace( '- blocks/', '# - blocks/', $phpstan_contents );
+			$phpstan_contents = str_replace( '- entries/', '# - entries/', $phpstan_contents );
 
-	file_put_contents( $file, $contents );
+			file_put_contents( 'phpstan.neon', $phpstan_contents );
+		}
+	}
 }
 
 function determine_separator( string $path ): string {
@@ -369,13 +390,15 @@ function remove_phpstan(): void {
 	if ( file_exists( 'composer.json' ) ) {
 		$composer_json = (array) json_decode( (string) file_get_contents( 'composer.json' ), true );
 
+		unset( $composer_json['require-dev']['szepeviktor/phpstan-wordpress'] ); // @phpstan-ignore-line
+
 		if ( isset( $composer_json['scripts']['phpstan'] ) ) { // @phpstan-ignore-line
 			unset( $composer_json['scripts']['phpstan'] ); // @phpstan-ignore-line
 
-			$composer_json['scripts']['test'] = [ // @phpstan-ignore-line
-				'@phpcs',
-				'@phpunit',
-			];
+			$composer_json['scripts']['lint'] = array_filter(
+				$composer_json['scripts']['lint'] ?? [],
+				fn ( string $script ) => ! str_contains( $script, 'phpstan' ),
+			);
 
 			file_put_contents( 'composer.json', json_encode( $composer_json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) );
 		}
@@ -625,6 +648,7 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 			'.eslintignore',
 			'.eslintrc.json',
 			'.nvmrc',
+			'.npmrc',
 			'.stylelintrc.json',
 			'babel.config.js',
 			'jest.config.js',
@@ -632,6 +656,7 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 			'package.json',
 			'package-lock.json',
 			'tsconfig.json',
+			'tsconfig.eslint.json',
 			'entries/',
 			'blocks/',
 			'build/',
@@ -641,6 +666,16 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 			'src/assets.php',
 		]
 	);
+
+	if ( file_exists( 'composer.json' ) ) {
+		$plugin_composer = (array) json_decode( (string) file_get_contents( 'composer.json' ), true );
+
+		if ( isset( $plugin_composer['scripts']['dev'] ) ) {
+			unset( $plugin_composer['scripts']['dev'] );
+
+			file_put_contents( 'composer.json', json_encode( $plugin_composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) );
+		}
+	}
 
 	remove_assets_readme( keep_contents: false );
 	remove_assets_require();
@@ -684,7 +719,7 @@ $standalone = true;
 // /wp-content/plugins/:plugin/.
 if (
 	file_exists( '../../.git/index' )
-	&& is_dir( '../../../wp-admin' )
+	&& is_dir( '../../../wp-content' )
 	&& ! confirm(
 		'Will this be a standalone plugin, not located within a larger project? For example, a standalone plugin will have a separate repository and will be distributed independently.',
 		false,
@@ -800,7 +835,7 @@ echo "\n\nWe're done! 🎉\n\n";
 // Offer some information about built releases if the workflow still exists.
 if ( file_exists( '.github/workflows/built-release.yml' ) ) {
 	echo <<<INFO
-When you are ready to release the plugin, you can run `npm run release`
+When you are ready to release the plugin, you can run `composer release`
 to generate a new release.
 
 The Built Release workflow will take care of the rest by building the plugin's

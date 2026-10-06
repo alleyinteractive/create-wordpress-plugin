@@ -5,10 +5,8 @@ This is a skeleton WordPress plugin that can scaffold a WordPress plugin. This
 template includes a base plugin file, autoloaded PHP files, unit tests powered
 by [Mantle](https://mantle.alley.com/), front-end assets compiled via Webpack,
 and Continuous Integration [via GitHub Actions](.github/workflows). Actions are
-configured to test the plugin and also build it for releases. A built tag
-workflow will create `*-built` branches as well as a built release workflow that
-will build and tag/release the plugin automatically. The built branches and
-releases will include any compiled front-end assets (if using them).
+configured to test the plugin and also [build it for releases](https://github.com/alleyinteractive/action-release).
+The workflows will also create a `*-built` branch, too.
 
 The plugin supports front-end assets which can be enqueued inside
 `src/assets.php` or from within an entry points `index.php` file. For plugins
@@ -35,15 +33,15 @@ Tags: vendor_name, create-wordpress-plugin
 
 Stable tag: 0.0.0
 
-Requires at least: 5.9
+Requires at least: 6.3
 
-Tested up to: 6.1
+Tested up to: 6.7
 
-Requires PHP: 8.1
+Requires PHP: 8.2
 
 License: GPL v2 or later
 
-[![Testing Suite](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/all-pr-tests.yml/badge.svg)](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/all-pr-tests.yml)
+[![Testing Suite](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/all-pr-tests.yml/badge.svg?branch=develop)](https://github.com/alleyinteractive/create-wordpress-plugin/actions/workflows/all-pr-tests.yml)
 
 A skeleton WordPress plugin.
 
@@ -63,24 +61,53 @@ Activate the plugin in WordPress and use it like so:
 $plugin = Create_WordPress_Plugin\Skeleton\Example_Plugin();
 $plugin->perform_magic();
 ```
+
+## Development
+
+To setup a WordPress installation and run the plugin in a local environment, you
+can use `wp-env` via the `composer dev` command:
+
+```sh
+npm install
+composer dev
+```
+
+The command will start a local WordPress environment with the plugin activated
+while also running the front-end assets build process. You can also run `npm run
+start` to start the front-end assets build process separately. The front-end
+assets will be compiled into the `build` directory and will be enqueued
+automatically by the plugin.
+
+## Registering Meta
+
+The plugin supports registering post and term meta via JSON files located in the
+`config` directory. Out of the box, the plugin will look for
+`config/post-meta.json` for post meta and `config/term-meta.json` for term meta.
+
+```json
+{
+  "$schema": "https://mantle.alley.com/schema/meta.json",
+  "example_meta_key": {
+    "post_types": "article",
+    "type": "string"
+  },
+  "another_meta_key": {
+    "post_types": [ "article", "page" ],
+    "type": "number",
+    "single": false,
+    "default": 0
+  }
+}
+```
+
+For more information on how to register meta via JSON files,
+[see the documentation](https://mantle.alley.com/docs/features/support/helpers#register_meta_from_file).
 <!--front-end-->
-## Testing
-
-Run `npm run test` to run Jest tests against JavaScript files. Run
-`npm run test:watch` to keep the test runner open and watching for changes.
-
-Run `npm run lint` to run ESLint against all JavaScript files. Linting will also
-happen when running development or production builds.
-
-Run `composer test` to run tests against PHPUnit and the PHP code in the plugin.
-Unit testing code is written in PSR-4 format and can be found in the `tests`
-directory.
-
-### The `entries` directory and entry points
+## The `entries` directory and entry points
 
 All directories created in the `entries` directory can serve as entry points and will be compiled with [@wordpress/scripts](https://github.com/WordPress/gutenberg/blob/trunk/packages/scripts/README.md#scripts) into the `build` directory with an accompanied `index.asset.php` asset map.
 
-#### Scaffolding an entry point
+### Scaffolding an entry point
 
 To generate a new entry point, run the following command:
 
@@ -101,7 +128,7 @@ npx @alleyinteractive/create-entry --help
 ```
 [Visit the package README](https://www.npmjs.com/package/@alleyinteractive/create-entry) for more information.
 
-#### Enqueuing Entry Points
+### Enqueuing Entry Points
 
 You can also include an `index.php` file in the entry point directory for enqueueing or registering a script. This file will then be moved to the build directory and will be auto-loaded with the `load_scripts()` function in the `functions.php` file. Alternatively, if a script is to be enqueued elsewhere there are helper functions in the `src/assets.php` file for getting the assets.
 
@@ -110,7 +137,7 @@ You can also include an `index.php` file in the entry point directory for enqueu
 Use the `create-block` command to create custom blocks with [@alleyinteractive/create-block](https://github.com/alleyinteractive/alley-scripts/tree/main/packages/create-block) script and follow the prompts to generate all the block assets in the `blocks/` directory.
 Block registration, script creation, etc will be scaffolded from the `create-block` script. Run `npm run build` to compile and build the custom block. Blocks are enqueued using the `load_scripts()` function in `src/assets.php`.
 
-### Updating WP Dependencies
+### Updating WordPress Dependencies
 
 Update the [WordPress dependency packages](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-scripts/#packages-update) used in the project to their latest version.
 
@@ -129,23 +156,52 @@ npx wp-scripts packages-update --dist-tag=wp-WPVERSION`
 ```
 
 Where `WPVERSION` is the version of WordPress you are targeting. The version
-must include both the major and minor version (e.g., `6.1`). For example:
+must include both the major and minor version (e.g., `6.7`). For example:
 
 ```sh
-npx wp-scripts packages-update --dist-tag=wp-6.1`
+npx wp-scripts packages-update --dist-tag=wp-6.7`
 ```
+<!--/front-end-->
+## Testing
+<!--front-end-->
+Run `npm run test` to run Jest tests against JavaScript files. Run
+`npm run test:watch` to keep the test runner open and watching for changes.
+
+Run `npm run lint` to run ESLint against all JavaScript files. Linting will also
+happen when running development or production builds.
+<!--/front-end-->
+Run `composer test` to run tests against PHPUnit and the PHP code in the plugin.
+Unit testing code is written in PSR-4 format and can be found in the `tests`
+directory.
 
 ## Releasing the Plugin
 
-The plugin uses a [built release workflow](./.github/workflows/built-release.yml)
-to compile and tag releases. Whenever a new version is detected in the root
-`composer.json` file or in the plugin's headers, the workflow will automatically
-build the plugin and tag it with a new version. The built tag will contain all
-the required front-end assets the plugin may require. This works well for
-publishing to WordPress.org or for submodule-ing.
+The plugin uses
+[action-release](https://github.com/alleyinteractive/action-release) via a
+[built release workflow](./.github/workflows/built-release.yml) to compile and
+tag releases. Whenever a new version is detected in the root plugin's headers in
+the `plugin.php` file or in the `composer.json` file, the workflow will
+automatically build the plugin and tag it with a new version. The built tag will
+contain all the required front-end assets the plugin may require. This works
+well for publishing to WordPress.org or for submodule-ing.
 
 When you are ready to release a new version of the plugin, you can run
-`npm run release` to start the process of setting up a new release.
+`npm run release`/`composer release` to start the process of setting up a new
+release. If you want to do this manually you can follow these steps:
+
+1. Change the `Version` in the `plugin.php` file to a new higher-level version.
+
+	```diff
+	- * Version: 0.0.0
+	+ * Version: 0.0.1
+	```
+
+	**✨ `npm run release` will do this for you automatically.**
+
+2. Commit your changes and push to the repository.
+3. Check the actions tab in the repository to see the progress of the release.
+   The action will automatically create a new tag and release for the plugin.
+   You are done!
 
 ## Changelog
 
@@ -155,9 +211,9 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 This project is actively maintained by [Alley
 Interactive](https://github.com/alleyinteractive). Like what you see? [Come work
-with us](https://alley.co/careers/).
+with us](https://alley.com/careers/).
 
-- [author_name](https://github.com/author_name)
+- [author_name](https://github.com/author_username)
 - [All Contributors](../../contributors)
 
 ## License

@@ -6,8 +6,9 @@
  * Version: 0.0.0
  * Author: author_name
  * Author URI: https://github.com/alleyinteractive/create-wordpress-plugin
- * Requires at least: 5.9
- * Tested up to: 6.2
+ * Requires at least: 7.1
+ * Requires PHP: 8.2
+ * Tested up to: 7.1
  *
  * Text Domain: create-wordpress-plugin
  * Domain Path: /languages/
@@ -60,6 +61,6 @@ require_once __DIR__ . '/src/assets.php';
 require_once __DIR__ . '/src/meta.php';
 require_once __DIR__ . '/src/main.php';
 
-load_scripts();
 register_post_meta_from_defs();
+register_term_meta_from_defs();
 main();
