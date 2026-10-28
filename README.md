@@ -137,6 +137,8 @@ You can also include an `index.php` file in the entry point directory for enqueu
 Use the `create-block` command to create custom blocks with [@alleyinteractive/create-block](https://github.com/alleyinteractive/alley-scripts/tree/main/packages/create-block) script and follow the prompts to generate all the block assets in the `blocks/` directory.
 Block registration, script creation, etc will be scaffolded from the `create-block` script. Run `npm run build` to compile and build the custom block. Blocks are enqueued using the `load_scripts()` function in `src/assets.php`.
 
+`npm run build` also sets each built block's `version` to a hash of its built files (`bin/version-blocks.mjs`), so a block's cached scripts and styles bust when that block changes. Leave the `version` in a block's source `block.json` alone.
+
 ### Updating WordPress Dependencies
 
 Update the [WordPress dependency packages](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-scripts/#packages-update) used in the project to their latest version.

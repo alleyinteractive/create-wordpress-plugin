@@ -30,3 +30,4 @@ Thumbs.db
 tsconfig.eslint.json
 tsconfig.json
 wp-cli.local.yml
+bin

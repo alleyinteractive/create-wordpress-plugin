@@ -7,7 +7,7 @@
     "npm": "10"
   },
   "scripts": {
-    "build": "alley-build build --blocks-manifest",
+    "build": "alley-build build --blocks-manifest && node bin/version-blocks.mjs && wp-scripts build-blocks-manifest",
     "create-block": "npx @alleyinteractive/create-block@latest -n create-wordpress-plugin --skip-registration",
     "create-entry": "npx @alleyinteractive/create-entry@latest -n create-wordpress-plugin -t create-wordpress-plugin",
     "create-slotfill": "npx @alleyinteractive/create-entry -s -n create-wordpress-plugin -t create-wordpress-plugin",
@@ -43,6 +43,7 @@
     "@alleyinteractive/stylelint-config": "^0.0.2",
     "@alleyinteractive/tsconfig": "^0.3.0",
     "@babel/preset-env": "^7.28.3",
+    "@types/jest": "^30.0.0",
     "@types/wordpress__block-editor": "^14.21.0",
     "@wordpress/babel-preset-default": "^8.8.2",
     "ajv": "^8.17.1",
