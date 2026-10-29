@@ -42,7 +42,7 @@ npm run jest:watch    # jest in watch mode
 npm run check-types   # tsc --noEmit
 npm run eslint:fix    # auto-fix JS/TS lint issues
 npm run stylelint:fix # auto-fix SCSS lint issues
-npm run packages-update  # update @wordpress/* packages to latest (wp-6.7 dist-tag)
+npm run packages-update  # update @wordpress/* packages to latest (wp-7.0 dist-tag)
 composer test         # runs @lint then @phpunit
 composer phpunit      # PHPUnit only
 composer phpstan      # PHPStan at level `max` (paths: blocks/, entries/, src/, plugin.php)
