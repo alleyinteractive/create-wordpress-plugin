@@ -300,7 +300,7 @@ function remove_assets_test(): void {
 
 	if ( file_exists( $file ) ) {
 		$contents = preg_replace(
-			'/(- name: Run Node Tests.*)(- name: Run)/s',
+			'/(- name: Read Node version.*)(- name: Run)/s',
 			'$2',
 			file_get_contents( $file ),
 		);

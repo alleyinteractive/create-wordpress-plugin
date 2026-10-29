@@ -102,7 +102,7 @@ Dynamic blocks live in `blocks/<name>/` (scaffolded by `npm run create-block`).
 - Namespace is `Alley\WP\Create_WordPress_Plugin\...` with feature classes under `...\Features\`.
 - Coding standard: `alleyinteractive/alley-coding-standards` (WordPress-VIP-flavored). Inline `phpcs:ignore` is used sparingly for unavoidable VIP rules (e.g. dynamic includes in `Load_Entries`).
 - Class files follow WordPress `class-{slug}.php` naming (not PSR-4 filename casing) — the wordpress-autoloader handles both.
-- Node 22 / npm 10 (see `engines` and `.nvmrc`).
+- Node 24 / npm 11 (see `engines` and `.nvmrc`).
 
 ## Mantle Framework
 
