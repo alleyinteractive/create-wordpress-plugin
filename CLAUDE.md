@@ -42,7 +42,7 @@ npm run jest:watch    # jest in watch mode
 npm run check-types   # tsc --noEmit
 npm run eslint:fix    # auto-fix JS/TS lint issues
 npm run stylelint:fix # auto-fix SCSS lint issues
-npm run packages-update  # update @wordpress/* packages to latest (wp-6.7 dist-tag)
+npm run packages-update  # update @wordpress/* packages to latest (wp-7.0 dist-tag)
 composer test         # runs @lint then @phpunit
 composer phpunit      # PHPUnit only
 composer phpstan      # PHPStan at level `max` (paths: blocks/, entries/, src/, plugin.php)
@@ -98,11 +98,11 @@ Dynamic blocks live in `blocks/<name>/` (scaffolded by `npm run create-block`).
 
 ## Conventions to respect
 
-- PHP 8.2+, WordPress 6.5+ minimum. Strict types, PHPStan **level max** across `blocks/`, `entries/`, `src/`, `plugin.php`. New PHP code must pass level max.
+- PHP 8.4+, WordPress 6.5+ minimum. Strict types, PHPStan **level max** across `blocks/`, `entries/`, `src/`, `plugin.php`. New PHP code must pass level max.
 - Namespace is `Alley\WP\Create_WordPress_Plugin\...` with feature classes under `...\Features\`.
 - Coding standard: `alleyinteractive/alley-coding-standards` (WordPress-VIP-flavored). Inline `phpcs:ignore` is used sparingly for unavoidable VIP rules (e.g. dynamic includes in `Load_Entries`).
 - Class files follow WordPress `class-{slug}.php` naming (not PSR-4 filename casing) — the wordpress-autoloader handles both.
-- Node 22 / npm 10 (see `engines` and `.nvmrc`).
+- Node 24 / npm 11 (see `engines` and `.nvmrc`).
 
 ## Mantle Framework
 
