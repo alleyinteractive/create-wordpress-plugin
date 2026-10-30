@@ -21,7 +21,7 @@
     "mantle-framework/support": "^1.15"
   },
   "require-dev": {
-    "alleyinteractive/alley-coding-standards": "^2.0",
+    "alleyinteractive/alley-coding-standards": "^2.6",
     "mantle-framework/testkit": "^1.15",
     "rector/rector": "^2.0",
     "szepeviktor/phpstan-wordpress": "^2.0"
