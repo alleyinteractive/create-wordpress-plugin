@@ -98,7 +98,7 @@ Dynamic blocks live in `blocks/<name>/` (scaffolded by `npm run create-block`).
 
 ## Conventions to respect
 
-- PHP 8.2+, WordPress 6.5+ minimum. Strict types, PHPStan **level max** across `blocks/`, `entries/`, `src/`, `plugin.php`. New PHP code must pass level max.
+- PHP 8.4+, WordPress 6.5+ minimum. Strict types, PHPStan **level max** across `blocks/`, `entries/`, `src/`, `plugin.php`. New PHP code must pass level max.
 - Namespace is `Alley\WP\Create_WordPress_Plugin\...` with feature classes under `...\Features\`.
 - Coding standard: `alleyinteractive/alley-coding-standards` (WordPress-VIP-flavored). Inline `phpcs:ignore` is used sparingly for unavoidable VIP rules (e.g. dynamic includes in `Load_Entries`).
 - Class files follow WordPress `class-{slug}.php` naming (not PSR-4 filename casing) — the wordpress-autoloader handles both.
