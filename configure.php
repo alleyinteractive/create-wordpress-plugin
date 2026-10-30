@@ -24,8 +24,8 @@ if ( 0 === strpos( strtoupper( PHP_OS ), 'WIN' ) ) {
 	die( 'Not supported in Windows. 🪟' );
 }
 
-if ( version_compare( PHP_VERSION, '8.2.0', '<' ) ) {
-	die( 'PHP 8.2.0 or greater is required.' );
+if ( version_compare( PHP_VERSION, '8.4.0', '<' ) ) {
+	die( 'PHP 8.4.0 or greater is required.' );
 }
 
 // Parse the command line arguments from $argv.
@@ -294,13 +294,35 @@ function remove_assets_require(): void {
 	file_put_contents( $plugin_file, trim( $contents ) . PHP_EOL );
 }
 
+/* Remove the features that load built assets from main.php. */
+function remove_assets_features(): void {
+	$file = 'src/main.php';
+
+	$contents = file_get_contents( $file );
+
+	if ( empty( $contents ) ) {
+		return;
+	}
+
+	$contents = str_replace(
+		[
+			"\t\tnew Features\\Register_Block_Manifest(),\n",
+			"\t\tnew Features\\Load_Entries( cache: 'local' !== wp_get_environment_type() ),\n",
+		],
+		'',
+		$contents,
+	);
+
+	file_put_contents( $file, $contents );
+}
+
 /* Remove the tests that support front-end assets. */
 function remove_assets_test(): void {
 	$file = __DIR__ . '/.github/workflows/all-pr-tests.yml';
 
 	if ( file_exists( $file ) ) {
 		$contents = preg_replace(
-			'/(- name: Run Node Tests.*)(- name: Run)/s',
+			'/(- name: Read Node version.*)(- name: Run)/s',
 			'$2',
 			file_get_contents( $file ),
 		);
@@ -664,6 +686,8 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 			'node_modules/',
 			'scaffold',
 			'src/assets.php',
+			'src/features/class-load-entries.php',
+			'src/features/class-register-block-manifest.php',
 		]
 	);
 
@@ -679,6 +703,7 @@ if ( confirm( 'Will this plugin be compiling front-end assets (Node)?', true ) )
 
 	remove_assets_readme( keep_contents: false );
 	remove_assets_require();
+	remove_assets_features();
 	remove_assets_test();
 }
 

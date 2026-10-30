@@ -7,7 +7,7 @@
  * Author: author_name
  * Author URI: https://github.com/alleyinteractive/create-wordpress-plugin
  * Requires at least: 7.1
- * Requires PHP: 8.2
+ * Requires PHP: 8.4
  * Tested up to: 7.1
  *
  * Text Domain: create-wordpress-plugin
