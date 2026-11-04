@@ -1,14 +1,14 @@
 <?php
 /**
- * {{ psr4ClassName name }} test class file
+ * {{ psr4ClassName inputs.featureName }} test class file
  *
  * @package create-wordpress-plugin
  */
 
-namespace Alley\WP\Create_WordPress_Plugin\\{{ wpNamespace inputs.featureName prefix="Tests\Features" }};
+namespace Alley\WP\Create_WordPress_Plugin\\{{ wpNamespace inputs.featureName prefix="Tests\Feature" }};
 
-use Create_WordPress_Plugin\Tests\TestCase;
-use Create_WordPress_Plugin\\{{ wpNamespace inputs.featureName prefix="Features" }}\\{{ wpClassName inputs.featureName }};
+use Alley\WP\Create_WordPress_Plugin\Tests\TestCase;
+use Alley\WP\Create_WordPress_Plugin\\{{ wpNamespace inputs.featureName prefix="Features" }}\\{{ wpClassName inputs.featureName }};
 
 /**
  * {{ replace (psr4ClassName inputs.featureName) "_" " " }} Test for the {{ wpClassName inputs.featureName }} class.

@@ -37,7 +37,7 @@ Requires at least: 6.3
 
 Tested up to: 6.7
 
-Requires PHP: 8.2
+Requires PHP: 8.4
 
 License: GPL v2 or later
 
@@ -86,7 +86,7 @@ The plugin supports registering post and term meta via JSON files located in the
 
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/alleyinteractive/mantle-framework/HEAD/src/mantle/support/schema/meta.json",
+  "$schema": "https://mantle.alley.com/schema/meta.json",
   "example_meta_key": {
     "post_types": "article",
     "type": "string"
@@ -156,10 +156,10 @@ npx wp-scripts packages-update --dist-tag=wp-WPVERSION`
 ```
 
 Where `WPVERSION` is the version of WordPress you are targeting. The version
-must include both the major and minor version (e.g., `6.7`). For example:
+must include both the major and minor version (e.g., `7.0`). For example:
 
 ```sh
-npx wp-scripts packages-update --dist-tag=wp-6.7`
+npx wp-scripts packages-update --dist-tag=wp-7.0`
 ```
 <!--/front-end-->
 ## Testing
